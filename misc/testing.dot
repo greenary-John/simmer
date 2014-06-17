@@ -1,0 +1,87 @@
+digraph {
+	graph [size = "10,7", ranksep = .1];
+	graph [ label = "Dmd//MGI:94909 (blue), Trim29//MGI:1919419 (pink), Intersection green", fontsize = 50];	0046872 [label="GO:0046872\nmetal ion binding\n2.68469248775",fontname=Courier, style=filled, fillcolor=greenyellow, fontsize = 50];
+	0008270 [label="GO:0008270\nzinc ion binding\n4.44224186385",fontname=Courier, style=filled, fillcolor=greenyellow, fontsize = 50];
+	0005515 [label="GO:0005515\nprotein binding\n1.55131801628",fontname=Courier, style=filled, fillcolor=greenyellow, fontsize = 50];
+	0050998 [label="GO:0050998\nnitric-oxide synthase binding\n8.36024694095",fontname=Courier, style=filled, fillcolor=cyan2, fontsize = 50];
+	0017166 [label="GO:0017166\nvinculin binding\n8.87107256472",fontname=Courier, style=filled, fillcolor=cyan2, fontsize = 50];
+	0005509 [label="GO:0005509\ncalcium ion binding\n4.97755303086",fontname=Courier, style=filled, fillcolor=cyan2, fontsize = 50];
+	0017022 [label="GO:0017022\nmyosin binding\n7.71839305478",fontname=Courier, style=filled, fillcolor=cyan2, fontsize = 50];
+	0003779 [label="GO:0003779\nactin binding\n5.16771509142",fontname=Courier, style=filled, fillcolor=cyan2, fontsize = 50];
+	0008307 [label="GO:0008307\nstructural constituent of muscle\n8.22048499858",fontname=Courier, style=filled, fillcolor=cyan2, fontsize = 50];
+	0002162 [label="GO:0002162\ndystroglycan binding\n9.56421974528",fontname=Courier, style=filled, fillcolor=cyan2, fontsize = 50];
+	0002039 [label="GO:0002039\np53 binding\n7.22884482946",fontname=Courier, style=filled, fillcolor=lightpink, fontsize = 50];
+	0050998 [width= .2, length = .2, fontname=Courier];
+	0019899 [width= .2, length = .2, fontname=Courier];
+	0005515 [width= .2, length = .2, fontname=Courier];
+	0005488 [width= .2, length = .2, fontname=Courier];
+	0003674 [width= .2, length = .2, fontname=Courier];
+	0017166 [width= .2, length = .2, fontname=Courier];
+	0008092 [width= .2, length = .2, fontname=Courier];
+	0005515 [width= .2, length = .2, fontname=Courier];
+	0005488 [width= .2, length = .2, fontname=Courier];
+	0003674 [width= .2, length = .2, fontname=Courier];
+	0017022 [width= .2, length = .2, fontname=Courier];
+	0008092 [width= .2, length = .2, fontname=Courier];
+	0005515 [width= .2, length = .2, fontname=Courier];
+	0005488 [width= .2, length = .2, fontname=Courier];
+	0003674 [width= .2, length = .2, fontname=Courier];
+	0003779 [width= .2, length = .2, fontname=Courier];
+	0008092 [width= .2, length = .2, fontname=Courier];
+	0005515 [width= .2, length = .2, fontname=Courier];
+	0005488 [width= .2, length = .2, fontname=Courier];
+	0003674 [width= .2, length = .2, fontname=Courier];
+	0002162 [width= .2, length = .2, fontname=Courier];
+	0001948 [width= .2, length = .2, fontname=Courier];
+	0005515 [width= .2, length = .2, fontname=Courier];
+	0005488 [width= .2, length = .2, fontname=Courier];
+	0003674 [width= .2, length = .2, fontname=Courier];
+	0008307 [width= .2, length = .2, fontname=Courier];
+	0005198 [width= .2, length = .2, fontname=Courier];
+	0003674 [width= .2, length = .2, fontname=Courier];
+	0008270 [width= .2, length = .2, fontname=Courier];
+	0046914 [width= .2, length = .2, fontname=Courier];
+	0046872 [width= .2, length = .2, fontname=Courier];
+	0043169 [width= .2, length = .2, fontname=Courier];
+	0003674 [width= .2, length = .2, fontname=Courier];
+	0005488 [width= .2, length = .2, fontname=Courier];
+	0043167 [width= .2, length = .2, fontname=Courier];
+	0005515 [width= .2, length = .2, fontname=Courier];
+	0005488 [width= .2, length = .2, fontname=Courier];
+	0003674 [width= .2, length = .2, fontname=Courier];
+	0046872 [width= .2, length = .2, fontname=Courier];
+	0043169 [width= .2, length = .2, fontname=Courier];
+	0005488 [width= .2, length = .2, fontname=Courier];
+	0003674 [width= .2, length = .2, fontname=Courier];
+	0043167 [width= .2, length = .2, fontname=Courier];
+	0002039 [width= .2, length = .2, fontname=Courier];
+	0005515 [width= .2, length = .2, fontname=Courier];
+	0003674 [width= .2, length = .2, fontname=Courier];
+	0005488 [width= .2, length = .2, fontname=Courier];
+	0005509 [width= .2, length = .2, fontname=Courier];
+	0046872 [width= .2, length = .2, fontname=Courier];
+	0043169 [width= .2, length = .2, fontname=Courier];
+	0003674 [width= .2, length = .2, fontname=Courier];
+	0043167 [width= .2, length = .2, fontname=Courier];
+	0005488 [width= .2, length = .2, fontname=Courier];
+
+0005488 -> 0003674[len = .3, weight = 2, penwidth = 3, color = black]
+0050998 -> 0019899[len = .3, weight = 2, penwidth = 3, color = black]
+0019899 -> 0005515[len = .3, weight = 2, penwidth = 3, color = black]
+0005515 -> 0005488[len = .3, weight = 2, penwidth = 3, color = black]
+0017166 -> 0008092[len = .3, weight = 2, penwidth = 3, color = black]
+0008092 -> 0005515[len = .3, weight = 2, penwidth = 3, color = black]
+0046914 -> 0046872[len = .3, weight = 2, penwidth = 3, color = black]
+0046872 -> 0043169[len = .3, weight = 2, penwidth = 3, color = black]
+0043169 -> 0043167[len = .3, weight = 2, penwidth = 3, color = black]
+0043167 -> 0005488[len = .3, weight = 2, penwidth = 3, color = black]
+0017022 -> 0008092[len = .3, weight = 2, penwidth = 3, color = black]
+0005198 -> 0003674[len = .3, weight = 2, penwidth = 3, color = black]
+0003779 -> 0008092[len = .3, weight = 2, penwidth = 3, color = black]
+0002162 -> 0001948[len = .3, weight = 2, penwidth = 3, color = black]
+0001948 -> 0005515[len = .3, weight = 2, penwidth = 3, color = black]
+0008307 -> 0005198[len = .3, weight = 2, penwidth = 3, color = black]
+0008270 -> 0046914[len = .3, weight = 2, penwidth = 3, color = black]
+0002039 -> 0005515[len = .3, weight = 2, penwidth = 3, color = black]
+0005509 -> 0046872[len = .3, weight = 2, penwidth = 3, color = black]
+}

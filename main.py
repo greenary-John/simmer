@@ -3,10 +3,16 @@ Created on Jun 11, 2013
 
 @author: s-galvez
 @author: Joel Richardson. Slightly modified (directories). Jun 5 2014
+@author: Pat Osterhaus. Edited for command line args.
+
+Example Input with Command Line Arguments:
+python main.py -o 2 -e None -f data\MPannot-2013-07-16.txt -d data\Geno_11_OMIM.txt -l 25
+python main.py -o 0 -e None -f data\gene_association.mgi -l 25
 '''
 import sys
 import os.path
 import subprocess
+import optparse
 
 from icLib import AnnotationSet
 from icLib import ObjectSimilarity
@@ -21,24 +27,23 @@ from icLib import AnnotatedObject
 myDir = os.path.dirname(__file__)
 
 def main():
-    ontoChoice = raw_input("Which ontology? 0 for GO, anything else for MP.")
-    evidenceCodesStrings = raw_input("What evidence codes would you like to remove? (Hit enter to use all. Separate evidence codes by commas. Spaces can be used. See http://www.geneontology.org/GO.evidence.shtml)")
-    evidenceCodesStrings.replace(" ", "")
-    evidenceCodes = evidenceCodesStrings.split(",")
+    options=optionParser()
+    ontoChoice=options.ontoChoice
+    evidenceCodeStrings=options.evidenceCodeStrings
+    evidenceCodeStrings.replace(" ","").replace("None","")
+    evidenceCodes=evidenceCodeStrings.split(",")
+    fileName=options.fileName
+    diseaseFile=options.diseaseFile
+    length=options.length
     if ontoChoice == "0":
-        ontology = Ontology.load(os.path.join(myDir,"data","gene_ontology.obo"), nodeType = Term.Term, cullObsolete = True)
-        fileName = os.path.join(myDir,"data","gene_association.mgi") #hardcoded. Change later.
+        ontology = Ontology.load(os.path.join(myDir,"data","gene_ontology.obo"), nodeType = Term.Term, cullObsolete = True)        
         annotationSet = AnnotationSet.AnnotationSet(fileName, ontology, evidenceCodes)
-        c = MyClosure.ForwardClosure(annotationSet, ontology).go(ontology)#Compute descendants.
-        c_rev = MyClosure.ReverseClosure(annotationSet).go(ontology, reversed = True)#, allPaths = True) #Compute ancestors.
         #pathwayDict = readReactome("NCBI_Reactome_MGI.txt")
     else:
         ontology = Ontology.load(os.path.join(myDir,"data","MPheno_OBO.obo"), nodeType = Term.Term, cullObsolete = True)
-        fileName = os.path.join(myDir,"data","MPannot-2013-07-16.txt") #Add this!
-        diseaseFile = os.path.join(myDir,"data","Geno_11_OMIM.txt")
-        annotationSet = AnnotationSet.MPAnnotationSet(fileName, ontology, diseaseFile, evidenceCodes)
-        c = MyClosure.ForwardClosure(annotationSet, ontology).go(ontology)#CFompute descendants.
-        c_rev = MyClosure.ReverseClosure(annotationSet).go(ontology, reversed = True)#, allPaths = True) #Compute ancestors.
+        annotationSet = AnnotationSet.MPAnnotationSet(fileName, ontology, diseaseFile, evidenceCodes)        
+    c = MyClosure.ForwardClosure(annotationSet, ontology).go(ontology)#Compute descendants.
+    c_rev = MyClosure.ReverseClosure(annotationSet).go(ontology, reversed = True)#, allPaths = True) #Compute ancestors.
     countDict = {"C": 0, "F": 0, "P": 0}
     
     more = "y"
@@ -56,14 +61,14 @@ def main():
             icType = "annotations"
         else:
             icType = "descendants"
-        length = 25
+        #length = 25
         
         for root in roots:
             for object_ID in object_IDs:
                 comparisonObject = annotationSet.annotatedObjects[object_ID]
                 orderings = createSimilarityMatrix(annotationSet,comparisonObject, root, evidenceCodes, icType)
-                comparisonData = compareMethodsSameObject(comparisonObject, orderings,25)
-                comparisonData2 = compareMethodsSameObject(comparisonObject, orderings,10)
+                comparisonData = compareMethodsSameObject(comparisonObject, orderings,length)
+                comparisonData2 = compareMethodsSameObject(comparisonObject, orderings,(length*2)//5)
                 printToFile(comparisonObject, orderings, length, root, evidenceCodes, icType,annotationSet,ontology, comparisonData, comparisonData2)#, pathwayDict)
         #pr.print_stats()
         #pr.disable()
@@ -434,6 +439,18 @@ def findAvgMaxResnikMICAs(orderings, length, root):
         
         i +=1
 
+def optionParser():
+    parser=optparse.OptionParser()
+    parser.add_option("-o","--ontology",dest="ontoChoice",default="0",help="Which ontology? 0 for GO, anything else for MP. (default=%default)")
+    parser.add_option("-e","--evidence",dest="evidenceCodeStrings",default="None",help="What evidence codes would you like to remove? (Separate evidence codes by commas. Spaces can be used. Specify 'None' to not remove evidence codes. See http://www.geneontology.org/GO.evidence.shtml)(default=%default)")
+    parser.add_option("-f","--file",dest="fileName",default="data\gene_association.mgi",help="Which gene or phenotype file would you like to use as input?(default=%default)")
+    parser.add_option("-d","--diseasefile",dest="diseaseFile",default="data\Geno_11_OMIM.txt",help="For use with MP terms. Specify which file, containing OMIM data, is desired for input.(default=%default)")
+    parser.add_option("-l","--length",type="int",dest="length",default=25,help="Select how many results (matches) are desired. Values will be rounded down to nearest integer of lesser value.(default=%default)")
+    (options,args)=parser.parse_args()
+    return options
 
 if __name__ == '__main__':
     main()
+
+
+

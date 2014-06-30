@@ -4,7 +4,9 @@ import optparse
 
 from icLib import Ontology
 from icLib import DAG
-from icLib import Term
+from icLib import OntTerm
+#from icLib import Term
+#above import is a remnant
 #Term imported for proper use of Ontology.load()
 #Is Term a base class?
 
@@ -17,7 +19,9 @@ def main():
     print "data directory:\t",datadir
     obodir=os.path.join(datadir,cp.get('SectionOne','obodir'))
     print "go directory:\t",obodir
-    ontology=Ontology.load(obodir,nodeType = Term.Term,cullObsolete = True)
+    #ontology=Ontology.load(obodir)
+    ontology=Ontology.load(obodir,nodeType = OntTerm.OntTerm,cullObsolete = True)
+    #either Ontology.load statement works, the one implemented shows incorporation with OntTerm module
     print "\nOntology Namespaces:\n",ontology.getNamespaces()
 
 def optionParser():

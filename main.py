@@ -51,17 +51,18 @@ def main():
         if ontoChoice == "0":
             #objectID = raw_input("What gene would you like to compare? Enter MGI ID: ")
             object_IDs = ["MGI:94909", "MGI:87961","MGI:88057", "MGI:1859546","MGI:96840"]
+            #hardcoded; BAD
             roots = ["F","C","P"]
         else:
             #objectID = raw_input("What genotype would you like to compare? Enter MGI ID: ")
             object_IDs = ["MGI:3526657"]
+            #hardcoded; BAD
             roots = ["MP"]
         icChoice = "0"
         if icChoice == "0":
             icType = "annotations"
         else:
             icType = "descendants"
-        #length = 25
         
         for root in roots:
             for object_ID in object_IDs:

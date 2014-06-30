@@ -4,41 +4,25 @@ import optparse
 
 from icLib import Ontology
 from icLib import DAG
-from icLib import Annotation_Manager
-from icLib import Ontology_Manager
+from icLib import OntTerm
+#from icLib import Term
+#above import is a remnant
+#Term imported for proper use of Ontology.load()
+#Is Term a base class?
 
 def main():
     options=optionParser()
     direc=os.path.dirname(__file__)
     cp=ConfigParser.RawConfigParser()
     cp.read(os.path.join(direc,options.configFile))
-    datadir=os.path.join(direc,cp.get('DEFAULT','datadir'))
+    datadir=os.path.join(direc,cp.get('SectionOne','datadir'))
     print "data directory:\t",datadir
-    ontdir=os.path.join(datadir,cp.get('DEFAULT','ontdir'))
-    print "ont directory:\t",ontdir
-    anndir=os.path.join(datadir,cp.get('DEFAULT','anndir'))
-    print "ann directory:\t",anndir,"\n"
-    ontfiledescripts=[]
-    annfiledescripts=[]
-    for s in cp.sections():
-        if "Ontology" in s:
-            ontfiledescripts.append([cp.get(s,'onttype'),os.path.join(ontdir,cp.get(s,'filename'))])
-        if "AnnotData" in s:
-            annfiledescripts.append([cp.get(s,'anntype'),os.path.join(anndir,cp.get(s,'filename')),cp.get(s,'obtype')])
-    print ontfiledescripts
-    print annfiledescripts,"\n"
-    ontman=Ontology_Manager.Ontology_Manager()
-    ontologies=ontman.ontsload(ontfiledescripts)
-    for x in ontologies:
-        print x.getNamespaces()
-    print "\n"
-    annman=Annotation_Manager.Annotation_Manager()
-    annotations=annman.annsload(annfiledescripts)
-    for x in annotations:
-        print x[0:3]
-    print "\n"
-
-    
+    obodir=os.path.join(datadir,cp.get('SectionOne','obodir'))
+    print "go directory:\t",obodir
+    #ontology=Ontology.load(obodir)
+    ontology=Ontology.load(obodir,nodeType = OntTerm.OntTerm,cullObsolete = True)
+    #either Ontology.load statement works, the one implemented shows incorporation with OntTerm module
+    print "\nOntology Namespaces:\n",ontology.getNamespaces()
 
 def optionParser():
     parser=optparse.OptionParser()

@@ -12,13 +12,19 @@ def main():
     conman=Config_Manager.Config_Manager(options.configFile)
     rclos=Extended_Closure.ReverseClosure()
     fclos=Extended_Closure.ForwardClosure()
-    print "Data Dir:\t",conman.getDataDir()
-    print "Ont Dir:\t",conman.getOntDir()
-    print "Ann Dir:\t",conman.getAnnDir(),"\n"
     ontologies=conman.getOntologies()
     annotations=conman.getAnnotations()
     rclosure=rclos.multigo(ontologies[1])
     fclosure=fclos.multigo(ontologies[1])
+
+
+    #above this comment is mostly algorithmic
+    #below this comment is mostly printing to validate variables and output
+
+    print "Data Dir:\t",conman.getDataDir()
+    print "Ont Dir:\t",conman.getOntDir()
+    print "Ann Dir:\t",conman.getAnnDir(),"\n"
+    
     #formatted printing of ontology namespaces and annotation subsets, respectively
     for x in range(0,len(ontologies[1])):
         print ontologies[0][x],":\t",ontologies[1][x].getNamespaces() 

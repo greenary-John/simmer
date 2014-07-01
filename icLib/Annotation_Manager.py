@@ -6,12 +6,14 @@ class Annotation_Manager(object):
         pass
 
     def annload(self,filedescript):
-        return open(filedescript[1],'r').read().split()
+        return [filedescript[0],open(filedescript[1],'r').read().split()]
 
     def annsload(self,filedescripts):
         anns=[]
+        types=[]
         for filedescript in filedescripts:
             anns.append(open(filedescript[1],'r').read().split())
-        return anns
+            types.append(filedescript[0])
+        return [types,anns]
         
             

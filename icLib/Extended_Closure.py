@@ -1,6 +1,5 @@
 import DAG
 import Ontology
-import sys
 
 class ReverseClosure(DAG.Traversal):
     #note this does not work for has_part relations

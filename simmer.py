@@ -35,6 +35,7 @@ def main():
 
     
     #printing 10 terms each from rclosure and fclosure for testing
+    print "rclosure subset"
     count=0
     while count<10:
         for x in rclosure:
@@ -49,8 +50,7 @@ def main():
                         break
                     count+=1
                     print z.id," ",z.name
-                    print count
-
+    print "\nfclosure subset"
     count=0  
     while count<10:
         for x in fclosure:
@@ -65,7 +65,6 @@ def main():
                         break
                     count+=1
                     print z.id," ",z.name
-                    print count
     
     
 

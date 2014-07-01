@@ -14,6 +14,7 @@ def main():
     print "Ann Dir:\t",conman.getAnnDir(),"\n"
     ontologies=conman.getOntologies()
     annotations=conman.getAnnotations()
+    #formatted printing of ontology namespaces and annotation subsets, respectively
     for x in range(0,len(ontologies[1])):
         print ontologies[0][x],":\t",ontologies[1][x].getNamespaces() 
     print "\n"

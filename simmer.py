@@ -26,10 +26,46 @@ def main():
     for x in range(0,len(annotations[1])):
         print annotations[0][x]," Preview:\t",annotations[1][x][0:2]
         print "\n"
-    
     #annotations[0] holds list of annotation types (e.g., "GO" or "MP")
     #annotations[1] holds list of annotations, split by tabs such that a list is
     #analogous to a row in Excel and each element in the list is from a unique column
+
+
+
+
+    
+    #printing 10 terms each from rclosure and fclosure for testing
+    count=0
+    while count<10:
+        for x in rclosure:
+            if count>10:
+                        break
+            for y in x:
+                if count>10:
+                    break
+                print "\n**",y,"**"
+                for z in x[y]:
+                    if count>10:
+                        break
+                    count+=1
+                    print z.id," ",z.name
+                    print count
+
+    count=0  
+    while count<10:
+        for x in fclosure:
+            if count>10:
+                        break
+            for y in x:
+                if count>10:
+                    break
+                print "\n**",y,"**"
+                for z in x[y]:
+                    if count>10:
+                        break
+                    count+=1
+                    print z.id," ",z.name
+                    print count
     
     
 

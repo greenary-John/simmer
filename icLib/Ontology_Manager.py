@@ -10,7 +10,7 @@ class Ontology_Manager(object):
         onts=[]
         types=[]
         for filename in filedescripts:
-            onts.append(Ontology.load(filename[1]))
+            onts.append(Ontology.load(filename[1],True))
             types.append(filename[0])
         return [types,onts]
     

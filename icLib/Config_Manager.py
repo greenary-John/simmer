@@ -9,11 +9,23 @@ class Config_Manager(object):
     def __init__(self):
         self.cp=ConfigParser.SafeConfigParser()
         self.op=optionParser()
-        self.ontman=Ontology_Manager.Ontology_Manager()
-        self.annman=Annotation_Manager.Annotation_Manager()
+        #self.ontman=Ontology_Manager.Ontology_Manager()
+        #self.annman=Annotation_Manager.Annotation_Manager()
         #this should handle only config files and command line options
         #inheritance backwards; ann and ont managers should call con man
         self.cp.read(self.op.opts.configFile)
+        self.sectionInfo=[]
+        #print self.cp.items("DEFAULT")
+        for s in self.cp.sections():
+            sectInfo=[]
+            if ":" in s:
+                temp=s.split(":")
+                obtype=temp[0]
+                specification=temp[1]
+            for (var,val) in self.cp.items(s):
+                if (var,val) not in self.cp.items("DEFAULT"):sectInfo.append([var,val])
+            self.sectionInfo.append([[obtype,specification],sectInfo])
+        #print self.sectionInfo
 
     #get methods for values contained in the DEFAULT section; maybe not vital
     def getDataDir(self):

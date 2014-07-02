@@ -9,22 +9,21 @@ from icLib import Extended_Closure
 
 def main():
     conman=Config_Manager.Config_Manager()
-    #rclos=Extended_Closure.ReverseClosure()
-    #fclos=Extended_Closure.ForwardClosure()
-    ontologies=conman.getOntologies()
-    annotations=conman.getAnnotations()
-    rclosure=Extended_Closure.ReverseClosure().multigo(ontologies[1])
-    fclosure=Extended_Closure.ForwardClosure().multigo(ontologies[1])
+    #ontologies=conman.getOntologies()
+    #annotations=conman.getAnnotations()
+    #rclosure=Extended_Closure.ReverseClosure().multigo(ontologies[1])
+    #fclosure=Extended_Closure.ForwardClosure().multigo(ontologies[1])
 
 
     #above this comment is mostly algorithmic
     #below this comment is mostly printing to validate variables and output
-
+    print conman.sectionInfo,"\n\n"
     print "Data Dir:\t",conman.getDataDir()
     print "Ont Dir:\t",conman.getOntDir()
     print "Ann Dir:\t",conman.getAnnDir(),"\n"
     
     #formatted printing of ontology namespaces and annotation subsets, respectively
+    '''
     for x in range(0,len(ontologies[1])):
         print ontologies[0][x],":\t",ontologies[1][x].getNamespaces() 
     print "\n"
@@ -70,5 +69,6 @@ def main():
                         break
                     count+=1
                     print z.id," ",z.name
+    '''
 
 main()

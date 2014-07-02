@@ -14,18 +14,22 @@ class Config_Manager(object):
         #this should handle only config files and command line options
         #inheritance backwards; ann and ont managers should call con man
         self.cp.read(self.op.opts.configFile)
-        self.sectionInfo=[]
+        self.sectionInfo={}
         #print self.cp.items("DEFAULT")
         for s in self.cp.sections():
-            sectInfo=[]
-            if ":" in s:
-                temp=s.split(":")
-                obtype=temp[0]
-                specification=temp[1]
+            sectInfo={}
             for (var,val) in self.cp.items(s):
                 if (var,val) not in self.cp.items("DEFAULT"):
-                    sectInfo.append([var,val])
-            self.sectionInfo.append([[obtype,specification],sectInfo])
+                    sectInfo.update({var:val})
+            if ":" in s:
+                temp=s.split(":")
+                if temp[0] in self.sectionInfo.keys():
+                    if temp[1] in self.sectionInfo[temp[0]].keys():
+                        self.sectionInfo[temp[0]][temp[1]].update(sectInfo)
+                    else:
+                        self.sectionInfo[temp[0]].update({temp[1]:sectInfo})
+                else:
+                    self.sectionInfo.update({temp[0]:{temp[1]:sectInfo}})
         #print self.sectionInfo
 
     #get methods for values contained in the DEFAULT section; maybe not vital

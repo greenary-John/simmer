@@ -7,6 +7,7 @@ class optionParser(object):
     def __init__(self):
         parser=optparse.OptionParser()
         parser.add_option("-c","--config",dest="configFile",default="C:\Users\s-osterh\Desktop\simmer\config.cfg",help="Specify config file location. (default=%default)")
+        parser.add_option("-D","--Define",dest="defintions",default=None,help="Define new sections and variables for config file. (default=%default)")
         #parser.add_option("-o","--ontology",dest="ontoChoice",default="0",help="Which ontology? 0 for GO, anything else for MP. (default=%default)")
         #parser.add_option("-e","--evidence",dest="evidenceCodeStrings",default="None",help="What evidence codes would you like to remove? (Separate evidence codes by commas. Spaces can be used. Specify 'None' to not remove evidence codes. See http://www.geneontology.org/GO.evidence.shtml)(default=%default)")
         #parser.add_option("-f","--file",dest="fileName",default="data\gene_association.mgi",help="Which gene or phenotype file would you like to use as input?(default=%default)")
@@ -21,6 +22,7 @@ class Config_Manager(object):
     def __init__(self):
         self.cp=simmerConfigParser()
         self.op=optionParser()
+        print "\n**",self.op.opts.defintions,"**\n"
         self.cp.read(self.op.opts.configFile)
     #methods called with simmerConfigParser class    
     def sectionsWith(self,name,value=None):
@@ -85,7 +87,14 @@ class simmerConfigParser(ConfigParser.SafeConfigParser):
         #loads and returns annotations associated with config information
         return self.annman.annsload(annfiledescripts)
     '''
-            
-        
-                
+def __test__():
+    simmercon=Config_Manager()
+    print "Data Dir:\t",simmercon.getDataDir()
+    print "Ont Dir:\t",simmercon.getOntDir()
+    print "Ann Dir:\t",simmercon.getAnnDir()
+    print "\nSections with 'type' of 'ontology'\n",simmercon.sectionsWith("type","ontology")
+    print "\ngetConfigObj(\"GO\")\n",simmercon.getConfigObj("GO")
+    print "\ngetConfigObj()\n",simmercon.getConfigObj()
     
+if __name__=="__main__":
+    __test__()

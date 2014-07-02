@@ -4,7 +4,7 @@ import ConfigParser
 
 from icLib import Ontology
 from icLib import DAG
-from icLib import Config_Manager2
+from icLib import Config_Manager
 from icLib import Extended_Closure
 
 def main():

@@ -8,19 +8,22 @@ from icLib import Config_Manager
 from icLib import Extended_Closure
 
 def main():
-    conman=Config_Manager.Config_Manager()
-    #ontologies=conman.getOntologies()
-    #annotations=conman.getAnnotations()
+    simmercon=Config_Manager.simmerConfigParser()
+    #ontologies=simmercon.getOntologies()
+    #annotations=simmercon.getAnnotations()
     #rclosure=Extended_Closure.ReverseClosure().multigo(ontologies[1])
     #fclosure=Extended_Closure.ForwardClosure().multigo(ontologies[1])
 
 
     #above this comment is mostly algorithmic
     #below this comment is mostly printing to validate variables and output
-    print conman.sectionInfo,"\n\n"
-    print "Data Dir:\t",conman.getDataDir()
-    print "Ont Dir:\t",conman.getOntDir()
-    print "Ann Dir:\t",conman.getAnnDir(),"\n"
+    #print conman.sectionInfo,"\n\n"
+    print "Data Dir:\t",simmercon.getDataDir()
+    print "Ont Dir:\t",simmercon.getOntDir()
+    print "Ann Dir:\t",simmercon.getAnnDir()
+    print "\nSections with 'type' of 'ontology'\n",simmercon.sectionsWith("type","ontology")
+    print "\ngetConfigObj(\"GO\")\n",simmercon.getConfigObj("GO")
+    print "\ngetConfigObj()\n",simmercon.getConfigObj()
     
     #formatted printing of ontology namespaces and annotation subsets, respectively
     '''

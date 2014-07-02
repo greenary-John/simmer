@@ -9,12 +9,12 @@ from icLib import Extended_Closure
 
 def main():
     conman=Config_Manager.Config_Manager()
-    rclos=Extended_Closure.ReverseClosure()
-    fclos=Extended_Closure.ForwardClosure()
+    #rclos=Extended_Closure.ReverseClosure()
+    #fclos=Extended_Closure.ForwardClosure()
     ontologies=conman.getOntologies()
     annotations=conman.getAnnotations()
-    rclosure=rclos.multigo(ontologies[1])
-    fclosure=fclos.multigo(ontologies[1])
+    rclosure=Extended_Closure.ReverseClosure().multigo(ontologies[1])
+    fclosure=Extended_Closure.ForwardClosure().multigo(ontologies[1])
 
 
     #above this comment is mostly algorithmic

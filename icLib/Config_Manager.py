@@ -23,6 +23,8 @@ class Config_Manager(object):
     def getAnnDir(self):
         return self.cp.get('DEFAULT','anndir')
     
+
+    #getOntologies and getAnnotations will need to be moved to the respective manager modules
     def getOntologies(self):
         ontfiledescripts=[]
         #parses information held in sections, including header details

@@ -8,7 +8,7 @@ from icLib import Config_Manager
 from icLib import Extended_Closure
 
 def main():
-    simmercon=Config_Manager.simmerConfigParser()
+    simmercon=Config_Manager.Config_Manager()
     #ontologies=simmercon.getOntologies()
     #annotations=simmercon.getAnnotations()
     #rclosure=Extended_Closure.ReverseClosure().multigo(ontologies[1])

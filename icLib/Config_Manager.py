@@ -17,24 +17,37 @@ class optionParser(object):
         self.opts=options
         self.ars=args
 
-class simmerConfigParser(object):
+class Config_Manager(object):
     def __init__(self):
-        self.cp=ConfigParser.SafeConfigParser()
+        self.cp=simmerConfigParser()
         self.op=optionParser()
         self.cp.read(self.op.opts.configFile)
+    #methods called with simmerConfigParser class    
+    def sectionsWith(self,name,value=None):
+        return self.cp.sectionsWith(name,value)
+    def getConfigObj(self,section=None):
+        return self.cp.getConfigObj(section)
+    def getDataDir(self):
+        return self.cp.get('DEFAULT','datadir')
+    def getOntDir(self):
+        return self.cp.get('DEFAULT','ontdir')
+    def getAnnDir(self):
+        return self.cp.get('DEFAULT','anndir')
+
+class simmerConfigParser(ConfigParser.SafeConfigParser):
     def sectionsWith(self,name,value=None):
         rlist=[]
-        for s in self.cp.sections():
-            for (var,val) in self.cp.items(s):
+        for s in self.sections():
+            for (var,val) in self.items(s):
                 if var==name and value==None or val==value:
                     rlist.append(s)
         return rlist
     def getConfigObj(self,section=None):
         sectionInfo={}
-        for s in self.cp.sections():
+        for s in self.sections():
             sectInfo={}
-            for (var,val) in self.cp.items(s):
-                if (var,val) not in self.cp.items("DEFAULT"):
+            for (var,val) in self.items(s):
+                if (var,val) not in self.items("DEFAULT"):
                     sectInfo.update({var:val})
             if section==s:
                 return {s:sectInfo}
@@ -43,23 +56,23 @@ class simmerConfigParser(object):
 
     #get methods for values contained in the DEFAULT section; maybe not vital
     def getDataDir(self):
-        return self.cp.get('DEFAULT','datadir')
+        return self.get('DEFAULT','datadir')
     def getOntDir(self):
-        return self.cp.get('DEFAULT','ontdir')
+        return self.get('DEFAULT','ontdir')
     def getAnnDir(self):
-        return self.cp.get('DEFAULT','anndir')
+        return self.get('DEFAULT','anndir')
 
     '''
     #getOntologies and getAnnotations will need to be moved to the respective manager modules
     def getOntologies(self):
         ontfiledescripts=[]
         #parses information held in sections, including header details
-        for s in self.cp.sections():
+        for s in self.sections():
             if "Ontology" in s:
                 if "GO" in s:
-                    ontfiledescripts.append(["GO",self.cp.get(s,'filename')])
+                    ontfiledescripts.append(["GO",self.get(s,'filename')])
                 if "MP" in s:
-                    ontfiledescripts.append(["MP",self.cp.get(s,'filename')])
+                    ontfiledescripts.append(["MP",self.get(s,'filename')])
         #loads and returns ontologies associated with config information
         return self.ontman.ontsload(ontfiledescripts)
     
@@ -68,7 +81,7 @@ class simmerConfigParser(object):
         #parses information held in AnnotData sections
         for s in self.cp.sections():
             if "AnnotData" in s:
-                 annfiledescripts.append([self.cp.get(s,'ontology'),self.cp.get(s,'filename'),self.cp.get(s,'obtype')])
+                 annfiledescripts.append([self.get(s,'ontology'),self.get(s,'filename'),self.get(s,'obtype')])
         #loads and returns annotations associated with config information
         return self.annman.annsload(annfiledescripts)
     '''

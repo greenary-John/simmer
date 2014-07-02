@@ -8,7 +8,7 @@ from icLib import Config_Manager
 from icLib import Extended_Closure
 
 def main():
-    conman=Config_Manager2.Config_Manager()
+    conman=Config_Manager.Config_Manager()
     #ontologies=conman.getOntologies()
     #annotations=conman.getAnnotations()
     #rclosure=Extended_Closure.ReverseClosure().multigo(ontologies[1])

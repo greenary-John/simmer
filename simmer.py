@@ -1,6 +1,6 @@
 import os
 import ConfigParser
-import optparse
+#import optparse
 
 from icLib import Ontology
 from icLib import DAG
@@ -8,8 +8,7 @@ from icLib import Config_Manager
 from icLib import Extended_Closure
 
 def main():
-    options=optionParser()
-    conman=Config_Manager.Config_Manager(options.configFile)
+    conman=Config_Manager.Config_Manager()
     rclos=Extended_Closure.ReverseClosure()
     fclos=Extended_Closure.ForwardClosure()
     ontologies=conman.getOntologies()

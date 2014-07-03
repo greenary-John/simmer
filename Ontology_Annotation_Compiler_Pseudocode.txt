@@ -1,0 +1,43 @@
+from compiler.ast import flatten
+
+class Ontology_Annotation_Compiler():
+	def __init__(self,annSetRaw,ont,evCodes=None):
+		annSet=applyFilters(annSetRaw.getAnnotations(),evCodes)
+		#assuming getAnnotations returns a list of elements resembling either:
+		#[gene, term, evCode] or [gene,term]
+		
+
+		#term to object dictionary
+		self.term2obj={}
+		for x in annSet:
+			if not self.term2obj.has_key(x[1]):
+				self.term2obj.update({x[1]:x[0]})
+			else:
+				self.term2obj[x[1]]=[self.term2obj[x[1]],x[0]]
+		for x in self.term2obj:
+			self.term2obj[x]=flatten(self.term2obj[x])
+
+
+		#object to term dictionary
+		self.obj2term={}
+		for x in annSet:
+			if not self.obj2term.has_key(x[0]):
+				self.obj2term.update({x[0]:x[1]})
+			else:
+				self.obj2term[x[0]]=[self.obj2term[x[0]],x[1]]
+		for x in self.obj2term:
+			self.obj2term[x]=flatten(self.obj2term[x])
+
+
+		#term to IC dictionary
+		self.term2IC={}
+		sum=0
+		counts={}
+		for x in term2obj:
+			counts.update({x:len(term2obj[x])})
+			sum+=len(term2obj[x])
+		self.ICs={}
+		for x in term2obj:
+			self.ICs.update{x:math.log(float(counts[x])/sum)}
+
+		

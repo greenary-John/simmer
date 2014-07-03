@@ -26,4 +26,4 @@ def jaccardSim(ob1,ob2):
 	#rawAnnotations is the set of terms to which an object is annotated (excluding ancestors)
 
 def wangSim(ob1,ob2):
-	
+	 

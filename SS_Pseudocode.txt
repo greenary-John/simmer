@@ -1,0 +1,29 @@
+SS Measure Pseduocode
+
+
+def jaccardExtSim (ob1,ob2):
+	intersection=ob1.AncAnnotations.intersection(ob2.AncAncestors)
+	union=ob1.AncAnnotations | ob2.AncAnnotations
+	return float(len(intersection))/len(union)
+	#this works for good input, maybe use a try-except in actual implementation
+	#AncAnnotations is the set of terms to which an object is annotated (including ancestors)
+
+def GICextSim(ob1,ob2):
+	intersection=ob1.AncAnnotations.intersection(ob2.AncAncestors)
+	union=ob1.AncAnnotations | ob2.AncAnnotations
+	intersectionICSum=sum(findIC(x) for x in intersection)
+	unionICSum=sum(findIC(x) for x in union)
+	return float(intersectionICSum)/unionICSum
+	#this works for good input, maybe use a tey-except in actual implementation
+	#AncAnnotations is the set of terms to which an object is annotated (including ancestors)
+	#findIC returns IC of a term
+
+def jaccardSim(ob1,ob2):
+	intersection=ob1.rawAnnotations.intersection(ob2.rawAnnotations)
+	union=ob1.rawAnnotations | ob2.rawAnnotations
+	return float(len(intersection))/len(union)
+	#this works for good input, maybe use a tey-except in actual implementation
+	#rawAnnotations is the set of terms to which an object is annotated (excluding ancestors)
+
+def wangSim(ob1,ob2):
+	

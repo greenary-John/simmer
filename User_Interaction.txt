@@ -1,0 +1,13 @@
+
+raw_input(
+"What would you like to do?
+'annotationQ'	=	display available annotation sets
+'ontologyQ'	=	display available ontologies
+'optionsQ'	=	display available options
+
+'annotationSel'	=	select from available annotation sets
+'ontologySel'	=	select from available ontologies
+'optionSel'	=	select from avaiable options
+
+'search'	=	use the search program"
+)

@@ -6,7 +6,7 @@ import optparse
 class optionParser(object):
     def __init__(self):
         parser=optparse.OptionParser()
-        parser.add_option("-c","--config",dest="configFile",default="C:\Users\s-osterh\Desktop\simmer\config.cfg",help="Specify config file location. (default=%default)")
+        parser.add_option("-c","--config",dest="configFile",default="C:\Users\Patrick\Documents\simmer\config.cfg",help="Specify config file location. (default=%default)")
         parser.add_option("-D","--Define",action="append",dest="defintions",default=None,help="Define new sections and variables for config file. (default=%default)")
         #parser.add_option("-o","--ontology",dest="ontoChoice",default="0",help="Which ontology? 0 for GO, anything else for MP. (default=%default)")
         #parser.add_option("-e","--evidence",dest="evidenceCodeStrings",default="None",help="What evidence codes would you like to remove? (Separate evidence codes by commas. Spaces can be used. Specify 'None' to not remove evidence codes. See http://www.geneontology.org/GO.evidence.shtml)(default=%default)")
@@ -23,6 +23,13 @@ class Config_Manager(object):
         self.cp=simmerConfigParser()
         self.op=optionParser()
         print "\n**",self.op.opts.defintions,"**\n"
+        open(self.op.opts.configFile,'r+')
+        defs=[]
+        for de in self.op.opts.defintions:
+            temp=de.split(".")
+            for te in temp:
+                defs.append(te.split("=")
+        print "\n**",defs,"**\n"    
         self.cp.read(self.op.opts.configFile)
     #methods called with simmerConfigParser class    
     def sectionsWith(self,name,value=None):

@@ -5,10 +5,16 @@ import ConfigParser
 from icLib import Ontology
 from icLib import DAG
 from icLib import Config_Manager
+from icLib import Ontology_Manager
 from icLib import Extended_Closure
+from icLib import Annotation_Manager
 
 def main():
     simmercon=Config_Manager.Config_Manager()
+    #below line doesn't work. it is proposed structure, but can't work
+    #since 'module' objects are not callable
+    ontman=Ontology_Manager.Ontology_Manager(simmercon)
+    annman=Annotation_Manager.Annotation_Manager(simmercon)
     #ontologies=simmercon.getOntologies()
     #annotations=simmercon.getAnnotations()
     #rclosure=Extended_Closure.ReverseClosure().multigo(ontologies[1])
@@ -24,6 +30,8 @@ def main():
     print "\nSections with 'type' of 'ontology'\n",simmercon.sectionsWith("type","ontology")
     print "\ngetConfigObj(\"GO\")\n",simmercon.getConfigObj("GO")
     print "\ngetConfigObj()\n",simmercon.getConfigObj()
+    print "\nontman.onts\n",ontman.onts
+    print "\nannman.anns[\"geneGO\"][0]\n",annman.anns["geneGO"][0]
     
     #formatted printing of ontology namespaces and annotation subsets, respectively
     '''
@@ -73,5 +81,5 @@ def main():
                     count+=1
                     print z.id," ",z.name
     '''
-
-main()
+if __name__=='__main__':
+    main()

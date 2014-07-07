@@ -2,8 +2,25 @@
 
 class Annotation_Manager(object):
 
-    def __init__(self):
-        pass
+    def __init__(self,conMan):
+        self.annObjs={}
+        typesTemp=[]
+        annsTemp=[]
+        self.anns={}
+        for sec in conMan.sectionsWith("type","annotations"):
+            self.annObjs[sec]=conMan.getConfigObj(sec)[sec]
+        for obj in self.annObjs:
+            annsTemp.append(open(self.annObjs[obj]["filename"],'r').read().splitlines())
+            typesTemp.append(obj)
+        for x in range(0,len(annsTemp)):
+            for y in range (0,len(annsTemp[x])):
+                if "\t" in annsTemp[x][y]:
+                    #reformaat anns such that each element is a list separated by tabs
+                    annsTemp[x][y]=annsTemp[x][y].split("\t")
+            if typesTemp[x]=="geneGO":
+                self.anns[typesTemp[x]]=annsTemp[x][6:]
+            if typesTemp[x]=="geneMP":
+                self.anns[typesTemp[x]]=annsTemp[x][1:]
 
     def annsload(self,filedescripts):
         #fildescripts formatted as: [type_of_ann,filename_of_ann]

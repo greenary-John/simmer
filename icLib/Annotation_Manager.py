@@ -8,7 +8,7 @@ class Annotation_Manager(object):
         annsTemp=[]
         self.anns={}
         for sec in conMan.sectionsWith("type","annotations"):
-            self.annObjs[sec]=conMan.getConfigObj(sec)[sec]
+            self.annObjs[sec]=conMan.getConfigObj(sec)
         for obj in self.annObjs:
             annsTemp.append(open(self.annObjs[obj]["filename"],'r').read().splitlines())
             typesTemp.append(obj)

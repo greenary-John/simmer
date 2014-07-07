@@ -1,6 +1,5 @@
 import os
 import ConfigParser
-#import optparse
 
 from icLib import Ontology
 from icLib import DAG
@@ -10,9 +9,15 @@ from icLib import Extended_Closure
 from icLib import Annotation_Manager
 
 def main():
-    simmercon=Config_Manager.Config_Manager()
-    #below line doesn't work. it is proposed structure, but can't work
-    #since 'module' objects are not callable
+    cm=Config_Manager.ConfigManager(setConfigOptions)
+    simmercon=cm.readConfig()
+    '''
+    simmercon.readfp(cm.defaultConfigFile())
+    c=cm.readConfig()
+    print c.sections()
+    global cp
+    cp=c
+    '''
     ontman=Ontology_Manager.Ontology_Manager(simmercon)
     annman=Annotation_Manager.Annotation_Manager(simmercon)
     #ontologies=simmercon.getOntologies()
@@ -24,9 +29,6 @@ def main():
     #above this comment is mostly algorithmic
     #below this comment is mostly printing to validate variables and output
     #print conman.sectionInfo,"\n\n"
-    print "Data Dir:\t",simmercon.getDataDir()
-    print "Ont Dir:\t",simmercon.getOntDir()
-    print "Ann Dir:\t",simmercon.getAnnDir()
     print "\nSections with 'type' of 'ontology'\n",simmercon.sectionsWith("type","ontology")
     print "\ngetConfigObj(\"GO\")\n",simmercon.getConfigObj("GO")
     print "\ngetConfigObj()\n",simmercon.getConfigObj()
@@ -81,5 +83,10 @@ def main():
                     count+=1
                     print z.id," ",z.name
     '''
+
+def setConfigOptions(op):
+    #is this done correctly?
+    op.add_option("-l", "--length", metavar="NUM", dest="n", type="int", help="A number.")
+    
 if __name__=='__main__':
     main()

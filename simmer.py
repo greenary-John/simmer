@@ -12,7 +12,7 @@ def main():
     simmercon=Config_Manager.Config_Manager()
     #below line doesn't work. it is proposed structure, but can't work
     #since 'module' objects are not callable
-    ontman=Ontology_Manager.Ontology_Manager(simmercon.cp)
+    ontman=Ontology_Manager.Ontology_Manager(simmercon)
     #ontologies=simmercon.getOntologies()
     #annotations=simmercon.getAnnotations()
     #rclosure=Extended_Closure.ReverseClosure().multigo(ontologies[1])

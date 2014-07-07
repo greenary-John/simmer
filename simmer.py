@@ -10,11 +10,9 @@ from icLib import Extended_Closure
 
 def main():
     simmercon=Config_Manager.Config_Manager()
-    print "\n",simmercon.cp
-    print type(simmercon.cp),"\n"
     #below line doesn't work. it is proposed structure, but can't work
     #since 'module' objects are not callable
-    #ontman=Ontology_Manager(simmercon.cp)
+    ontman=Ontology_Manager.Ontology_Manager(simmercon.cp)
     #ontologies=simmercon.getOntologies()
     #annotations=simmercon.getAnnotations()
     #rclosure=Extended_Closure.ReverseClosure().multigo(ontologies[1])
@@ -30,7 +28,7 @@ def main():
     print "\nSections with 'type' of 'ontology'\n",simmercon.sectionsWith("type","ontology")
     print "\ngetConfigObj(\"GO\")\n",simmercon.getConfigObj("GO")
     print "\ngetConfigObj()\n",simmercon.getConfigObj()
-    #print "\nontman.onts\n",ontman.onts
+    print "\nontman.onts\n",ontman.onts
     
     #formatted printing of ontology namespaces and annotation subsets, respectively
     '''

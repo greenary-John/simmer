@@ -85,19 +85,30 @@ def parse(rawAnnotations,annNames,annSets,simConPar,ontMan):
 def add_MP_TSV_Annotation(annSet,annLine):
     try:
         columns=annLine.split("\t")
-        annID=columns[3]
+        annID=columns[0]
+        #2014 annID is columns[3]
         ontID="MP"
-        termID=columns[0]
-        details={"TermName":columns[1],
+        termID=columns[3]
+        #2014 termID is columns[0]
+        details={
+             '''"TermName":columns[1],
              "OntologyNamespace":columns[2],
              "SubjectName":columns[4],
              "Qualifier":columns[5].replace("\"\"","None"),
              "EvidenceCode":columns[6],
-             "JNumber":columns[7]}
+             "JNumber":columns[7]'''
+             #above is for 2014 version
+             #below is for 2013 version
+             "Genotype":columns[1],
+             "Evidence":columns[2],
+             "MPTerm":columns[4],
+             "Qualifier":columns[5]
+                 }
         annSet.addAnnotation(annID,ontID,termID,details)
-    except:
-        pass
-        #print "Error on:\t",annID
+    except Exception as e:
+        print type(e)
+        print "\nError near:\t",annID
+        #pass
     
     
 def add_gaf_Annotation(annSet,annLine):

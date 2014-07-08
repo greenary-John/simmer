@@ -30,22 +30,10 @@ def main():
     print "\nannman.annotationSets[\"geneGO\"]\n",annman.annotationSets["geneGO"]
     print "\nannman.annotationSets[\"geneGO\"].getAnnotsByTerm(\"GO:0031403\")\n",annman.annotationSets["geneGO"].getAnnotsByTerm("GO:0031403")
     print "\nannman.annotationSets[\"geneGO\"].getAnnotsByObject(\"MGI:1918911\")\n",annman.annotationSets["geneGO"].getAnnotsByObject("MGI:1918911")
+    #print "\nannman.annotationSets[\"geneGO\"].getAllAnnots()",annman.annotationSets["geneGO"].getAllAnnots()
     #formatted printing of ontology namespaces and annotation subsets, respectively
-    '''
-    for x in range(0,len(ontologies[1])):
-        print ontologies[0][x],":\t",ontologies[1][x].getNamespaces() 
-    print "\n"
-    for x in range(0,len(annotations[1])):
-        print annotations[0][x]," Preview:\t",annotations[1][x][0:2]
-        print "\n"
-    #annotations[0] holds list of annotation types (e.g., "GO" or "MP")
-    #annotations[1] holds list of annotations, split by tabs such that a list is
-    #analogous to a row in Excel and each element in the list is from a unique column
-
-
-
-
     
+    '''
     #printing 10 terms each from rclosure and fclosure for testing
     print "rclosure subset"
     count=0

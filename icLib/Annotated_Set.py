@@ -46,3 +46,6 @@ class AnnotatedSet:
                     continue
             print "\nNo annotations for requested object."
             return None
+    def getAllAnnots(self):        
+        return self.annotations["Obj"]
+        

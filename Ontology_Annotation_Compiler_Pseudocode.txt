@@ -1,3 +1,10 @@
+'''
+
+**NOTE: Fix for actual format of getAllAnnots: dictionary
+
+{AnnotatedObject:[Term,details_dict]}
+
+'''
 from compiler.ast import flatten
 
 class Ontology_Annotation_Compiler():

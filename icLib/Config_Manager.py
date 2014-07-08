@@ -165,19 +165,32 @@ class SimmerConfigParser(ConfigParser.ConfigParser):
     def optionxform(self, name):
         return name
 
+    # Return True iff the given section actually defines the variable (not just inherits it from DEFAULT)
     def has_own_option(self, section, name):
         if self.has_option(section,name):
-	    if self.has_option('DEFAULT',name) \
-	    and self.get(section,name,True) == self.get('DEFAULT',name,True):
-		return False
+	    if self.has_option('DEFAULT',name):
+		# both sections include the named option. The only way to know for
+		# sure if it's inherited is to temporarily remove it from DEFAULT and see if the
+		# section still has it.
+
+		# save the current raw value then remove it
+		v = self.get('DEFAULT',name,True)
+		self.remove_option('DEFAULT',name)
+		# see if the section still sees it. then put it back.
+		res = self.has_option(section,name)
+		self.set('DEFAULT',name,v)
+		# return the result
+		return res
 	    else:
 	        return True
 	else:
 	    return False
 
+    # return list of variable names actually defined in the section (exclude those only inherited from DEFAULT)
     def own_options(self, section):
         return filter( lambda o:self.has_own_option(section, o), self.options(section) )
 
+    # returns list if (name,value) pairs for items actually defined in the section.
     def own_items(self, section, raw=False):
         return filter( lambda i:self.has_own_option(section, i[0]), self.items(section,raw) )
 

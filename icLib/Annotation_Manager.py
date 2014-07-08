@@ -83,24 +83,30 @@ def parse(rawAnnotations,annNames,annSets,simConPar,ontMan):
                     add_gaf_Annotation(annSets[annNames[x]],rawAnnotations[x][y])
 
 def add_MP_TSV_Annotation(annSet,annLine):
-    columns=annLine.split("\t")
-    annID=columns[3]
-    ontID="MP"
-    termID=columns[0]
-    details={"TermName":columns[1],
+    try:
+        columns=annLine.split("\t")
+        annID=columns[3]
+        ontID="MP"
+        termID=columns[0]
+        details={"TermName":columns[1],
              "OntologyNamespace":columns[2],
-             "Qualifier":columns[4].replace("\"\"","None"),
-             "EvidenceCode":columns[5],
-             "JNumber":columns[6]}
-    annSet.addAnnotation(annID,ontID,termID,details)
+             "SubjectName":columns[4],
+             "Qualifier":columns[5].replace("\"\"","None"),
+             "EvidenceCode":columns[6],
+             "JNumber":columns[7]}
+        annSet.addAnnotation(annID,ontID,termID,details)
+    except:
+        pass
+        #print "Error on:\t",annID
     
     
 def add_gaf_Annotation(annSet,annLine):
-    columns=annLine.split("\t")
-    annID=columns[1]
-    ontID="GO"
-    termID=columns[4]
-    details={"DB":columns[0],
+    try:
+        columns=annLine.split("\t")
+        annID=columns[1]
+        ontID="GO"
+        termID=columns[4]
+        details={"DB":columns[0],
              "DBObjectSymbol":columns[2],
              "Qualifier":columns[3].replace("\"\"","None"),
              "DBReference":columns[5],
@@ -115,6 +121,8 @@ def add_gaf_Annotation(annSet,annLine):
              "AssignedBy":columns[14],
              "AnnotationExtension":columns[15].replace("\"\"","None"),
              "GeneProductFormID":columns[16].replace("\"\"","None")}
-    annSet.addAnnotation(annID,ontID,termID,details)    
-    
+        annSet.addAnnotation(annID,ontID,termID,details)
+    except:
+        print "Error on:\t",annID
+
     

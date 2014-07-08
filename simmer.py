@@ -27,7 +27,7 @@ def main():
     print "\ngetConfigObj(\"GO\")\n",simmercon.getConfigObj("GO")
     print "\ngetConfigObj()\n",simmercon.getConfigObj()
     print "\nontman.onts\n",ontman.onts
-    print "\nannman.anns[\"geneGO\"][0]\n",annman.anns["geneGO"][0]
+    print "\nannman.anns[\"geneGO\"][0]\n",annman.annotationSets["geneGO"]
     
     #formatted printing of ontology namespaces and annotation subsets, respectively
     '''

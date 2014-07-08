@@ -11,8 +11,9 @@ from icLib import Annotation_Manager
 def main():
     cm=Config_Manager.ConfigManager(setConfigOptions)
     simmercon=cm.readConfig()
+    #readConfig() returns a SimmerConfigParser so simmercon is a SimmerConfigParser
     ontman=Ontology_Manager.Ontology_Manager(simmercon)
-    annman=Annotation_Manager.Annotation_Manager(simmercon)
+    annman=Annotation_Manager.Annotation_Manager(simmercon,ontman)
     #ontologies=simmercon.getOntologies()
     #annotations=simmercon.getAnnotations()
     #rclosure=Extended_Closure.ReverseClosure().multigo(ontologies[1])
@@ -26,7 +27,7 @@ def main():
     print "\ngetConfigObj(\"GO\")\n",simmercon.getConfigObj("GO")
     print "\ngetConfigObj()\n",simmercon.getConfigObj()
     print "\nontman.onts\n",ontman.onts
-    print "\nannman.anns[\"geneMP\"][0]\n",annman.anns["geneMP"][0]
+    print "\nannman.anns[\"geneGO\"][0]\n",annman.annotationSets["geneGO"]
     
     #formatted printing of ontology namespaces and annotation subsets, respectively
     '''

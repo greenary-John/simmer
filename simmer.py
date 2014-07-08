@@ -13,7 +13,7 @@ def main():
     simmercon=cm.readConfig()
     #readConfig() returns a SimmerConfigParser so simmercon is a SimmerConfigParser
     ontman=Ontology_Manager.Ontology_Manager(simmercon)
-    annman=Annotation_Manager.Annotation_Manager(simmercon)
+    annman=Annotation_Manager.Annotation_Manager(simmercon,ontman)
     #ontologies=simmercon.getOntologies()
     #annotations=simmercon.getAnnotations()
     #rclosure=Extended_Closure.ReverseClosure().multigo(ontologies[1])

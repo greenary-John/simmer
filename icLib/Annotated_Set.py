@@ -25,8 +25,10 @@ class AnnotatedSet:
         self.annotations["ID"][ontTerm]=[annObj,details]
         self.annotations["Obj"][annObj]=[ontTerm,details]
 
-    def getAnnotsByObject(self,obj):
+    def getAnnotsByObject(self,obj=None):
         #print self.annotations["Obj"].keys()
+        if obj==None:
+            return self.annotations["Obj"]
         try:
             return self.annotations["Obj"][obj]
         except KeyError:
@@ -35,7 +37,9 @@ class AnnotatedSet:
             except KeyError:
                 print "No annotations for requested object."
                 return None
-    def getAnnotsByTerm(self,term):
+    def getAnnotsByTerm(self,term=None):
+        if term==None:
+            return self.annotations["ID"]
         try:
             return self.annotations["ID"][term]
         except KeyError:
@@ -44,8 +48,6 @@ class AnnotatedSet:
                     return  self.annotations["ID"][self.ontman.onts[ont].getTerm(term)]
                 except KeyError:
                     continue
-            print "\nNo annotations for requested object."
+            print "No annotations for requested object."
             return None
-    def getAllAnnots(self):        
-        return self.annotations["Obj"]
         

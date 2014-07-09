@@ -94,7 +94,7 @@ def add_MP_TSV_Annotation(annSet,annLine):
              '''"TermName":columns[1],
              "OntologyNamespace":columns[2],
              "SubjectName":columns[4],
-             "Qualifier":columns[5].replace("\"\"","None"),
+             "Qualifier":columns[5],
              "EvidenceCode":columns[6],
              "JNumber":columns[7]'''
              #above is for 2014 version
@@ -104,7 +104,8 @@ def add_MP_TSV_Annotation(annSet,annLine):
              "MPTerm":columns[4],
              "Qualifier":columns[5]
                  }
-        annSet.addAnnotation(annID,ontID,termID,details)
+        if details["Qualifier"]!="normal":
+            annSet.addAnnotation(annID,ontID,termID,details)
     except Exception as e:
         print type(e)
         print "\nError near:\t",annID
@@ -119,20 +120,21 @@ def add_gaf_Annotation(annSet,annLine):
         termID=columns[4]
         details={"DB":columns[0],
              "DBObjectSymbol":columns[2],
-             "Qualifier":columns[3].replace("\"\"","None"),
+             "Qualifier":columns[3],
              "DBReference":columns[5],
              "EvidenceCode":columns[6],
-             "With (or) From":columns[7].replace("\"\"","None"),
+             "With (or) From":columns[7],
              "Aspect":columns[8],
-             "DBObjectName":columns[9].replace("\"\"","None"),
-             "DBObjectSynonym":columns[10].replace("\"\"","None"),
+             "DBObjectName":columns[9],
+             "DBObjectSynonym":columns[10],
              "DBObjectType":columns[11],
              "Taxon":columns[12],
              "Date":columns[13],
              "AssignedBy":columns[14],
-             "AnnotationExtension":columns[15].replace("\"\"","None"),
-             "GeneProductFormID":columns[16].replace("\"\"","None")}
-        annSet.addAnnotation(annID,ontID,termID,details)
+             "AnnotationExtension":columns[15],
+             "GeneProductFormID":columns[16]}
+        if details["Qualifier"]=="None" or details["Qualifier"]=="":
+            annSet.addAnnotation(annID,ontID,termID,details)
     except:
         print "Error on:\t",annID
 

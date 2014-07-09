@@ -8,6 +8,7 @@ from icLib import Ontology_Manager
 from icLib import Extended_Closure
 from icLib import Annotation_Manager
 from icLib import Ontology_Annotation_Compiler
+from icLib import Compiled_Annotation_Set
 
 def main():
     cm=Config_Manager.ConfigManager(setConfigOptions)
@@ -29,13 +30,19 @@ def main():
     print "\ngetConfigObj()\n",simmercon.getConfigObj()
     print "\nontman.onts\n",ontman.onts
     print "\nannman.annotationSets[\"geneGO\"]\n",annman.annotationSets["geneGO"]
-    print "\nannman.annotationSets[\"geneGO\"].getAnnotsByTerm(\"GO:0031403\")\n",annman.annotationSets["geneGO"].getAnnotsByTerm("GO:0031403")
-    print "\nannman.annotationSets[\"geneGO\"].getAnnotsByObject(\"MGI:1918911\")\n",annman.annotationSets["geneGO"].getAnnotsByObject("MGI:1918911")
+    print "\nannman.annotationSets[\"geneGO\"].getAnnotsByTerm(\"GO:0007612\")\n",annman.annotationSets["geneGO"].getAnnotsByTerm("GO:0007612")
+    print "\nannman.annotationSets[\"geneGO\"].getAnnotsByObject(\"MGI:1918911\")\n",annman.annotationSets["geneGO"].getAnnotsByObject("MGI:1918911"),"\n"
     #print "\nannman.annotationSets[\"geneGO\"].getAnnotsByTerm()",annman.annotationSets["geneGO"].getAnnotsByTerm()    
     #print "\nannman.annotationSets[\"geneGO\"].getAnnotsByObject()",annman.annotationSets["geneGO"].getAnnotsByObject() 
-    print len(annman.annotationSets["geneGO"].getAnnotsByObject())
-    Ontology_Annotation_Compiler.AnnotationSetEvidenceFilter(annman.annotationSets["geneGO"],["ND","ISO"])
-    print len(annman.annotationSets["geneGO"].getAnnotsByObject())
+    print "Cardinality before filtering:\t",len(annman.annotationSets["geneGO"].getAnnotsByObject()),"objects"
+    print "Cardinality before filtering:\t",len(annman.annotationSets["geneGO"].getAnnotsByTerm()),"terms"
+    test=Compiled_Annotation_Set.CompiledAnnotationSet(annman.annotationSets["geneGO"],["ND","ISS","ISA","ISO","ISM","IGC","IBA","IBD","IKR","IRD","RCA"])
+    print "Cardinality after filtering:\t",len(test.annset.getAnnotsByObject()),"objects"
+    print "Cardinality after filtering:\t",len(test.annset.getAnnotsByTerm()),"terms"
+    print len(test.obj2term),"obj2term entries"
+    print len(test.term2obj),"term2obj entries"
+    print "\ntest.annset.getAnnotsByTerm(\"GO:0007612\")\n",test.annset.getAnnotsByTerm("GO:0007612")
+    #print len(test.term2IC)
     #formatted printing of ontology namespaces and annotation subsets, respectively
     
     '''

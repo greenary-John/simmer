@@ -9,6 +9,7 @@ from icLib import Extended_Closure
 from icLib import Annotation_Manager
 from icLib import Ontology_Annotation_Compiler
 from icLib import Compiled_Annotation_Set
+from icLib import Annotated_Object
 
 def main():
     cm=Config_Manager.ConfigManager(setConfigOptions)
@@ -36,12 +37,19 @@ def main():
     #print "\nannman.annotationSets[\"geneGO\"].getAnnotsByObject()",annman.annotationSets["geneGO"].getAnnotsByObject() 
     print "Cardinality before filtering:\t",len(annman.annotationSets["geneGO"].getAnnotsByObject()),"objects"
     print "Cardinality before filtering:\t",len(annman.annotationSets["geneGO"].getAnnotsByTerm()),"terms"
-    test=Compiled_Annotation_Set.CompiledAnnotationSet(annman.annotationSets["geneGO"],["ND","ISS","ISA","ISO","ISM","IGC","IBA","IBD","IKR","IRD","RCA"])
+    test=Compiled_Annotation_Set.CompiledAnnotationSet(annman.annotationSets["geneGO"],["ISS","ISA","ISO","ISM","IGC","IBA","IBD","IKR","IRD","RCA"],ontman)
     print "Cardinality after filtering:\t",len(test.annset.getAnnotsByObject()),"objects"
     print "Cardinality after filtering:\t",len(test.annset.getAnnotsByTerm()),"terms"
     print len(test.obj2term),"obj2term entries"
     print len(test.term2obj),"term2obj entries"
     print "\ntest.annset.getAnnotsByTerm(\"GO:0007612\")\n",test.annset.getAnnotsByTerm("GO:0007612")
+    print "\ntest.term2obj[\"GO:0008150\"]\n",test.term2obj[ontman.onts["GO"].getTerm("GO:0008150")]
+    #print "\ntest.obj2term[Annotated_Object.AnnotatedObject.getAnnotatedObj(\"MGI:1918911\")]\n",test.obj2term[Annotated_Object.AnnotatedObject.getAnnotatedObj("MGI:1918911")]
+    #statement above printing many instances of OboTerm; why isn't __str__ formatting them?
+    print "I don't know if this is correct."
+    print "\n\n**\n",ontman.onts["GO"].getTerm("GO:0008150")
+    
+
     #print len(test.term2IC)
     #formatted printing of ontology namespaces and annotation subsets, respectively
     

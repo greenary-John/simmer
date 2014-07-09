@@ -12,6 +12,8 @@ class AnnotatedObject:
     def __init__(self,iden):
         self.id=iden
         knownObjs[iden]=self
+    def __str__(self):
+        return self.id
     def getID(self):
         return self.id
         

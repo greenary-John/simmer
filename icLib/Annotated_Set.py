@@ -20,8 +20,9 @@ class AnnotatedSet:
         #details parameter will be a dictionary of additional values
         #these values may include evCode, J reference, etc.
         #structure: {"evCode":blah,"JRef":bloop,"InfoVar":beep,...}
+        self.ontology=self.ontman.onts[ontID]
         annObj=Annotated_Object.AnnotatedObject.getAnnotatedObj(annID)
-        ontTerm=self.ontman.onts[ontID].getTerm(termID)
+        ontTerm=self.ontology.getTerm(termID)
         self.annotations["ID"][ontTerm]=[annObj,details]
         self.annotations["Obj"][annObj]=[ontTerm,details]
 

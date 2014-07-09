@@ -2,7 +2,8 @@ import math
 
 class CompiledAnnotationSet:
 
-    def __init__(self,AnnSet,evCodes):
+    def __init__(self,AnnSet,evCodes,ontman):
+        self.ontman=ontman
         self.annset=AnnSet
         self.evCodes=evCodes if isinstance(evCodes,list) else [evCodes]
         self.AnnotationSetEvidenceFilter(self.evCodes)
@@ -24,17 +25,27 @@ class CompiledAnnotationSet:
         self.term2obj={}
         for x in self.annset.annotations["ID"]:
             if not self.term2obj.has_key(x):
-                self.term2obj.update({x:self.annset.annotations["ID"][x][0]})
+                for y in self.annset.ontology.closure[x]:
+                    try:
+                        self.term2obj.update({x:self.annset.annotations["ID"][y][0]})
+                    except KeyError:
+                        continue
             else:
-                self.term2obj[x]=[self.term2obj[x],self.annset.annotations["ID"][x][0]]
+                for y in self.annset.ontolgoy.closure[x]:
+                    try:
+                        self.term2obj[x]=[self.term2obj[x],self.annset.annotations["ID"][y][0]]
+                    except KeyError:
+                        continue
 
     def obj2term(self):
         self.obj2term={}
         for x in self.annset.annotations["Obj"]:
             if not self.obj2term.has_key(x):
-                self.obj2term.update({x:self.annset.annotations["Obj"][x][0]})
+                self.obj2term.update({x:self.annset.ontology.closure[self.annset.annotations["Obj"][x][0]]})
             else:
-                self.obj2term[x]=[self.obj2term[x],self.annset.annotations["Obj"][x][0]]
+                self.obj2term[x]=[self.obj2term[x],self.annset.ontology.closure[self.annset.annotations["Obj"][x][0]]]
+            for y in self.annset.annotations["Obj"][x]:
+                y=y.__str__()
 
     def term2IC(self):
         self.term2IC={}

@@ -4,9 +4,9 @@ def AnnotationSetEvidenceFilter(AnnSet,evCodes):
     annotationsByObj=AnnSet.annotations["Obj"]
     for evCode in evCodes:
         try:
-            annotationsbyID={key:value for key,value in annnotationsByID.items() if value[1]["EvidenceCode"]!=evCode}
-            annotationsbyObj={key:value for key,value in annnotationsByObj.items() if value[1]["EvidenceCode"]!=evCode}
+            annotationsByID={key:value for key,value in annotationsByID.items() if value[1]["EvidenceCode"]!=evCode}
+            annotationsByObj={key:value for key,value in annotationsByObj.items() if value[1]["EvidenceCode"]!=evCode}
         except KeyError:
-            annotationsbyID={key:value for key,value in annnotationsByID.items() if value[1]["Evidence"]!=evCode}
-            annotationsbyObj={key:value for key,value in annnotationsByObj.items() if value[1]["Evidence"]!=evCode}
+            annotationsByID={key:value for key,value in annotationsByID.items() if value[1]["Evidence"]!=evCode}
+            annotationsByObj={key:value for key,value in annotationsByObj.items() if value[1]["Evidence"]!=evCode}
     AnnSet.annotations={"ID":annotationsByID,"Obj":annotationsByObj}

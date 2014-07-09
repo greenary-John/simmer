@@ -7,6 +7,7 @@ from icLib import Config_Manager
 from icLib import Ontology_Manager
 from icLib import Extended_Closure
 from icLib import Annotation_Manager
+from icLib import Ontology_Annotation_Compiler
 
 def main():
     cm=Config_Manager.ConfigManager(setConfigOptions)
@@ -32,6 +33,9 @@ def main():
     print "\nannman.annotationSets[\"geneGO\"].getAnnotsByObject(\"MGI:1918911\")\n",annman.annotationSets["geneGO"].getAnnotsByObject("MGI:1918911")
     #print "\nannman.annotationSets[\"geneGO\"].getAnnotsByTerm()",annman.annotationSets["geneGO"].getAnnotsByTerm()    
     #print "\nannman.annotationSets[\"geneGO\"].getAnnotsByObject()",annman.annotationSets["geneGO"].getAnnotsByObject() 
+    print len(annman.annotationSets["geneGO"].getAnnotsByObject())
+    Ontology_Annotation_Compiler.AnnotationSetEvidenceFilter(annman.annotationSets["geneGO"],["ND","ISO"])
+    print len(annman.annotationSets["geneGO"].getAnnotsByObject())
     #formatted printing of ontology namespaces and annotation subsets, respectively
     
     '''

@@ -30,7 +30,8 @@ def main():
     print "\nannman.annotationSets[\"geneGO\"]\n",annman.annotationSets["geneGO"]
     print "\nannman.annotationSets[\"geneGO\"].getAnnotsByTerm(\"GO:0031403\")\n",annman.annotationSets["geneGO"].getAnnotsByTerm("GO:0031403")
     print "\nannman.annotationSets[\"geneGO\"].getAnnotsByObject(\"MGI:1918911\")\n",annman.annotationSets["geneGO"].getAnnotsByObject("MGI:1918911")
-    #print "\nannman.annotationSets[\"geneGO\"].getAnnotsByObject()",annman.annotationSets["geneGO"].getAnnotsByObject()
+    #print "\nannman.annotationSets[\"geneGO\"].getAnnotsByTerm()",annman.annotationSets["geneGO"].getAnnotsByTerm()    
+    #print "\nannman.annotationSets[\"geneGO\"].getAnnotsByObject()",annman.annotationSets["geneGO"].getAnnotsByObject() 
     #formatted printing of ontology namespaces and annotation subsets, respectively
     
     '''

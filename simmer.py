@@ -3,20 +3,19 @@ import ConfigParser
 
 from icLib import Ontology
 from icLib import DAG
-from icLib import Config_Manager
-from icLib import Ontology_Manager
-from icLib import Extended_Closure
-from icLib import Annotation_Manager
-from icLib import Ontology_Annotation_Compiler
-from icLib import Compiled_Annotation_Set
-from icLib import Annotated_Object
+from icLib import ConfigManager
+from icLib import OntologyManager
+from icLib import AnnotationManager
+from icLib import OntologyAnnotationCompiler
+from icLib import CompiledAnnotationSet
+from icLib import AnnotatedObject
 
 def main():
-    cm=Config_Manager.ConfigManager(setConfigOptions)
+    cm=ConfigManager.ConfigManager(setConfigOptions)
     simmercon=cm.readConfig()
     #readConfig() returns a SimmerConfigParser so simmercon is a SimmerConfigParser
-    ontman=Ontology_Manager.Ontology_Manager(simmercon)
-    annman=Annotation_Manager.Annotation_Manager(simmercon,ontman)
+    ontman=OntologyManager.OntologyManager(simmercon)
+    annman=AnnotationManager.AnnotationManager(simmercon,ontman)
     #ontologies=simmercon.getOntologies()
     #annotations=simmercon.getAnnotations()
     #rclosure=Extended_Closure.ReverseClosure().multigo(ontologies[1])
@@ -37,17 +36,16 @@ def main():
     #print "\nannman.annotationSets[\"geneGO\"].getAnnotsByObject()",annman.annotationSets["geneGO"].getAnnotsByObject() 
     print "Cardinality before filtering:\t",len(annman.annotationSets["geneGO"].getAnnotsByObject()),"objects"
     print "Cardinality before filtering:\t",len(annman.annotationSets["geneGO"].getAnnotsByTerm()),"terms"
-    test=Compiled_Annotation_Set.CompiledAnnotationSet(annman.annotationSets["geneGO"],["ISS","ISA","ISO","ISM","IGC","IBA","IBD","IKR","IRD","RCA"],ontman)
+    test=CompiledAnnotationSet.CompiledAnnotationSet(annman.annotationSets["geneGO"],["ISS","ISA","ISO","ISM","IGC","IBA","IBD","IKR","IRD","RCA"],ontman)
     print "Cardinality after filtering:\t",len(test.annset.getAnnotsByObject()),"objects"
     print "Cardinality after filtering:\t",len(test.annset.getAnnotsByTerm()),"terms"
     print len(test.obj2term),"obj2term entries"
     print len(test.term2obj),"term2obj entries"
     print "\ntest.annset.getAnnotsByTerm(\"GO:0007612\")\n",test.annset.getAnnotsByTerm("GO:0007612")
-    print "\ntest.term2obj[\"GO:0008150\"]\n",test.term2obj[ontman.onts["GO"].getTerm("GO:0008150")]
     #print "\ntest.obj2term[Annotated_Object.AnnotatedObject.getAnnotatedObj(\"MGI:1918911\")]\n",test.obj2term[Annotated_Object.AnnotatedObject.getAnnotatedObj("MGI:1918911")]
     #statement above printing many instances of OboTerm; why isn't __str__ formatting them?
-    print "I don't know if this is correct."
-    print "\n\n**\n",ontman.onts["GO"].getTerm("GO:0008150")
+    print "\nannman.getSet(\"geneGO\")\n",annman.getSet("geneGO")
+    print "\nontman.getOntology()\n",ontman.getOntology()
     
 
     #print len(test.term2IC)

@@ -36,7 +36,7 @@ class AnnotationManager(object):
                 return self.annotationNames 
 
 def parse(rawAnnotations,annNames,annSets,simConPar,ontMan):
-    formatdict={"gaf-version: 2.0":[6,"GO",{
+    formatdict={"gaf-version: 2.0":[6,{
         "DB":0,
         "annID":1,
         "DBObjectSymbol":2,
@@ -54,7 +54,7 @@ def parse(rawAnnotations,annNames,annSets,simConPar,ontMan):
         "AssignedBy":14,
         "AnnotationExtension":15,
         "GeneProductFormID":16
-        }],"MP TSV":[1,"MP",{
+        }],"MP TSV":[1,{
             "annID":0,
             "Genotype":1,
             "EvidenceCode":2,
@@ -80,7 +80,7 @@ def parse(rawAnnotations,annNames,annSets,simConPar,ontMan):
         for y in range(formatdict[form][0],len(rawAnnotations[x])):
             columns=rawAnnotations[x][y].split("\t")
             details={}
-            for z in formatdict[form][2]:
-                details[z]=columns[formatdict[form][2][z]]
+            for z in formatdict[form][1]:
+                details[z]=columns[formatdict[form][1][z]]
             if details["Qualifier"]=="None" or details["Qualifier"]=="":
-                annSets[annNames[x]].addAnnotation(formatdict[form][1],details)
+                annSets[annNames[x]].addAnnotation(details)

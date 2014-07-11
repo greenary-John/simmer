@@ -20,8 +20,14 @@ class AnnotationSet:
         #structure: {"evCode":blah,"JRef":bloop,"InfoVar":beep,...}
         annObj=AnnotatedObject.AnnotatedObject.getAnnotatedObj(details["annID"])
         ontTerm=self.ontology.getTerm(details["termID"])
-        self.annotsByID[ontTerm]=Annotation.Annotation(self.ontology,details)
-        self.annotsByObj[annObj]=Annotation.Annotation(self.ontology,details)
+        if self.annotsByID.has_key(ontTerm):
+            self.annotsByID[ontTerm].append(Annotation.Annotation(self.ontology,details))
+        else:
+            self.annotsByID[ontTerm]=[Annotation.Annotation(self.ontology,details)]
+        if self.annotsByObj.has_key(annObj):
+            self.annotsByObj[annObj].append(Annotation.Annotation(self.ontology,details))
+        else:
+            self.annotsByObj[annObj]=[Annotation.Annotation(self.ontology,details)]
 
     def getAnnotsByObject(self,obj=None):
         if obj==None:

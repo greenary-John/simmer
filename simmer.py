@@ -34,11 +34,12 @@ def main():
     print "\nannman.annotationSets[\"geneGO\"].getAnnotsByObject(\"MGI:1918911\")\n",annman.annotationSets["geneGO"].getAnnotsByObject("MGI:1918911"),"\n"
     #print "\nannman.annotationSets[\"geneGO\"].getAnnotsByTerm()",annman.annotationSets["geneGO"].getAnnotsByTerm()    
     #print "\nannman.annotationSets[\"geneGO\"].getAnnotsByObject()",annman.annotationSets["geneGO"].getAnnotsByObject() 
-    print "Cardinality before filtering:\t",len(annman.annotationSets["geneGO"].getAnnotsByObject()),"objects"
-    print "Cardinality before filtering:\t",len(annman.annotationSets["geneGO"].getAnnotsByTerm()),"terms"
+    #print "Cardinality before filtering:\t",len(flatten(annman.annotationSets["geneGO"].getAnnotsByObject().values())),"annotations"
     test=CompiledAnnotationSet.CompiledAnnotationSet(annman.annotationSets["geneGO"],["ISS","ISA","ISO","ISM","IGC","IBA","IBD","IKR","IRD","RCA"],ontman)
-    print "Cardinality after filtering:\t",len(test.annset.getAnnotsByObject()),"objects"
-    print "Cardinality after filtering:\t",len(test.annset.getAnnotsByTerm()),"terms"
+    #print "Cardinality after filtering:\t",len(flatten(test.annset.getAnnotsByObject().values())),"annotations"
+    print "\nClosure sample:\n",test.annset.ontology.closure[test.annset.getAnnotsByObject("MGI:98351")[0].ontTerm],"\n"
+    print "There should be",len(annman.annotationSets["geneGO"].getAnnotsByObject()),"obj2term entries."
+    print "There should be",len(annman.annotationSets["geneGO"].getAnnotsByTerm()),"term2obj entries."
     print len(test.obj2term),"obj2term entries"
     print len(test.term2obj),"term2obj entries"
     print "\ntest.annset.getAnnotsByTerm(\"GO:0007612\")\n",test.annset.getAnnotsByTerm("GO:0007612")
@@ -46,10 +47,11 @@ def main():
     #statement above printing many instances of OboTerm; why isn't __str__ formatting them?
     print "\nannman.getSet(\"geneGO\")\n",annman.getSet("geneGO")
     print "\nontman.getOntology()\n",ontman.getOntology()
-    
-
-    #print len(test.term2IC)
-    #formatted printing of ontology namespaces and annotation subsets, respectively
+    print "\ntest.term2IC\n",test.term2IC
+    print "\nlen(test.term2IC)\n",len(test.term2IC)
+    print "\nmax(test.term2IC)\n",max(test.term2IC.values())
+    print "\n",len(test.term2obj),"term2obj entries"
+    print "\ntest.annotationCardinality\n",test.annotationCardinality
     
     '''
     #printing 10 terms each from rclosure and fclosure for testing
@@ -84,7 +86,9 @@ def main():
                     count+=1
                     print z.id," ",z.name
     '''
-
+def flatten(lst):
+	return sum((flatten(x) if isinstance(x, list) else [x]for x in lst),[])
+    
 def setConfigOptions(op):
     #is this done correctly?
     op.add_option("-l", "--length", metavar="NUM", dest="n", type="int", help="A number.")

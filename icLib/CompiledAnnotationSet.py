@@ -10,7 +10,8 @@ class CompiledAnnotationSet:
         self.term2obj()
         self.obj2term()
         self.term2IC()
-        self.pair2MICA()
+        #print "\nlen(term2IC)\n",len(self.term2IC)
+        #self.pair2MICA()
 
     def AnnotationSetEvidenceFilter(self,evCodes):
         #input of annotation set and desired evidence codes to REMOVE

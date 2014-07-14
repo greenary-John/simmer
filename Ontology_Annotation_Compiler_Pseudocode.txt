@@ -1,6 +1,6 @@
 '''
 
-**NOTE: Fix for actual format of getAllAnnots: dictionary
+**NOTE: Fix for actual format of getAnnotsByObject(): dictionary
 
 {AnnotatedObject:[Term,details_dict]}
 

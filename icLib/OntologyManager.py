@@ -12,6 +12,7 @@ class OntologyManager(object):
             self.onts[det]=Ontology.load(self.ontDetails[det]["filename"],False)
         for ont in self.onts:
             self.onts[ont].closure=DAG.Closure().go(self.onts[ont])
+            self.onts[ont].reverseClosure=DAG.Closure().go(self.onts[ont],None,True)
 
     def getOntology(self,name=None):
         try:

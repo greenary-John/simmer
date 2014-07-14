@@ -10,6 +10,7 @@ class CompiledAnnotationSet:
         self.term2obj()
         self.obj2term()
         self.term2IC()
+        self.pair2MICA()
 
     def AnnotationSetEvidenceFilter(self,evCodes):
         #input of annotation set and desired evidence codes to REMOVE
@@ -74,13 +75,33 @@ class CompiledAnnotationSet:
 
     def term2IC(self):
         self.annotationCardinality=len(flatten(self.annset.getAnnotsByObject().values()))
-        print "annCard calculated!"
         self.term2IC={}
         for x in self.term2obj:
             try:
-                self.term2IC.update({x:-1.0*math.log(float(len(self.term2obj[x]))/self.annotationCardinality)})
-            except ValueError:
+                self.term2IC.update({x:math.log(self.annotationCardinality/float(len(self.term2obj[x])))})
+            except ZeroDivisionError:
                 self.term2IC.update({x:None})
-
+                
+    def pair2MICA(self):
+        self.pair2MICA={}
+        for x in self.term2IC:
+            for y in self.term2IC:
+                if self.pair2MICA.has_key((y,x)):
+                    continue
+                else:
+                    mica=self.maxIC(self.annset.ontology.reverseClosure[x]&self.annset.ontology.reverseClosure[y])
+                    self.pair2MICA.update({(x,y):mica})
+                    
+    def maxIC(self,lst):
+        maximum=0
+        for x in lst:
+            if self.term2IC.has_key(x):
+                if self.term2IC[x]>maximum:
+                    maximum=self.term2IC[x]
+            else:
+                continue
+        return maximum
+            
 def flatten(lst):
-	return sum((flatten(x) if isinstance(x, list) else [x]for x in lst),[])
+    return sum((flatten(x) if isinstance(x, list) else [x]for x in lst),[])
+

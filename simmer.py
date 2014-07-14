@@ -47,11 +47,13 @@ def main():
     #statement above printing many instances of OboTerm; why isn't __str__ formatting them?
     print "\nannman.getSet(\"geneGO\")\n",annman.getSet("geneGO")
     print "\nontman.getOntology()\n",ontman.getOntology()
-    print "\ntest.term2IC\n",test.term2IC
+    #print "\ntest.term2IC\n",test.term2IC
+    print "\nmax(test.term2IC.values())\n",max(test.term2IC.values())
     print "\nlen(test.term2IC)\n",len(test.term2IC)
-    print "\nmax(test.term2IC)\n",max(test.term2IC.values())
     print "\n",len(test.term2obj),"term2obj entries"
     print "\ntest.annotationCardinality\n",test.annotationCardinality
+    print "\ntest.pair2MICA[(test.ontology.getTerm(\"GO:0007612\"),test.ontology.getTerm(\"GO:0007611\"))]\n",test.pair2MICA[(test.ontology.getTerm("GO:0007612"),test.ontology.getTerm("GO:0007611"))]
+    
     
     '''
     #printing 10 terms each from rclosure and fclosure for testing

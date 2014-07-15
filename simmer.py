@@ -32,11 +32,13 @@ def main():
     print "\nannman.annotationSets[\"geneGO\"]\n",annman.annotationSets["geneGO"]
     print "\nannman.annotationSets[\"geneGO\"].getAnnotsByTerm(\"GO:0007612\")\n",annman.annotationSets["geneGO"].getAnnotsByTerm("GO:0007612")
     print "\nannman.annotationSets[\"geneGO\"].getAnnotsByObject(\"MGI:1918911\")\n",annman.annotationSets["geneGO"].getAnnotsByObject("MGI:1918911"),"\n"
+    #print "\ntype(annman.annotationSets[\"geneGO\"].getAnnotsByObject().keys()[0])\n",type(annman.annotationSets["geneGO"].getAnnotsByObject().keys()[0])
     #print "\nannman.annotationSets[\"geneGO\"].getAnnotsByTerm()",annman.annotationSets["geneGO"].getAnnotsByTerm()    
     #print "\nannman.annotationSets[\"geneGO\"].getAnnotsByObject()",annman.annotationSets["geneGO"].getAnnotsByObject() 
     #print "Cardinality before filtering:\t",len(flatten(annman.annotationSets["geneGO"].getAnnotsByObject().values())),"annotations"
     test=CompiledAnnotationSet.CompiledAnnotationSet(annman.annotationSets["geneGO"],["ISS","ISA","ISO","ISM","IGC","IBA","IBD","IKR","IRD","RCA"],ontman)
     #print "Cardinality after filtering:\t",len(flatten(test.annset.getAnnotsByObject().values())),"annotations"
+    #print "\ntest.getAnnotatedObjects()\n",test.annset.getAnnotatedObjects()
     print "\nClosure sample:\n",test.annset.ontology.closure[test.annset.getAnnotsByObject("MGI:98351")[0].ontTerm],"\n"
     print "There should be",len(annman.annotationSets["geneGO"].getAnnotsByObject()),"obj2term entries."
     print "There should be",len(annman.annotationSets["geneGO"].getAnnotsByTerm()),"term2obj entries."
@@ -52,6 +54,8 @@ def main():
     print "\nlen(test.term2IC)\n",len(test.term2IC)
     print "\n",len(test.term2obj),"term2obj entries"
     print "\ntest.annotationCardinality\n",test.annotationCardinality
+    #print "\ntest.rowMICA(AnnotatedObject.AnnotatedObject.getAnnotatedObj(\"MGI:98351\"),test.annset.getAnnotsByTerm(\"GO:0007612\"))\n",test.rowMICA(AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:98351"),test.annset.getAnnotsByTerm("GO:0007612"))
+    #print "\ntest.objCompare(AnnotatedObject.AnnotatedObject.getAnnotatedObj(\"MGI:98351\"),AnnotatedObject.AnnotatedObject.getAnnotatedObj(\"MGI:3619222\"))\n",test.objCompare(AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:98351"),AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:3619222"))
     print "\ntest.resnikResults(AnnotatedObject.AnnotatedObject.getAnnotatedObj(\"MGI:98351\"),25)\n",test.resnikResults(AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:98351"),25)
     #print "\ntest.pair2MICA[(test.annset.ontology.getTerm(\"GO:0007612\"),test.annset.ontology.getTerm(\"GO:0007611\"))]\n",test.pair2MICA[(test.annset.ontology.getTerm("GO:0007612"),test.annset.ontology.getTerm("GO:0007611"))]
     

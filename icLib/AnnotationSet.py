@@ -9,6 +9,7 @@ import types
 class AnnotationSet:
     def __init__(self,name,ontMan,simConPar):
         self.name=name
+        self.annots=set([])
         self.annotsByID={}
         self.annotsByObj={}
         self.ontology=ontMan.getOntology(simConPar.getConfigObj(name)["ontology"])
@@ -19,15 +20,20 @@ class AnnotationSet:
         #these values may include evCode, J reference, etc.
         #structure: {"evCode":blah,"JRef":bloop,"InfoVar":beep,...}
         annObj=AnnotatedObject.AnnotatedObject.getAnnotatedObj(details["annID"])
+        a=Annotation.Annotation(self.ontology,details)
         ontTerm=self.ontology.getTerm(details["termID"])
-        if self.annotsByID.has_key(ontTerm):
-            self.annotsByID[ontTerm].append(Annotation.Annotation(self.ontology,details))
-        else:
-            self.annotsByID[ontTerm]=[Annotation.Annotation(self.ontology,details)]
-        if self.annotsByObj.has_key(annObj):
-            self.annotsByObj[annObj].append(Annotation.Annotation(self.ontology,details))
-        else:
-            self.annotsByObj[annObj]=[Annotation.Annotation(self.ontology,details)]
+        self.annotsByID.setdefault(ontTerm,set([])).add(a)
+        self.annotsByObj.setdefault(annObj,set([])).add(a)
+        self.annots.add(a)
+
+    def getAnnots(self):
+        return self.annots
+
+    def getAnnotatedObjects(self):
+        return self.annotsByObj
+
+    def getAnnotatedTerms(self):
+        return self.annotsByID
 
     def getAnnotsByObject(self,obj=None):
         if obj==None:

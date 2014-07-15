@@ -16,3 +16,6 @@ def choiceProcessing(choice):
 	{"annotationQ":annman.getAnns(),"ontologyQ":ontman.getOnts(),"optionsQ":conman.getOpts(),
 	"annotationSel":op.overwrite(fileName),"ontologySel":op.overwrite(ontoChoice),"optionSel":
 	op.conditionChoice(),"search":main()}.get(choice,main())
+
+def main():
+    user_choice=raw_input("What would you like to do?\n'annotationQ'\t=\tdisplay available annotation sets\n'ontologyQ'\t=\tdisplay available ontologies\n'optionsQ'\t=\tdisplay available options\n\n'annotationSel'\t=\tselect from available annotation sets\n'ontologySel'\t=\tselect from available ontologies\n'optionSel'\t=\tselect from avaiable options\n\n'search'\t=\tuse the search program\n")

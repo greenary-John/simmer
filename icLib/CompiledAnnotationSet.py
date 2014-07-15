@@ -89,9 +89,8 @@ class CompiledAnnotationSet:
             for y in self.term2IC:
                 if self.pair2MICA.has_key((y,x)):
                     continue
-                else:
-                    mica=self.maxIC(self.annset.ontology.reverseClosure[x]&self.annset.ontology.reverseClosure[y])
-                    self.pair2MICA.update({(x,y):mica})
+                else:                    
+                    self.pair2MICA.update({(x,y):self.MICA(x,y)})
                     
     def maxIC(self,lst):
         maximum=0
@@ -102,6 +101,39 @@ class CompiledAnnotationSet:
             else:
                 continue
         return maximum
+
+    def MICA(self,termA,termB):
+        return self.maxIC(self.annset.ontology.reverseClosure[termA]&self.annset.ontology.reverseClosure[termB])
+
+    def rowMICA(self,termA,objB):
+        #term to obj comparison
+        maximum=0
+        for y in set.union(*self.obj2term[objB]):
+            if self.MICA(termA,y)>maximum:
+                maximum=self.MICA(termA,y)
+        return maximum
+
+    def objCompare(self,objA,objB):
+        #obj to obj comparison
+        lst=[]
+        for y in set.union(*self.obj2term[objA]):
+            lst.append(self.rowMICA(y,objB))
+        return sum(lst)/len(lst)
+
+    def resnikResults(self,objA,length):
+        #BMA approach; obj to list of objs comparison
+        resultsDict={}
+        returnDict={}
+        count=0
+        for x in self.obj2term:
+            resultsDict.update({x:self.objCompare(objA,x)})
+        for x in sorted(resultsDict):
+            if count>=length:
+                break
+            returnDict.update({x:resultsDict[x]})
+            count+=1
+        return sorted(returnDict)
+        
             
 def flatten(lst):
     return sum((flatten(x) if isinstance(x, list) else [x]for x in lst),[])

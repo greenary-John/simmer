@@ -52,7 +52,8 @@ def main():
     print "\nlen(test.term2IC)\n",len(test.term2IC)
     print "\n",len(test.term2obj),"term2obj entries"
     print "\ntest.annotationCardinality\n",test.annotationCardinality
-    print "\ntest.pair2MICA[(test.ontology.getTerm(\"GO:0007612\"),test.ontology.getTerm(\"GO:0007611\"))]\n",test.pair2MICA[(test.ontology.getTerm("GO:0007612"),test.ontology.getTerm("GO:0007611"))]
+    print "\ntest.resnikResults(AnnotatedObject.AnnotatedObject.getAnnotatedObj(\"MGI:98351\"),25)\n",test.resnikResults(AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:98351"),25)
+    #print "\ntest.pair2MICA[(test.annset.ontology.getTerm(\"GO:0007612\"),test.annset.ontology.getTerm(\"GO:0007611\"))]\n",test.pair2MICA[(test.annset.ontology.getTerm("GO:0007612"),test.annset.ontology.getTerm("GO:0007611"))]
     
     
     '''

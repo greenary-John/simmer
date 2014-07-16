@@ -13,6 +13,8 @@ class AnnotationSet:
         self.annotsByID={}
         self.annotsByObj={}
         self.ontology=ontMan.getOntology(simConPar.getConfigObj(name)["ontology"])
+        self.ontMan=ontMan
+        self.simConPar=simConPar
         #ontman required to access list of ontologies in addAnnotation
         
     def addAnnotation(self,details):
@@ -22,7 +24,8 @@ class AnnotationSet:
         annObj=AnnotatedObject.AnnotatedObject.getAnnotatedObj(details["annID"])
         a=Annotation.Annotation(self.ontology,details)
         ontTerm=self.ontology.getTerm(details["termID"])
-        self.annotsByID.setdefault(ontTerm,set([])).add(a)
+        for x in self.ontology.reverseClosure[ontTerm]:
+            self.annotsByID.setdefault(x,set([])).add(a)
         self.annotsByObj.setdefault(annObj,set([])).add(a)
         self.annots.add(a)
 
@@ -30,10 +33,10 @@ class AnnotationSet:
         return self.annots
 
     def getAnnotatedObjects(self):
-        return self.annotsByObj
+        return self.annotsByObj.keys()
 
     def getAnnotatedTerms(self):
-        return self.annotsByID
+        return self.annotsByID.keys()
 
     def getAnnotsByObject(self,obj=None):
         if obj==None:
@@ -66,4 +69,26 @@ class AnnotationSet:
             except KeyError:
                 print "No annotations for requested object."
                 return None
+
+    def evidenceFilter(self,evCodes):
+        annset=AnnotationSet(self.name,self.ontMan,self.simConPar)
+        filtered={}
+        for item in self.annotsByID:
+            temp=[]
+            for ann in self.annotsByID[item]:
+                if not ann.details["EvidenceCode"] in evCodes:
+                    temp.append(ann)
+            filtered.update({item:temp})
+        annset.annotsByID=filtered
+        
+        filtered={}
+        for item in self.annotsByObj:
+            temp=[]
+            for ann in self.annotsByObj[item]:
+                if not ann.details["EvidenceCode"] in evCodes:
+                    temp.append(ann)
+            filtered.update({item:temp})
+        annset.annotsByObj=filtered
+        
+        return annset
         

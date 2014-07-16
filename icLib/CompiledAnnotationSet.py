@@ -1,41 +1,21 @@
 import math
+import time
 
 class CompiledAnnotationSet:
 
     def __init__(self,AnnSet,evCodes,ontman):
-        self.ontman=ontman
-        self.annset=AnnSet
-        self.evCodes=evCodes if isinstance(evCodes,list) else [evCodes]
-        self.AnnotationSetEvidenceFilter(self.evCodes)
-        self.Compute_term2obj()
-        self.Compute_obj2term()
-        self.Compute_term2IC()
         self.count=0
-        #print "\nlen(term2IC)\n",len(self.term2IC)
+        self.ontman=ontman
+        self.evCodes=evCodes if isinstance(evCodes,list) else [evCodes]
+        self.annset=AnnSet.evidenceFilter(self.evCodes)
+        self.Compute_obj2term()
+        self.Compute_term2obj()
+        self.Compute_term2IC()
         #self.Compute_pair2MICA()
-
-    def AnnotationSetEvidenceFilter(self,evCodes):
-        #input of annotation set and desired evidence codes to REMOVE
-        filtered={}
-        for item in self.annset.annotsByID:
-            temp=[]
-            for ann in self.annset.annotsByID[item]:
-                if not ann.details["EvidenceCode"] in evCodes:
-                    temp.append(ann)
-            filtered.update({item:temp})
-        self.annset.annotsByID=filtered
-        filtered={}
-        for item in self.annset.annotsByObj:
-            temp=[]
-            for ann in self.annset.annotsByObj[item]:
-                if not ann.details["EvidenceCode"] in evCodes:
-                    temp.append(ann)
-            filtered.update({item:temp})
-        self.annset.annotsByObj=filtered
 
     def Compute_term2obj(self):
         self.term2obj={}
-        for x in self.annset.getAnnotsByTerm():
+        for x in self.annset.getAnnotatedTerms():
                 temp=set([])
                 for y in self.annset.ontology.closure[x]:
                     try:
@@ -50,14 +30,14 @@ class CompiledAnnotationSet:
 
     def Compute_obj2term(self):
         self.obj2term={}
-        for x in self.annset.getAnnotsByObject():
+        for x in self.annset.getAnnotatedObjects():
             temp=set([])
             for y in self.annset.annotsByObj[x]:
-                temp.union(self.annset.ontology.reverseClosure[y.ontTerm])
-            self.obj2term.setdefault(x,set([])).union(temp)
+                temp.update(self.annset.ontology.reverseClosure[y.ontTerm])
+            self.obj2term.setdefault(x,set([])).update(temp)
 
     def Compute_term2IC(self):
-        self.annotationCardinality=len(flatten(self.annset.getAnnotsByObject().values()))
+        self.annotationCardinality=len(self.annset.getAnnotatedObjects())
         self.term2IC={}
         for x in self.term2obj:
             try:
@@ -93,7 +73,7 @@ class CompiledAnnotationSet:
         maximum=0
         count=0
         if len(self.obj2term[objB])>0:
-            for y in set.union(*self.obj2term[objB]):
+            for y in set.union(self.obj2term[objB]):
                 if self.MICA(termA,y)>maximum:
                     maximum=self.MICA(termA,y)
                     count+=1
@@ -104,26 +84,29 @@ class CompiledAnnotationSet:
         lst=[]
         count=0
         if len(self.obj2term[objA])>0:
-            for y in set.union(*self.obj2term[objA]):
+            for y in set.union(self.obj2term[objA]):
                 lst.append(self.rowMICA(y,objB))
                 count+=1
-        return sum(lst)/len(lst)
+            return sum(lst)/len(lst)
+        return 0
 
     def resnikResults(self,objA,length):
         #BMA approach; obj to list of objs comparison
+        start=time.time()
         resultsDict={}
         returnDict={}
-        count2=0
         count=0
+        count2=0
         for x in self.obj2term:
             resultsDict.update({x:self.objCompare(objA,x)})
-            count+=1
-        for x in sorted(resultsDict):
-            if count2>=length:
+            count2+=1
+            if count2%1000==0:
+                print count2,"of",len(self.obj2term),"iterations\t",self.count,"MICA calculations"
+                print "projected runtime:\t",((float(len(self.obj2term))/count2)*(time.time()-start))+1,"seconds\n"
+        for x in sorted(resultsDict,key=lambda entry:resultsDict[entry],reverse=True):
+            if count>=length:
                 break
             returnDict.update({x:resultsDict[x]})
-            count2+=1
+            count+=1
+        print "Finished!\t\t\t",self.count,"MICA calculations\nactual runtime:\t\t",time.time()-start,"seconds"
         return returnDict
-
-def flatten(lst):
-	return sum((flatten(x) if isinstance(x, list) else [x]for x in lst),[])

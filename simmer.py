@@ -10,6 +10,7 @@ from icLib import AnnotationManager
 from icLib import OntologyAnnotationCompiler
 from icLib import CompiledAnnotationSet
 from icLib import AnnotatedObject
+from icLib import Logger
 
 def main():
     cm=ConfigManager.ConfigManager(setConfigOptions)
@@ -17,7 +18,8 @@ def main():
     #readConfig() returns a SimmerConfigParser so simmercon is a SimmerConfigParser
     ontman=OntologyManager.OntologyManager(simmercon)
     annman=AnnotationManager.AnnotationManager(simmercon,ontman)
-    print "Now building CompiledAnnotationSet"
+    logger=Logger.Logger()
+    logger.debug("\tNow building CompiledAnnotationSet")
     test=CompiledAnnotationSet.CompiledAnnotationSet(annman.annotationSets["geneGO"],["ISS","ISA","ISO","ISM","IGC","IBA","IBD","IKR","IRD","RCA"],ontman)
     #ontologies=simmercon.getOntologies()
     #annotations=simmercon.getAnnotations()
@@ -54,52 +56,19 @@ def main():
     #print "\ntest.term2IC\n",test.term2IC
     print "\nmax(test.term2IC.values())\n",max(test.term2IC.values())
     print "\nlen(test.term2IC)\n",len(test.term2IC)'''
-    print "Now starting resnikBMA\n"
+    logger.debug("\tNow starting resnikBMA\n")
     #print "\ntest.annotationCardinality\n",test.annotationCardinality
     #print "\ntest.rowMICA(AnnotatedObject.AnnotatedObject.getAnnotatedObj(\"MGI:98351\"),test.annset.getAnnotsByTerm(\"GO:0007612\"))\n",test.rowMICA(AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:98351"),test.annset.getAnnotsByTerm("GO:0007612"))
     #print "\ntest.objCompare(AnnotatedObject.AnnotatedObject.getAnnotatedObj(\"MGI:98351\"),AnnotatedObject.AnnotatedObject.getAnnotatedObj(\"MGI:3619222\"))\n",test.objCompare(AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:98351"),AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:3619222"))
     results=test.resnikResults(AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:98351"),25)
     print "\ntest.resnikResults(AnnotatedObject.AnnotatedObject.getAnnotatedObj(\"MGI:98351\"),25)"    
+    logger.debug("\ntest.resnikResults(AnnotatedObject.AnnotatedObject.getAnnotatedObj(\"MGI:98351\"),25)")
     #print sorted(results,key=lambda entry:results[entry],reverse=True)
     for x in sorted(results,key=lambda entry:results[entry],reverse=True):
         print x,"\t\t",results[x]
+        logger.debug("".join(("\t",x,"\t\t",results[x])))
     #print "\ntest.pair2MICA[(test.annset.ontology.getTerm(\"GO:0007612\"),test.annset.ontology.getTerm(\"GO:0007611\"))]\n",test.pair2MICA[(test.annset.ontology.getTerm("GO:0007612"),test.annset.ontology.getTerm("GO:0007611"))]
-    
-    
-    '''
-    #printing 10 terms each from rclosure and fclosure for testing
-    print "rclosure subset"
-    count=0
-    while count<10:
-        for x in rclosure:
-            if count>10:
-                        break
-            for y in x:
-                if count>10:
-                    break
-                print "\n**",y,"**"
-                for z in x[y]:
-                    if count>10:
-                        break
-                    count+=1
-                    print z.id," ",z.name
-    print "\nfclosure subset"
-    count=0  
-    while count<10:
-        for x in fclosure:
-            if count>10:
-                        break
-            for y in x:
-                if count>10:
-                    break
-                print "\n**",y,"**"
-                for z in x[y]:
-                    if count>10:
-                        break
-                    count+=1
-                    print z.id," ",z.name
-    '''
-    
+   
 def setConfigOptions(op):
     #is this done correctly?
     op.add_option("-l", "--length", metavar="NUM", dest="n", type="int", help="A number.")

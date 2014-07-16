@@ -1,6 +1,8 @@
 import math
 import time
 
+import Logger
+
 class CompiledAnnotationSet:
 
     def __init__(self,AnnSet,evCodes,ontman):
@@ -8,6 +10,7 @@ class CompiledAnnotationSet:
         self.ontman=ontman
         self.evCodes=evCodes if isinstance(evCodes,list) else [evCodes]
         self.annset=AnnSet.evidenceFilter(self.evCodes)
+        self.logger=Logger.Logger()
         self.Compute_obj2term()
         self.Compute_term2obj()
         self.Compute_term2IC()
@@ -101,12 +104,11 @@ class CompiledAnnotationSet:
             resultsDict.update({x:self.objCompare(objA,x)})
             count2+=1
             if count2%1000==0:
-                print count2,"of",len(self.obj2term),"iterations\t",self.count,"MICA calculations"
-                print "projected runtime:\t",((float(len(self.obj2term))/count2)*(time.time()-start))+1,"seconds\n"
+                self.logger.debug("".join(("\n",str(count2)," of ",str(len(self.obj2term))," iterations\t",str(self.count)," MICA calculations\nprojected runtime:\t",str(((float(len(self.obj2term))/count2)*(time.time()-start))+1)," seconds\n")))
         for x in sorted(resultsDict,key=lambda entry:resultsDict[entry],reverse=True):
             if count>=length:
                 break
             returnDict.update({x:resultsDict[x]})
             count+=1
-        print "Finished!\t\t\t",self.count,"MICA calculations\nactual runtime:\t\t",time.time()-start,"seconds"
+        self.logger.debug("".join(("\nFinished!\t\t\t",str(self.count)," MICA calculations\nactual runtime:\t\t",str(time.time()-start)," seconds")))
         return returnDict

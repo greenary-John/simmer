@@ -1,5 +1,6 @@
-# python compiled files
+# python compiled files and log files
 *.pyc
+*.log
 
 # editor temp files
 *~

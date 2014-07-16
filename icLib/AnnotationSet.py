@@ -1,7 +1,9 @@
+import types
+
 import Ontology
 import AnnotatedObject
 import Annotation
-import types
+import Logger
 
 #current setup requires ont & con manager to be called before this file to work
 #this means that in simmer.py, it is imperative to call ontman before annman
@@ -15,6 +17,7 @@ class AnnotationSet:
         self.ontology=ontMan.getOntology(simConPar.getConfigObj(name)["ontology"])
         self.ontMan=ontMan
         self.simConPar=simConPar
+        self.logger=Logger.Logger()
         #ontman required to access list of ontologies in addAnnotation
         
     def addAnnotation(self,details):
@@ -45,13 +48,13 @@ class AnnotationSet:
             try:
                 return self.annotsByObj[AnnotatedObject.AnnotatedObject.getAnnotatedObj(obj)]
             except KeyError:
-                print "No annotations for requested object."
+                self.logger.info("".join(("\nNo annotations for requested object:",str(obj))))
                 return None
         else:
             try:
                 return self.annotsByObj[obj]
             except KeyError:
-                print "No annotations for requested object."
+                self.logger.info("".join(("\nNo annotations for requested object:",str(obj))))
                 return None
 
     def getAnnotsByTerm(self,term=None):
@@ -61,13 +64,13 @@ class AnnotationSet:
             try:
                 return self.annotsByID[self.ontology.getTerm(term)]
             except KeyError:
-                print "No annotations for requested object."
+                self.logger.info("".join(("\nNo annotations for requested term:",str(term))))
                 return None 
         else:
             try:
                 return self.annotsByID[term]
             except KeyError:
-                print "No annotations for requested object."
+                self.logger.info("".join(("\nNo annotations for requested term:",str(term))))
                 return None
 
     def evidenceFilter(self,evCodes):

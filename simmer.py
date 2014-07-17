@@ -66,7 +66,7 @@ def main():
     #print sorted(results,key=lambda entry:results[entry],reverse=True)
     for x in sorted(results,key=lambda entry:results[entry],reverse=True):
         print x,"\t\t",results[x]
-        logger.debug("".join(("\t",x,"\t\t",results[x])))
+        logger.debug("".join(("\t",x.__str__(),"\t\t",str(results[x]))))
     #print "\ntest.pair2MICA[(test.annset.ontology.getTerm(\"GO:0007612\"),test.annset.ontology.getTerm(\"GO:0007611\"))]\n",test.pair2MICA[(test.annset.ontology.getTerm("GO:0007612"),test.annset.ontology.getTerm("GO:0007611"))]
    
 def setConfigOptions(op):

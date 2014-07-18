@@ -13,12 +13,13 @@ from icLib import AnnotatedObject
 from icLib import Logger
 
 def main():
+    logger=Logger.Logger()
+    logger.debug("\tStart!\t\tBeginning Precomputation.")
     cm=ConfigManager.ConfigManager(setConfigOptions)
     simmercon=cm.readConfig()
     #readConfig() returns a SimmerConfigParser so simmercon is a SimmerConfigParser
     ontman=OntologyManager.OntologyManager(simmercon)
-    annman=AnnotationManager.AnnotationManager(simmercon,ontman)
-    logger=Logger.Logger()
+    annman=AnnotationManager.AnnotationManager(simmercon,ontman)   
     logger.debug("\tNow building CompiledAnnotationSet")
     test=CompiledAnnotationSet.CompiledAnnotationSet(annman.annotationSets["geneGO"],["ISS","ISA","ISO","ISM","IGC","IBA","IBD","IKR","IRD","RCA"],ontman)
     #ontologies=simmercon.getOntologies()

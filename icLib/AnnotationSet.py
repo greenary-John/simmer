@@ -11,7 +11,7 @@ import Logger
 class AnnotationSet:
     def __init__(self,name,ontMan,simConPar):
         self.name=name
-        self.annots=set([])
+        self.annots=[]
         self.annotsByID={}
         self.annotsByObj={}
         self.ontology=ontMan.getOntology(simConPar.getConfigObj(name)["ontology"])
@@ -24,13 +24,11 @@ class AnnotationSet:
         #details parameter will be a dictionary of additional values
         #these values may include evCode, J reference, etc.
         #structure: {"evCode":blah,"JRef":bloop,"InfoVar":beep,...}
-        annObj=AnnotatedObject.AnnotatedObject.getAnnotatedObj(details["annID"])
         a=Annotation.Annotation(self.ontology,details)
-        ontTerm=self.ontology.getTerm(details["termID"])
-        for x in self.ontology.reverseClosure[ontTerm]:
+        for x in self.ontology.reverseClosure[a.ontTerm]:
             self.annotsByID.setdefault(x,set([])).add(a)
-        self.annotsByObj.setdefault(annObj,set([])).add(a)
-        self.annots.add(a)
+        self.annotsByObj.setdefault(a.annObj,set([])).add(a)
+        self.annots.append(a)
 
     def getAnnots(self):
         return self.annots

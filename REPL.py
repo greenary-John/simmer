@@ -1,3 +1,4 @@
+import sys
 import os
 import ConfigParser
 
@@ -33,7 +34,9 @@ What would you like to do?
     ontman=OntologyManager.OntologyManager(simmercon)
     annman=AnnotationManager.AnnotationManager(simmercon,ontman)
     user_choice=raw_input(menu)
-    while user_choice!="quit" and user_choice!="search":
+    while user_choice!="search":
+        if user_choice=="quit":
+            quit()
         print "\n",choiceProcessing(user_choice,ontman,annman,cm),"\n"
         user_choice=raw_input(menu)
     cas=CompiledAnnotationSet.CompiledAnnotationSet(annman.annotationSets[choices[0]],choices[1],ontman)
@@ -64,8 +67,6 @@ def choiceProcessing(choice,ontman,annman,conman):
         return choices[1]
     elif choice=="search":
         pass
-    elif choice=="quit":
-        quit()
     else:
         print "Choice not understood; please try again."
         

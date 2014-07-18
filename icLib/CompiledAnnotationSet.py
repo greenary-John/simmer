@@ -22,12 +22,12 @@ class CompiledAnnotationSet:
                 temp=set([])
                 for y in self.annset.ontology.closure[x]:
                     try:
-                        for z in self.annset.annotsByID[y]:
+                        for z in self.annset.getAnnotsByTerm(y):
                             try:
                                 temp.add(z.annObj)
                             except KeyError:
                                 continue
-                    except KeyError:
+                    except TypeError:
                         continue
                 self.term2obj[x]=temp
 
@@ -35,7 +35,7 @@ class CompiledAnnotationSet:
         self.obj2term={}
         for x in self.annset.getAnnotatedObjects():
             temp=[]
-            for y in self.annset.annotsByObj[x]:
+            for y in self.annset.getAnnotsByObject(x):
                 temp.append(y.ontTerm)
             self.obj2term.setdefault(x,set([])).update(temp)
 

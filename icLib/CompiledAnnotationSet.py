@@ -1,12 +1,12 @@
 import math
 import time
 
+import AnnotatedObject
 import Logger
 
 class CompiledAnnotationSet:
 
     def __init__(self,AnnSet,evCodes,ontman):
-        self.MICAcount=0
         self.ontman=ontman
         self.evCodes=evCodes if isinstance(evCodes,list) else [evCodes]
         self.annset=AnnSet.evidenceFilter(self.evCodes)
@@ -70,18 +70,28 @@ class CompiledAnnotationSet:
 
     def objCompare(self,objA,objB):
         #obj to obj comparison
-        lst=([self.rowMICA(y,objB)for y in self.obj2term[objA]])
+        lst=[self.rowMICA(y,objB)for y in self.obj2term[objA]]
+        return float(sum(lst))/len(lst) if len(lst)>0 else 0
+
+    def listCompare(self,listA,objB):
+        #obj to obj comparison
+        lst=[self.rowMICA(y,objB)for y in listA]
         return float(sum(lst))/len(lst) if len(lst)>0 else 0
         
-    def resnikBMA(self,objA,length):
+    def resnikBMA(self,qType,query,length):
         #BMA approach; obj to list of objs comparison
         #eventually normalize for the maximum (identity) score to equal 1
         start=time.time()
+        self.MICAcount=0
         resultsDict={}
         returnDict={}
         count=0
-        for x in self.obj2term:
-            resultsDict[x]=self.objCompare(objA,x)
+        if qType=="object":
+            for x in self.obj2term:
+                resultsDict[x]=self.objCompare(query,x)
+        else:
+            for x in self.obj2term:
+                resultsDict[x]=self.listCompare(query,x)
         for x in sorted(resultsDict,key=lambda entry:resultsDict[entry],reverse=True):
             if count>=length:
                 break
@@ -90,14 +100,18 @@ class CompiledAnnotationSet:
         self.logger.debug("".join(("\nFinished!\tresnikBMA\t",str(self.MICAcount)," MICA calculations\nactual runtime:\t\t",str(time.time()-start)," seconds\n")))
         return returnDict
 
-    def jaccardExt(self,objA,length):
+    def jaccardExt(self,qType,que,length):
         start=time.time()
         resultsDict={}
         returnDict={}
         count=0
         query=set([])
-        for x in self.obj2term[objA]:
-            query|=self.annset.ontology.reverseClosure[x]
+        if qType=="object":
+            for x in self.obj2term[que]:
+                query|=self.annset.ontology.reverseClosure[x]
+        else:
+            for x in que:
+                query|=self.annset.ontology.reverseClosure[x]
         for x in self.annset.getAnnotatedObjects():
             test=set([])
             for y in self.obj2term[x]:
@@ -111,19 +125,25 @@ class CompiledAnnotationSet:
         self.logger.debug("".join(("\nFinished!\tjaccardExt\t",str(time.time()-start)," seconds\n")))
         return returnDict
 
-    def gicExt(self,objA,length):
+    def gicExt(self,qType,que,length):
         start=time.time()
         resultsDict={}
         returnDict={}
         count=0
         query=set([])
-        for x in self.obj2term[objA]:
-            query|=self.annset.ontology.reverseClosure[x]
+        if qType=="object":
+            for x in self.obj2term[que]:
+                query|=self.annset.ontology.reverseClosure[x]
+        else:
+            for x in que:
+                query|=self.annset.ontology.reverseClosure[x]
         for x in self.annset.getAnnotatedObjects():
             test=set([])
             for y in self.obj2term[x]:
                 test|=self.annset.ontology.reverseClosure[y]
             resultsDict[x]=sum([self.term2IC.get(z,0)for z in query&test])/sum([self.term2IC.get(d,0)for d in query|test])
+            if resultsDict[x]>=0.45:
+                pass
         for x in sorted(resultsDict,key=lambda entry:resultsDict[entry],reverse=True):
             if count>=length:
                 break

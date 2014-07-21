@@ -65,19 +65,19 @@ Ex:     "MGI:98351"
         if user_choice==1:
             continue #for now, continue. update whenever term set search is supported
         
-        rBMA=cas.resnikBMA(AnnotatedObject.AnnotatedObject.getAnnotatedObj(user_choice),25)
+        rBMA=cas.resnikBMA("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj(user_choice),25)
         print "Top 25 Resnik BMA results for",user_choice    
         for x in sorted(rBMA,key=lambda entry:rBMA[entry],reverse=True):
             print x,"\t\t",rBMA[x]
             logger.debug("".join(("\t",x.__str__(),"\t\t",str(rBMA[x]))))
         
-        jExt=cas.jaccardExt(AnnotatedObject.AnnotatedObject.getAnnotatedObj(user_choice),25)
+        jExt=cas.jaccardExt("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj(user_choice),25)
         print "\nTop 25 Jaccard Extended results for",user_choice    
         for x in sorted(jExt,key=lambda entry:jExt[entry],reverse=True):
             print x,"\t\t",jExt[x]
             logger.debug("".join(("\t",x.__str__(),"\t\t",str(jExt[x]))))
 
-        gExt=cas.gicExt(AnnotatedObject.AnnotatedObject.getAnnotatedObj(user_choice),25)
+        gExt=cas.gicExt("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj(user_choice),25)
         print "\nTop 25 GIC Extended results for",user_choice    
         for x in sorted(gExt,key=lambda entry:gExt[entry],reverse=True):
             print x,"\t\t",gExt[x]

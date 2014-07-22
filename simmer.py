@@ -22,29 +22,53 @@ def main():
     annman=AnnotationManager.AnnotationManager(simmercon,ontman)
     
     logger.debug("\tNow building CompiledAnnotationSet")
-    test=CompiledAnnotationSet.CompiledAnnotationSet(annman.annotationSets["geneGO"],[],ontman)
-    
-    rBMA=test.resnikBMA("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:98351"),25)
-    print '\nResnikBMA:MGI:87961'    
-    logger.debug('\nResnikBMA:MGI:87961')
+    test=CompiledAnnotationSet.CompiledAnnotationSet(annman.annotationSets["geneMP"],[],ontman)
+    '''
+    rBMA=test.resnikBMA("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:3526657"),"MPheno.ontology",25)
+    print '\nMP:ResnikBMA:MGI:3526657'    
+    logger.debug('\nMP:ResnikBMA:MGI:3526657')
     for x in sorted(rBMA,key=lambda entry:rBMA[entry],reverse=True):
         print x,"\t\t",rBMA[x]
         logger.debug("".join(("\t",x.__str__(),"\t\t",str(rBMA[x]))))
 
-    jExt=test.jaccardExt("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:98351"),25)
-    print '\nJaccardExt:MGI:87961'
-    logger.debug('\nJaccardExt:MGI:87961')
+    jExt=test.jaccardExt("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:3526657"),"MPheno.ontology",25)
+    print '\nMP:JaccardExt:MGI:3526657'
+    logger.debug('\nMP:JaccardExt:MGI:3526657')
     for x in sorted(jExt,key=lambda entry:jExt[entry],reverse=True):
         print x,"\t\t",jExt[x]
         logger.debug("".join(("\t",x.__str__(),"\t\t",str(jExt[x]))))
     
-    gExt=test.gicExt("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:98351"),25)
-    print '\ngicExt:MGI:87961'
-    logger.debug('\ngicExt:MGI:87961)')
+    gExt=test.gicExt("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:3526657"),"MPheno.ontology",25)
+    print '\nMP:gicExt:MGI:3526657'
+    logger.debug('\nMP:gicExt:MGI:3526657)')
     for x in sorted(gExt,key=lambda entry:gExt[entry],reverse=True):
         print x,"\t\t",gExt[x]
         logger.debug("".join(("\t",x.__str__(),"\t\t",str(gExt[x]))))
-        
+    '''
+    
+    test=CompiledAnnotationSet.CompiledAnnotationSet(annman.annotationSets["geneGO"],[],ontman)
+
+    rBMA=test.resnikBMA("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:87961"),"biological_process",25)
+    print '\nBP:ResnikBMA:MGI:87961'    
+    logger.debug('\nBP:ResnikBMA:MGI:87961')
+    for x in sorted(rBMA,key=lambda entry:rBMA[entry],reverse=True):
+        print x,"\t\t",rBMA[x]
+        logger.debug("".join(("\t",x.__str__(),"\t\t",str(rBMA[x]))))
+
+    jExt=test.jaccardExt("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:87961"),"biological_process",25)
+    print '\nBP:JaccardExt:MGI:87961'
+    logger.debug('\nBP:JaccardExt:MGI:87961')
+    for x in sorted(jExt,key=lambda entry:jExt[entry],reverse=True):
+        print x,"\t\t",jExt[x]
+        logger.debug("".join(("\t",x.__str__(),"\t\t",str(jExt[x]))))
+    
+    gExt=test.gicExt("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:87961"),"biological_process",25)
+    print '\nBP:gicExt:MGI:87961'
+    logger.debug('\nBP:gicExt:MGI:87961)')
+    for x in sorted(gExt,key=lambda entry:gExt[entry],reverse=True):
+        print x,"\t\t",gExt[x]
+        logger.debug("".join(("\t",x.__str__(),"\t\t",str(gExt[x]))))
+    
 def setConfigOptions(op):
     #is this done correctly?
     op.add_option("-l", "--length", metavar="NUM", dest="n", type="int", help="A number.")

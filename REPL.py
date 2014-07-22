@@ -73,9 +73,11 @@ Please specify which namespace you'd like to compare the query in:
             elif user_choice=="restart":
                 break
             elif user_choice=="object":
-                user_choice2=raw_input(menu[2])
+                user_choice2=AnnotatedObject.AnnotatedObject.getAnnotatedObj(raw_input(menu[2]))
             elif user_choice=="list":
-                user_choice2=raw_input(menu[3]).replace(" ",",").split(",")
+                user_choice2=[]
+                for x in raw_input(menu[3]).replace(" ",",").split(","):
+                    user_choice2.append(cas.annset.ontology.getTerm(x))
             else:
                 print "\nCannot interpret input. Please try again."
                 continue
@@ -87,23 +89,35 @@ Please specify which namespace you'd like to compare the query in:
                     if user_choice3 not in ["cellular_component","biological_process","molecular_function"]:
                         print "\nCannot interpret input. Please try again."
                         continue
-                rBMA=cas.resnikBMA(user_choice,AnnotatedObject.AnnotatedObject.getAnnotatedObj(user_choice2),user_choice3,25)
-                print "\n",user_choice3,":Top 25 Resnik BMA results for",user_choice2
-                logger.debug("".join((user_choice3,"Top 25 Resnik BMA results for",user_choice2)))
+                rBMA=cas.resnikBMA(user_choice,user_choice2,user_choice3,25)
+                if isinstance(user_choice2,list):
+                    print "\n",user_choice3,":Top 25 Resnik BMA results for",[x.__str__() for x in user_choice2].__str__()
+                    logger.debug("".join((user_choice3,"Top 25 Resnik BMA results for",[x.__str__() for x in user_choice2].__str__())))
+                else:
+                    print "\n",user_choice3,":Top 25 Resnik BMA results for",user_choice2.__str__()
+                    logger.debug("".join((user_choice3,"Top 25 Resnik BMA results for",user_choice2.__str__())))
                 for x in sorted(rBMA,key=lambda entry:rBMA[entry],reverse=True):
                     print x,"\t\t",rBMA[x]
                     logger.debug("".join(("\t",x.__str__(),"\t\t",str(rBMA[x]))))
             
-                jExt=cas.jaccardExt(user_choice,AnnotatedObject.AnnotatedObject.getAnnotatedObj(user_choice2),user_choice3,25)
-                print "\n",user_choice3,"Top 25 Jaccard Extended results for",user_choice2
-                logger.debug("".join((user_choice3,":Top 25 Jaccard Extended results for",user_choice2)))
+                jExt=cas.jaccardExt(user_choice,user_choice2,user_choice3,25)
+                if isinstance(user_choice2,list):
+                    print "\n",user_choice3,":Top 25 Jaccard Extended results for",[x.__str__() for x in user_choice2].__str__()
+                    logger.debug("".join((user_choice3,"Top 25 Jaccard Extended results for",[x.__str__() for x in user_choice2].__str__())))
+                else:
+                    print "\n",user_choice3,":Top 25 Jaccard Extended results for",user_choice2.__str__()
+                    logger.debug("".join((user_choice3,"Top 25 Jaccard Extended results for",user_choice2.__str__())))
                 for x in sorted(jExt,key=lambda entry:jExt[entry],reverse=True):
                     print x,"\t\t",jExt[x]
                     logger.debug("".join(("\t",x.__str__(),"\t\t",str(jExt[x]))))
     
-                gExt=cas.gicExt(user_choice,AnnotatedObject.AnnotatedObject.getAnnotatedObj(user_choice2),user_choice3,25)
-                print "\n",user_choice3,"Top 25 GIC Extended results for",user_choice2
-                logger.debug("".join((user_choice3,":Top 25 GIC Extended results for",user_choice2)))
+                gExt=cas.gicExt(user_choice,user_choice2,user_choice3,25)
+                if isinstance(user_choice2,list):
+                    print "\n",user_choice3,":Top 25 GIC Extended results for",[x.__str__() for x in user_choice2].__str__()
+                    logger.debug("".join((user_choice3,"Top 25 GIC Extended results for",[x.__str__() for x in user_choice2].__str__())))
+                else:
+                    print "\n",user_choice3,":Top 25 GIC Extended results for",user_choice2.__str__()
+                    logger.debug("".join((user_choice3,"Top 25 GIC Extended results for",user_choice2.__str__())))
                 for x in sorted(gExt,key=lambda entry:gExt[entry],reverse=True):
                     print x,"\t\t",gExt[x]
                     logger.debug("".join(("\t",x.__str__(),"\t\t",str(gExt[x]))))

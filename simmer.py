@@ -22,8 +22,9 @@ def main():
     annman=AnnotationManager.AnnotationManager(simmercon,ontman)
     
     logger.debug("\tNow building CompiledAnnotationSet")
-    test=CompiledAnnotationSet.CompiledAnnotationSet(annman.annotationSets["geneMP"],[],ontman)
     '''
+    test=CompiledAnnotationSet.CompiledAnnotationSet(annman.annotationSets["geneMP"],[],ontman)
+
     rBMA=test.resnikBMA("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:3526657"),"MPheno.ontology",25)
     print '\nMP:ResnikBMA:MGI:3526657'    
     logger.debug('\nMP:ResnikBMA:MGI:3526657')
@@ -46,7 +47,7 @@ def main():
         logger.debug("".join(("\t",x.__str__(),"\t\t",str(gExt[x]))))
     '''
     
-    test=CompiledAnnotationSet.CompiledAnnotationSet(annman.annotationSets["geneGO"],[],ontman)
+    test=CompiledAnnotationSet.CompiledAnnotationSet(annman.annotationSets["geneGO"],["ISS","ISA","ISO","ISM","IGC","IBA","IBD","IKR","IRD","RCA"],ontman)
 
     rBMA=test.resnikBMA("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:87961"),"biological_process",25)
     print '\nBP:ResnikBMA:MGI:87961'    

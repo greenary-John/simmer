@@ -92,10 +92,10 @@ Please specify which namespace you'd like to compare the query in:
                 rBMA=cas.resnikBMA(user_choice,user_choice2,user_choice3,25)
                 if isinstance(user_choice2,list):
                     print "\n",user_choice3,":Top 25 Resnik BMA results for",[x.__str__() for x in user_choice2].__str__()
-                    logger.debug("".join((user_choice3,"Top 25 Resnik BMA results for",[x.__str__() for x in user_choice2].__str__())))
+                    logger.debug("".join((user_choice3,"Top 25 Resnik BMA results for ",[x.__str__() for x in user_choice2].__str__())))
                 else:
                     print "\n",user_choice3,":Top 25 Resnik BMA results for",user_choice2.__str__()
-                    logger.debug("".join((user_choice3,"Top 25 Resnik BMA results for",user_choice2.__str__())))
+                    logger.debug("".join((user_choice3,"Top 25 Resnik BMA results for ",user_choice2.__str__())))
                 for x in sorted(rBMA,key=lambda entry:rBMA[entry],reverse=True):
                     print x,"\t\t",rBMA[x]
                     logger.debug("".join(("\t",x.__str__(),"\t\t",str(rBMA[x]))))
@@ -103,10 +103,10 @@ Please specify which namespace you'd like to compare the query in:
                 jExt=cas.jaccardExt(user_choice,user_choice2,user_choice3,25)
                 if isinstance(user_choice2,list):
                     print "\n",user_choice3,":Top 25 Jaccard Extended results for",[x.__str__() for x in user_choice2].__str__()
-                    logger.debug("".join((user_choice3,"Top 25 Jaccard Extended results for",[x.__str__() for x in user_choice2].__str__())))
+                    logger.debug("".join((user_choice3,"Top 25 Jaccard Extended results for ",[x.__str__() for x in user_choice2].__str__())))
                 else:
                     print "\n",user_choice3,":Top 25 Jaccard Extended results for",user_choice2.__str__()
-                    logger.debug("".join((user_choice3,"Top 25 Jaccard Extended results for",user_choice2.__str__())))
+                    logger.debug("".join((user_choice3,"Top 25 Jaccard Extended results for ",user_choice2.__str__())))
                 for x in sorted(jExt,key=lambda entry:jExt[entry],reverse=True):
                     print x,"\t\t",jExt[x]
                     logger.debug("".join(("\t",x.__str__(),"\t\t",str(jExt[x]))))
@@ -114,10 +114,10 @@ Please specify which namespace you'd like to compare the query in:
                 gExt=cas.gicExt(user_choice,user_choice2,user_choice3,25)
                 if isinstance(user_choice2,list):
                     print "\n",user_choice3,":Top 25 GIC Extended results for",[x.__str__() for x in user_choice2].__str__()
-                    logger.debug("".join((user_choice3,"Top 25 GIC Extended results for",[x.__str__() for x in user_choice2].__str__())))
+                    logger.debug("".join((user_choice3,"Top 25 GIC Extended results for ",[x.__str__() for x in user_choice2].__str__())))
                 else:
                     print "\n",user_choice3,":Top 25 GIC Extended results for",user_choice2.__str__()
-                    logger.debug("".join((user_choice3,"Top 25 GIC Extended results for",user_choice2.__str__())))
+                    logger.debug("".join((user_choice3,"Top 25 GIC Extended results for ",user_choice2.__str__())))
                 for x in sorted(gExt,key=lambda entry:gExt[entry],reverse=True):
                     print x,"\t\t",gExt[x]
                     logger.debug("".join(("\t",x.__str__(),"\t\t",str(gExt[x]))))
@@ -144,7 +144,7 @@ def choiceProcessing(choice,ontman,annman,conman):
         choices[1]=set([])
         return choices[1]
     elif choice=="evCodes":
-        choices[1]|=set(raw_input("Which evidence code would you like to append to the exclusion list?\n(Please enter as comma or space delimited list.)\n").replace(" ",",").split(","))
+        choices[1]|=set(raw_input("Which evidence codes would you like to append to the exclusion list?\n(Please enter as comma or space delimited list.)\n").replace(" ",",").split(","))
         return choices[1]
     elif choice=="search":
         pass

@@ -65,7 +65,7 @@ Please specify which namespace you'd like to compare the query in:
             print "\n",choiceProcessing(user_choice,ontman,annman,cm),"\n"
             user_choice=raw_input(menu[0])
         print "Building CompiledAnnotationSet (paying overhead)."
-        cas=CompiledAnnotationSet.CompiledAnnotationSet(annman.annotationSets[choices[0]],choices[1],ontman)
+        cas=CompiledAnnotationSet.CompiledAnnotationSet(annman.annotationSets[choices[0]],list(choices[1]),ontman)
         while True:
             user_choice=raw_input(menu[1]).replace("1","object").replace("2","list")
             if user_choice=="quit":

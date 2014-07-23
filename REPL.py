@@ -7,7 +7,6 @@ from icLib import DAG
 from icLib import ConfigManager
 from icLib import OntologyManager
 from icLib import AnnotationManager
-from icLib import OntologyAnnotationCompiler
 from icLib import CompiledAnnotationSet
 from icLib import AnnotatedObject
 from icLib import Logger

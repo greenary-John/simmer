@@ -1,13 +1,11 @@
 import os
 import ConfigParser
-import time
 
 from icLib import Ontology
 from icLib import DAG
 from icLib import ConfigManager
 from icLib import OntologyManager
 from icLib import AnnotationManager
-from icLib import OntologyAnnotationCompiler
 from icLib import CompiledAnnotationSet
 from icLib import AnnotatedObject
 from icLib import Logger
@@ -71,7 +69,6 @@ def main():
         logger.debug("".join(("\t",x.__str__(),"\t\t",str(gExt[x]))))
     
 def setConfigOptions(op):
-    #is this done correctly?
     op.add_option("-l", "--length", metavar="NUM", dest="n", type="int", help="A number.")
     
 if __name__=='__main__':

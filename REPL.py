@@ -39,7 +39,7 @@ Which would you like to search with?
 "quit"          =   quit the loop
 ''','''
 Please name the object you'd like to search by.
-Ex:     "MGI:98351"
+Ex:     "MGI:87961"
 Ex:     "MGI:3526657"
 ''','''
 Please type the list of terms, separated by spaces or commas, you'd like to search by.

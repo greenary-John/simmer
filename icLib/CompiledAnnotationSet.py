@@ -58,7 +58,7 @@ class CompiledAnnotationSet:
                     self.pair2MICA.update[(x,y)]=self.getMICAscore(x,y)
                     
     def maxIC(self,lst):
-        return max([self.term2IC.get(x,0)for x in lst])if len(lst)>0 else 0
+        return max([self.term2IC.get(x,0)for x in lst])if len(lst)>0 else 0.0
 
     def getMICAscore(self,termA,termB,namespace):
         if termA.namespace!=namespace or termB.namespace!=namespace:
@@ -81,7 +81,7 @@ class CompiledAnnotationSet:
         if len([x for x in lst if x!=None])>0:
             return float(sum([x for x in lst if x!=None]))/len([x for x in lst if x!=None])
         else:
-            return 0
+            return 0.0
 
     def listCompare(self,listA,objB,namespace):
         #list to obj comparison
@@ -89,7 +89,7 @@ class CompiledAnnotationSet:
         if len([x for x in lst if x!=None])>0:
             return float(sum([x for x in lst if x!=None]))/len([x for x in lst if x!=None])
         else:
-            return 0
+            return 0.0
         
     def resnikBMA(self,qType,query,namespace,length):
         #BMA approach; obj to list of objs comparison
@@ -105,11 +105,10 @@ class CompiledAnnotationSet:
         else:
             for x in self.obj2term:
                 resultsDict[x]=self.listCompare(query,x,namespace)
-        maximum=max(resultsDict.values())
         for x in sorted(resultsDict,key=lambda entry:resultsDict[entry],reverse=True):
             if count>=length:
                 break
-            returnDict[x]=resultsDict[x]/maximum
+            returnDict[x]=resultsDict[x]
             count+=1
         self.logger.debug("".join(("\nFinished!\tresnikBMA\t",str(self.MICAcount)," MICA calculations\nactual runtime:\t\t",str(time.time()-start)," seconds\n")))
         return returnDict
@@ -133,7 +132,10 @@ class CompiledAnnotationSet:
             for y in self.obj2term[x]:
                 if y.namespace==namespace:
                     test|=self.annset.ontology.reverseClosure[y]
-            resultsDict[x]=float(len(query&test))/len(query|test)
+            if len(query|test)==0:
+                resultsDict[x]=0.0
+            else:
+                resultsDict[x]=float(len(query&test))/len(query|test)
         for x in sorted(resultsDict,key=lambda entry:resultsDict[entry],reverse=True):
             if count>=length:
                 break
@@ -161,9 +163,10 @@ class CompiledAnnotationSet:
             for y in self.obj2term[x]:
                 if y.namespace==namespace:
                     test|=self.annset.ontology.reverseClosure[y]
-            resultsDict[x]=sum([self.term2IC.get(z,0)for z in query&test])/sum([self.term2IC.get(d,0)for d in query|test])
-            if resultsDict[x]>=0.45:
-                pass
+            if sum([self.term2IC.get(d,0)for d in query|test])==0:
+                resultsDict[x]=0.0
+            else:
+                resultsDict[x]=sum([self.term2IC.get(z,0)for z in query&test])/sum([self.term2IC.get(d,0)for d in query|test])
         for x in sorted(resultsDict,key=lambda entry:resultsDict[entry],reverse=True):
             if count>=length:
                 break

@@ -1,3 +1,11 @@
+'''Annotation
+The Annotation class creates an object describing the link between
+objects (in the form of AnnotatedObject objects) and ontological terms.
+This contains not only the link, but information describing the link
+including evidence codes, qualifiers (if present), etc.
+
+Author: Patrick Osterhaus   s-osterh
+'''
 import AnnotatedObject
 
 class Annotation:

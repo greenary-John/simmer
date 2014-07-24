@@ -1,4 +1,11 @@
+'''Labeler
+This file contains a Labeler class which creates a Labeler object. This
+Labeler object can then be used to fetch labels and information for genotypes
+and genes with only the MGI identifier as input. This allows gene/genotype names
+and other information to be included within results for the search engine.
 
+Author: Joel Richardson 
+'''
 import json
 import urllib
 

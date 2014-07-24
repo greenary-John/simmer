@@ -1,3 +1,13 @@
+'''Logger
+This is a file containing the Logger class which defines a Logger object.
+This Logger object has different methods all used to write to the simmer.log
+file contained in the simmer directory. This allows users to have a record of
+program output and debugging information (usually just what step the program
+is on and when) in a file as opposed to temporarily printing it to the Terminal
+to be lost after use.
+
+Author: Patrick Osterhaus   s-osterh
+'''
 import logging
 import os
 

@@ -1,3 +1,11 @@
+'''AnnotationManager
+The AnnotationManager class creates an object that parses annotation
+input files into AnnotationSet objects. These AnnotationSet objects
+are the correct format for later steps of the program. NOTE: AnnotationManager
+must be called AFTER OntologyManager and ConfigManager in a driver program.
+
+Author: Patrick Osterhaus   s-osterh
+'''
 import AnnotationSet
 
 class AnnotationManager(object):

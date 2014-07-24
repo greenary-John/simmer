@@ -1,3 +1,10 @@
+'''simmer
+This is the hardcoded command line driver implementation of the gene and
+mouse strain search engine. Queries can be made through hardcoding them as
+input.
+
+Author: Patrick Osterhaus   s-osterh
+'''
 import os
 import ConfigParser
 

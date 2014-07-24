@@ -1,3 +1,12 @@
+'''AnnotationSet
+This is a file containing sets of annotations as specified by input files
+and parsed by AnnotationManager.py. This is also used in the creation of
+CompiledAnnotationSet objects. These AnnotationSet objects contain information
+on ontologies and annotations and can be conceptualized as raw versions of
+CompiledAnnotationSet objects with little precomputation and slight compiling.
+
+Author: Patrick Osterhaus   s-osterh
+'''
 import types
 
 import Ontology

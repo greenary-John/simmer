@@ -1,3 +1,14 @@
+'''CompiledAnnotationSet
+This is a file containing the CompiledAnnotationSet class which defines a
+CompiledAnnotationSet object. This object contains an AnnotationSet object
+after filtering out specified evidence codes. Information is then computed
+and stored within this object in the form of dictionaries describing
+to which terms an object is annotated, to which objects terms are annotated,
+and the information content value of each term. This information is used later
+by the semantic similarity measure methods, also defined in this class.
+
+Author: Patrick Osterhaus   s-osterh
+'''
 import math
 import time
 

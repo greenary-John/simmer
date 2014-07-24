@@ -4,7 +4,7 @@ to defined objects. These objects are also created within the class
 and simply contain the ID (e.g., 'MGI:1918911') of the object (gene
 or mouse model) component of an annotation.
 
-Author: Patrick Osterhaus
+Author: Patrick Osterhaus   s-osterh
 '''
 class AnnotatedObject:
     knownObjs={}

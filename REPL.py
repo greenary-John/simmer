@@ -1,3 +1,9 @@
+'''REPL
+This is the Read-Eval-Print-Loop implementation of the gene and mouse model
+search engine. Queries are made within the command prompt.
+
+Author: Patrick Osterhaus   s-osterh
+'''
 import sys
 import os
 import ConfigParser

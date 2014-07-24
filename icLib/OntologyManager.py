@@ -5,7 +5,8 @@ and reverse closures and stores this infomation, along with ontologies,
 within the object.
 
 Author: Patrick Osterhaus   s-osterh
-'''import Ontology
+'''
+import Ontology
 import DAG
 
 class OntologyManager(object):

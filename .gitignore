@@ -8,6 +8,8 @@
 
 # generated files and directories
 LOG
+._.DS_Store
 .DS_Store
 output/
 data/
+Data/

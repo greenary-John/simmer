@@ -62,24 +62,23 @@ def parse(rawAnnotations,annNames,annSets,simConPar,ontMan):
         "AssignedBy":14,
         "AnnotationExtension":15,
         "GeneProductFormID":16
-        }],"MP TSV":[1,{
-            "annID":0,
-            "Genotype":1,
-            "EvidenceCode":2,
-            "termID":3,
-            "MPTerm":4,
-            "Qualifier":5
-            }]}
-
-    '''#2014 MP TSV version
-    "termID":0,
-    "TermName":1,
-    "OntologyNamespace":2,
-    "annID":3,
-    "SubjectName":4,
-    "Qualifier":5,
-    "EvidenceCode":6,
-    "JNumber":7'''
+        }],"MP TSV 2013":[1,{
+        "annID":0,
+        "Genotype":1,
+        "EvidenceCode":2,
+        "termID":3,
+        "MPTerm":4,
+        "Qualifier":5
+        }],"MP TSV 2014":[1,{
+        "termID":0,
+        "TermName":1,
+        "OntologyNamespace":2,
+        "annID":3,
+        "SubjectName":4,
+        "Qualifier":5,
+        "EvidenceCode":6,
+        "JNumber":7
+                }]}
     #add conditionals to check if indices within rawAnnotations have already been
     #parsed into AnnotationSets to avoid unnecessary runtime
     for x in range(0,len(rawAnnotations)):

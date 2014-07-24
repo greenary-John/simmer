@@ -71,13 +71,13 @@ def parse(rawAnnotations,annNames,annSets,simConPar,ontMan):
         "Qualifier":5
         }],"MP TSV 2014":[1,{
         "termID":0,
-        "TermName":1,
+        "Term":1,
         "OntologyNamespace":2,
         "annID":3,
-        "SubjectName":4,
+        "ObjectName":4,
         "Qualifier":5,
         "EvidenceCode":6,
-        "JNumber":7
+        "Reference":7
                 }]}
     #add conditionals to check if indices within rawAnnotations have already been
     #parsed into AnnotationSets to avoid unnecessary runtime

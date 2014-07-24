@@ -10,9 +10,9 @@ class AnnotatedObject:
     knownObjs={}
     @classmethod
     def getAnnotatedObj(cls,iden):
-        try:
+        if iden in cls.knownObjs:
             return cls.knownObjs[iden]
-        except KeyError:
+        else:
             newObj=AnnotatedObject(iden)
             return newObj
     def __init__(self,iden):

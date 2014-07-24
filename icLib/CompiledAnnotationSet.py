@@ -17,8 +17,18 @@ import Logger
 import Ontology
 
 class CompiledAnnotationSet:
+    knownCAS={}
 
+    @classmethod
+    def getCAS(cls,AnnSet,evCodes,ontman):
+        if (AnnSet,frozenset(evCodes),ontman) in cls.knownCAS:
+            return cls.knownCAS[(AnnSet,frozenset(evCodes),ontman)]
+        else:
+            newCAS=CompiledAnnotationSet(AnnSet,frozenset(evCodes),ontman)
+            return newCAS
+    
     def __init__(self,AnnSet,evCodes,ontman):
+        self.knownCAS[(AnnSet,frozenset(evCodes),ontman)]=self
         self.ontman=ontman
         self.evCodes=evCodes if isinstance(evCodes,list) else [evCodes]
         self.annset=AnnSet.evidenceFilter(self.evCodes)

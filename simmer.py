@@ -54,7 +54,7 @@ def main():
         logger.debug("".join(("\t",x.__str__(),"\t\t",str(gExt[x]))))
     '''
     
-    test=CompiledAnnotationSet.CompiledAnnotationSet(annman.annotationSets["geneGO"],["ISS","ISA","ISO","ISM","IGC","IBA","IBD","IKR","IRD","RCA"],ontman)
+    test=CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annman.annotationSets["geneGO"],["ISS","ISA","ISO","ISM","IGC","IBA","IBD","IKR","IRD","RCA"],ontman)
     labelType="gene"
     rBMA=test.resnikBMA("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:87961"),"biological_process",25)
     print '\nBP:ResnikBMA:MGI:87961'    
@@ -62,7 +62,7 @@ def main():
     for x in sorted(rBMA,key=lambda entry:rBMA[entry],reverse=True):
         print labeler.get(labelType,x.id),"\t\t",rBMA[x]
         logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(rBMA[x]))))
-    print [x.id for x in sorted(rBMA,key=lambda entry:rBMA[entry],reverse=True)]
+    print "\n"," ".join([x.id for x in sorted(rBMA,key=lambda entry:rBMA[entry],reverse=True)])
 
     jExt=test.jaccardExt("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:87961"),"biological_process",25)
     print '\nBP:JaccardExt:MGI:87961'
@@ -70,7 +70,7 @@ def main():
     for x in sorted(jExt,key=lambda entry:jExt[entry],reverse=True):
         print labeler.get(labelType,x.id),"\t\t",jExt[x]
         logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(jExt[x]))))
-    print [x.id for x in sorted(jExt,key=lambda entry:jExt[entry],reverse=True)]
+    print "\n"," ".join([x.id for x in sorted(jExt,key=lambda entry:jExt[entry],reverse=True)])
     
     gExt=test.gicExt("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:87961"),"biological_process",25)
     print '\nBP:gicExt:MGI:87961'
@@ -78,7 +78,7 @@ def main():
     for x in sorted(gExt,key=lambda entry:gExt[entry],reverse=True):
         print labeler.get(labelType,x.id),"\t\t",gExt[x]
         logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(gExt[x]))))
-    print [x.id for x in sorted(gExt,key=lambda entry:gExt[entry],reverse=True)]
+    print "\n"," ".join([x.id for x in sorted(gExt,key=lambda entry:gExt[entry],reverse=True)])
     
 def setConfigOptions(op):
     op.add_option("-l", "--length", metavar="NUM", dest="n", type="int", help="A number.")

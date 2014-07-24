@@ -79,7 +79,7 @@ Please specify which semantic similarity measure you'd like to use.
             print "\n",choiceProcessing(menu[5],user_choice,ontman,annman,cm),"\n"
             user_choice=raw_input(menu[0])
         print "Building CompiledAnnotationSet (paying overhead)."
-        cas=CompiledAnnotationSet.CompiledAnnotationSet(annman.annotationSets[choices[0]],list(choices[1]),ontman)
+        cas=CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annman.annotationSets[choices[0]],list(choices[1]),ontman)
         while True:
             user_choice=raw_input(menu[1]).replace("1","object").replace("2","list")
             if user_choice=="quit":
@@ -126,7 +126,7 @@ Please specify which semantic similarity measure you'd like to use.
                         for x in sorted(rBMA,key=lambda entry:rBMA[entry],reverse=True):
                             print labeler.get(labelType,x.id),"\t\t",rBMA[x]
                             logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(rBMA[x]))))
-                        print [x.id for x in sorted(rBMA,key=lambda entry:rBMA[entry],reverse=True)]
+                        print "\n"," ".join([x.id for x in sorted(rBMA,key=lambda entry:rBMA[entry],reverse=True)])
                         
 
                     if user_choice4=="2":
@@ -140,7 +140,7 @@ Please specify which semantic similarity measure you'd like to use.
                         for x in sorted(jExt,key=lambda entry:jExt[entry],reverse=True):
                             print labeler.get(labelType,x.id),"\t\t",jExt[x]
                             logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(jExt[x]))))
-                        print [x.id for x in sorted(jExt,key=lambda entry:jExt[entry],reverse=True)]
+                        print "\n"," ".join([x.id for x in sorted(jExt,key=lambda entry:jExt[entry],reverse=True)])
 
                     if user_choice4=="3":
                         gExt=cas.gicExt(user_choice,user_choice2,user_choice3,25)
@@ -153,7 +153,7 @@ Please specify which semantic similarity measure you'd like to use.
                         for x in sorted(gExt,key=lambda entry:gExt[entry],reverse=True):
                             print labeler.get(labelType,x.id),"\t\t",gExt[x]
                             logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(gExt[x]))))
-                        print [x.id for x in sorted(gExt,key=lambda entry:gExt[entry],reverse=True)]
+                        print "\n"," ".join([x.id for x in sorted(gExt,key=lambda entry:gExt[entry],reverse=True)])
                             
                     if raw_input('\nWould you like to search again with a new semantic similarity measure?\n"y"\t\t=\tSearch again\nanything else\t=\tDo not search again\n')=="y":
                         continue

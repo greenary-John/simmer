@@ -3,6 +3,41 @@ datadir=/home/jak/work/simmer/Data
 ontdir=%(datadir)s/ontologies 
 anndir=%(datadir)s/annotations
 
+url: http://www.mousemine.org/mousemine/service/query/results?format=jsonobjects&start=0&query=
+
+[query.gene]
+query:
+    <query model="genomic" view="
+      SequenceFeature.primaryIdentifier 
+      SequenceFeature.symbol 
+      SequenceFeature.name 
+      SequenceFeature.mgiType" >
+      <constraint 
+	path="SequenceFeature.primaryIdentifier" 
+	op="=" 
+	value="%(id)s" 
+	/>
+    </query>
+
+format: %(primaryIdentifier)s	%(symbol)s 
+
+[query.genotype]
+query:
+    <query model="genomic" view="
+      Genotype.primaryIdentifier 
+      Genotype.symbol 
+      Genotype.name">
+      <constraint 
+	path="Genotype.primaryIdentifier" 
+	op="=" 
+	value="%(id)s" 
+	/>
+    </query>
+
+format: %(primaryIdentifier)s	%(name)s 
+
+
+
 [GO]
 type=ontology
 name=GO
@@ -22,9 +57,9 @@ filename=%(anndir)s/gene_association.mgi
 format=gaf-version: 2.0
 ontology=GO
 
-[geneMP]
+[genotypeMP]
 type=annotations
-name=geneMP
+name=genotypeMP
 filename=%(anndir)s/MPannot-2013-07-16.txt
 format=MP TSV
 ontology=MP

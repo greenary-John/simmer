@@ -49,6 +49,11 @@ Please specify which namespace you'd like to compare the query in:
 
 "s"             =   use the search program
 "quit"          =   quit the loop
+''','''
+Please specify which semantic similarity measure you'd like to use.
+"1"             =   Resnik Best Match Average
+"2"             =   Jaccard Extended
+"3"             =   GIC Extended
 ''']
     logger=Logger.Logger()
     print "Precomputing..."
@@ -98,39 +103,55 @@ Please specify which namespace you'd like to compare the query in:
                     if user_choice3 not in ["cellular_component","biological_process","molecular_function"]:
                         print "\nCannot interpret input. Please try again."
                         continue
-                rBMA=cas.resnikBMA(user_choice,user_choice2,user_choice3,25)
-                if isinstance(user_choice2,list):
-                    print "\n",user_choice3,":Top 25 Resnik BMA results for",[x.__str__() for x in user_choice2].__str__()
-                    logger.debug("".join((user_choice3,"Top 25 Resnik BMA results for ",[x.__str__() for x in user_choice2].__str__())))
-                else:
-                    print "\n",user_choice3,":Top 25 Resnik BMA results for",labeler.get(labelType,user_choice2.id)
-                    logger.debug("".join((user_choice3,"Top 25 Resnik BMA results for ",labeler.get(labelType,user_choice2.id))))
-                for x in sorted(rBMA,key=lambda entry:rBMA[entry],reverse=True):
-                    print labeler.get(labelType,x.id),"\t\t",rBMA[x]
-                    logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(rBMA[x]))))
-            
-                jExt=cas.jaccardExt(user_choice,user_choice2,user_choice3,25)
-                if isinstance(user_choice2,list):
-                    print "\n",user_choice3,":Top 25 Jaccard Extended results for",[x.__str__() for x in user_choice2].__str__()
-                    logger.debug("".join((user_choice3,"Top 25 Jaccard Extended results for ",[x.__str__() for x in user_choice2].__str__())))
-                else:
-                    print "\n",user_choice3,":Top 25 Jaccard Extended results for",labeler.get(labelType,user_choice2.id)
-                    logger.debug("".join((user_choice3,"Top 25 Jaccard Extended results for ",labeler.get(labelType,user_choice2.id))))
-                for x in sorted(jExt,key=lambda entry:jExt[entry],reverse=True):
-                    print labeler.get(labelType,x.id),"\t\t",jExt[x]
-                    logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(jExt[x]))))
-    
-                gExt=cas.gicExt(user_choice,user_choice2,user_choice3,25)
-                if isinstance(user_choice2,list):
-                    print "\n",user_choice3,":Top 25 GIC Extended results for",[x.__str__() for x in user_choice2].__str__()
-                    logger.debug("".join((user_choice3,"Top 25 GIC Extended results for ",[x.__str__() for x in user_choice2].__str__())))
-                else:
-                    print "\n",user_choice3,":Top 25 GIC Extended results for",labeler.get(labelType,user_choice2.id)
-                    logger.debug("".join((user_choice3,"Top 25 GIC Extended results for ",labeler.get(labelType,user_choice2.id))))
-                for x in sorted(gExt,key=lambda entry:gExt[entry],reverse=True):
-                    print labeler.get(labelType,x.id),"\t\t",gExt[x]
-                    logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(gExt[x]))))
+                while True:
+                    user_choice4=raw_input(menu[6])
+                    if user_choice4 not in ["1","2","3"]:
+                        print "\nCannot interpret input. Please try again."
+                        continue
+                    
+                    if user_choice4=="1":
+                        rBMA=cas.resnikBMA(user_choice,user_choice2,user_choice3,25)
+                        if isinstance(user_choice2,list):
+                            print "\n",user_choice3,":Top 25 Resnik BMA results for",[x.__str__() for x in user_choice2].__str__()
+                            logger.debug("".join((user_choice3,"Top 25 Resnik BMA results for ",[x.__str__() for x in user_choice2].__str__())))
+                        else:
+                            print "\n",user_choice3,":Top 25 Resnik BMA results for",labeler.get(labelType,user_choice2.id)
+                            logger.debug("".join((user_choice3,"Top 25 Resnik BMA results for ",labeler.get(labelType,user_choice2.id))))
+                        for x in sorted(rBMA,key=lambda entry:rBMA[entry],reverse=True):
+                            print labeler.get(labelType,x.id),"\t\t",rBMA[x]
+                            logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(rBMA[x]))))
+                        print [x.id for x in sorted(rBMA,key=lambda entry:rBMA[entry],reverse=True)]
+                        
 
+                    if user_choice4=="2":
+                        jExt=cas.jaccardExt(user_choice,user_choice2,user_choice3,25)
+                        if isinstance(user_choice2,list):
+                            print "\n",user_choice3,":Top 25 Jaccard Extended results for",[x.__str__() for x in user_choice2].__str__()
+                            logger.debug("".join((user_choice3,"Top 25 Jaccard Extended results for ",[x.__str__() for x in user_choice2].__str__())))
+                        else:
+                            print "\n",user_choice3,":Top 25 Jaccard Extended results for",labeler.get(labelType,user_choice2.id)
+                            logger.debug("".join((user_choice3,"Top 25 Jaccard Extended results for ",labeler.get(labelType,user_choice2.id))))
+                        for x in sorted(jExt,key=lambda entry:jExt[entry],reverse=True):
+                            print labeler.get(labelType,x.id),"\t\t",jExt[x]
+                            logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(jExt[x]))))
+                        print [x.id for x in sorted(jExt,key=lambda entry:jExt[entry],reverse=True)]
+
+                    if user_choice4=="3":
+                        gExt=cas.gicExt(user_choice,user_choice2,user_choice3,25)
+                        if isinstance(user_choice2,list):
+                            print "\n",user_choice3,":Top 25 GIC Extended results for",[x.__str__() for x in user_choice2].__str__()
+                            logger.debug("".join((user_choice3,"Top 25 GIC Extended results for ",[x.__str__() for x in user_choice2].__str__())))
+                        else:
+                            print "\n",user_choice3,":Top 25 GIC Extended results for",labeler.get(labelType,user_choice2.id)
+                            logger.debug("".join((user_choice3,"Top 25 GIC Extended results for ",labeler.get(labelType,user_choice2.id))))
+                        for x in sorted(gExt,key=lambda entry:gExt[entry],reverse=True):
+                            print labeler.get(labelType,x.id),"\t\t",gExt[x]
+                            logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(gExt[x]))))
+                        print [x.id for x in sorted(gExt,key=lambda entry:gExt[entry],reverse=True)]
+                            
+                    if raw_input('\nWould you like to search again with a new semantic similarity measure?\n"y"\t\t=\tSearch again\nanything else\t=\tDo not search again\n')=="y":
+                        continue
+                    break
                 break
     
 def setConfigOptions(op):

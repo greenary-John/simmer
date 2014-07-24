@@ -1,4 +1,11 @@
-import Ontology
+'''Ontology Manager
+The OntologyManager class creates an object that utilizes a ConfigManager
+object to load ontologies. Additionally this class pre-computes forward
+and reverse closures and stores this infomation, along with ontologies,
+within the object.
+
+Author: Patrick Osterhaus   s-osterh
+'''import Ontology
 import DAG
 
 class OntologyManager(object):

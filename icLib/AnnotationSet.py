@@ -63,7 +63,7 @@ class AnnotationSet:
     def getAnnotsByTerm(self,term=None):
         if term==None:
             return self.annotsByID
-        if type(term)==types.StringType:
+        if type(term)==types.StringType and term in self.ontology.id2term:
             term=self.ontology.getTerm(term)
         return self.annotsByID.get(term,[])
         #ret=self.annotsByID.get(term,[])

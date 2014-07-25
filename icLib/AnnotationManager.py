@@ -30,17 +30,17 @@ class AnnotationManager(object):
         parse(self.rawAnns,self.annotationNames,self.annotationSets,self.simConPar,self.ontMan)
 
     def getSet(self,name="None"):
-        try:
+        if name in self.annotationSets:
             return self.annotationSets[name]
-        except KeyError:
-            try:
+        else:
+            if len(self.simConPar.sectionsWith("name",name))>0:
                 with open(self.simConPar.getConfigObj(self.simConPar.sectionsWith("name",name)[0])["filename"],'r') as f:
                     self.rawAnns.append(f.read().splitlines())
                 print self.simConPar.sectionsWith("name",name)
                 self.annotationNames.append(self.simConPar.getConfigObj(self.simConPar.sectionsWith("name",name)[0])["name"])
                 parse(self.rawAnns,self.annotationNames,self.annotationSets,self.simConPar,self.ontMan)
                 return self.annotationSets[name]
-            except IndexError:
+            else:
                 return self.annotationNames 
 
 def parse(rawAnnotations,annNames,annSets,simConPar,ontMan):

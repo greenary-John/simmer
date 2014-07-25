@@ -23,9 +23,9 @@ class OntologyManager(object):
             self.onts[ont].reverseClosure=DAG.Closure().go(self.onts[ont],None,True)
 
     def getOntology(self,name=None):
-        try:
+        if name in self.onts:
             return self.onts[name]
-        except KeyError:
+        else:
             names=[]
             for namespace in self.onts:
                 names.append(namespace)

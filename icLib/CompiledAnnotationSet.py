@@ -43,13 +43,10 @@ class CompiledAnnotationSet:
         for x in self.annset.getAnnotatedTerms():
                 temp=set([])
                 for y in self.annset.ontology.closure[x]:
-                    try:
+                    if not isinstance(self.annset.getAnnotsByTerm,list):
                         for z in self.annset.getAnnotsByTerm(y):
-                            try:
                                 temp.add(z.annObj)
-                            except KeyError:
-                                continue
-                    except TypeError:
+                    else:
                         continue
                 self.term2obj[x]=temp
 

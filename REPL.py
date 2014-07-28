@@ -125,13 +125,14 @@ Please specify which semantic similarity measure you'd like to use.
                     if user_choice4 not in ["resnikBMA","jaccardExt","gicExt"]:
                         print "\nCannot interpret input. Please try again."
                         continue
-                    results=SimmerEngine.requestSubmissionPC(choices[0],choices[1],user_choice,user_choice2,user_choice3,user_choice4,25,logger,labeler,ontman,annman)
+                    user_choice5=int(raw_input("How many results should be returned?\n>\t"))
+                    results=SimmerEngine.requestSubmissionPC(choices[0],choices[1],user_choice,user_choice2,user_choice3,user_choice4,user_choice5,logger,labeler,ontman,annman)
                     if isinstance(user_choice2,list):
-                        print "\n",user_choice3,":Top 25",user_choice4,"results for",[x.__str__() for x in user_choice2].__str__()
-                        logger.debug("".join((user_choice3,"Top 25",user_choice4,"results for ",[x.__str__() for x in user_choice2].__str__())))
+                        print "\n",user_choice3,":Top",str(user_choice5),user_choice4,[x.__str__() for x in user_choice2].__str__()
+                        logger.debug("".join((user_choice3,":Top",str(user_choice5),user_choice4,"results for ",[x.__str__() for x in user_choice2].__str__())))
                     else:
-                        print "\n",user_choice3,":Top 25",user_choice4,"results for",labeler.get(labelType,user_choice2)
-                        logger.debug("".join((user_choice3,"Top 25",user_choice4,"for ",labeler.get(labelType,user_choice2))))
+                        print "\n",user_choice3,":Top",str(user_choice5),user_choice4,"results for",labeler.get(labelType,user_choice2)
+                        logger.debug("".join((user_choice3,":Top",str(user_choice5),user_choice4,"for ",labeler.get(labelType,user_choice2))))
                     for x in sorted(results,key=lambda entry:results[entry],reverse=True):
                         print labeler.get(labelType,x.id),"\t\t",results[x]
                         logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(results[x]))))

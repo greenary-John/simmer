@@ -17,52 +17,67 @@ from icLib import CompiledAnnotationSet
 from icLib import AnnotatedObject
 from icLib import Logger
 from icLib import Labeler
+from icLib import SimmerEngine
 
 #NOTE: The loops contained within main may be better wrapped in a function
 #and handled that way. My only concern with that is I don't know how to
 #exit the program while not in the main method.
+def main2():
+    annSetChoice=raw_input("Which annSet would you like?\n>\t")
+    evCodesChoice=raw_input("Which evCodes should be removed?\n>\t").replace(" ,",",").replace(" ",",")
+    searchType=raw_input("Search by object or list?\n>\t")
+    searchInput=raw_input("Search what?\n>\t")
+    namespaceChoice=raw_input("Which namespace should be used?\n>\t")
+    methodChoice=raw_input("Which method should be used?\n>\t")
+    length=int(raw_input("How many results should be returned?\n>\t"))
+    results=SimmerEngine.requestSubmissionRaw(annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length)
+    if searchType=="list":
+        print "\n",namespaceChoice,": Top",length," ",methodChoice," results for",[x.__str__() for x in searchInput].__str__()
+    else:
+        print "\n",namespaceChoice,": Top",length," ",methodChoice," results for",searchInput
+    for x in sorted(results,key=lambda entry:results[entry],reverse=True):
+        print x,"\t\t",results[x]
 
 def main():
     menu=['''
 What would you like to do? (Enter "h" for help)
-''','''
+>   ''','''
 Which would you like to search with?
 "1"             =   search by object
 "2"             =   search by set of terms
 "restart"       =   start over (new CompiledAnnotationSet)
 "quit"          =   quit the loop
-''','''
+>   ''','''
 Please name the object you'd like to search by.
 Ex:     "MGI:87961"
 Ex:     "MGI:3526657"
-''','''
+>   ''','''
 Please type the list of terms, separated by spaces or commas, you'd like to search by.
 Ex:     "GO:0008219,GO:0008150"
-''','''
+>   ''','''
 Please specify which namespace you'd like to compare the query in:
 "1"            =   "biological_process"
 "2"            =   "molecular_function"
 "3"            =   "cellular_component"
-''','''
+>   ''','''
 "e q"           =   display current evidenceCode exclusion list
 "a q"           =   display available annotation sets
 "o q"           =   display available ontologies
 "c"             =   interrogate config file
 
 "a s"           =   select from available annotation sets
-"e c"           =   clear evidence code exclusion list
-"e a"           =   specify evidence codes to add to exclusion list
+"e a"           =   specify evidence codes to exclude
 
 "s"             =   use the search program
 "quit"          =   quit the loop
-''','''
+>   ''','''
 Please specify which semantic similarity measure you'd like to use.
 "1"             =   Resnik Best Match Average
 "2"             =   Jaccard Extended
 "3"             =   GIC Extended
-''']
+>   ''']
+    print "Pre-Computation I..."
     logger=Logger.Logger()
-    print "Precomputing..."
     cm=ConfigManager.ConfigManager(setConfigOptions)
     simmercon=cm.readConfig()
     #readConfig() returns a SimmerConfigParser so simmercon is a SimmerConfigParser
@@ -73,17 +88,15 @@ Please specify which semantic similarity measure you'd like to use.
         user_choice=raw_input(menu[0])
         while user_choice!="s":
             if user_choice=="quit":
-                user_choice=raw_input('Are you sure? (Type "quit" to quit; otherwise use another command.)\n')
+                user_choice=raw_input('Are you sure? (Type "quit" to quit; otherwise use another command.)\n>\t')
                 if user_choice=="quit":
                     quit()
-            print "\n",choiceProcessing(menu[5],user_choice,ontman,annman,cm),"\n"
+            print "\n",choiceProcessing(menu[5],user_choice,cm),"\n"
             user_choice=raw_input(menu[0])
-        print "Building CompiledAnnotationSet (paying overhead)."
-        cas=CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annman.annotationSets[choices[0]],list(choices[1]),ontman)
         while True:
             user_choice=raw_input(menu[1]).replace("1","object").replace("2","list")
             if user_choice=="quit":
-                user_choice=raw_input('Are you sure? (Type "quit" to quit; otherwise type anything else.)\n')
+                user_choice=raw_input('Are you sure? (Type "quit" to quit; otherwise type anything else.)\n>\t')
                 if user_choice=="quit":
                     quit()
                 else:
@@ -91,11 +104,9 @@ Please specify which semantic similarity measure you'd like to use.
             elif user_choice=="restart":
                 break
             elif user_choice=="object":
-                user_choice2=AnnotatedObject.AnnotatedObject.getAnnotatedObj(raw_input(menu[2]))
+                user_choice2=raw_input(menu[2])
             elif user_choice=="list":
-                user_choice2=[]
-                for x in raw_input(menu[3]).replace(" ",",").split(","):
-                    user_choice2.append(cas.annset.ontology.getTerm(x))
+                user_choice2=raw_input(menu[3])
             else:
                 print "\nCannot interpret input. Please try again."
                 continue
@@ -110,52 +121,23 @@ Please specify which semantic similarity measure you'd like to use.
                         print "\nCannot interpret input. Please try again."
                         continue
                 while True:
-                    user_choice4=raw_input(menu[6])
-                    if user_choice4 not in ["1","2","3"]:
+                    user_choice4=raw_input(menu[6]).replace("1","resnikBMA").replace("2","jaccardExt").replace("3","gicExt")
+                    if user_choice4 not in ["resnikBMA","jaccardExt","gicExt"]:
                         print "\nCannot interpret input. Please try again."
                         continue
-                    
-                    if user_choice4=="1":
-                        rBMA=cas.resnikBMA(user_choice,user_choice2,user_choice3,25)
-                        if isinstance(user_choice2,list):
-                            print "\n",user_choice3,":Top 25 Resnik BMA results for",[x.__str__() for x in user_choice2].__str__()
-                            logger.debug("".join((user_choice3,"Top 25 Resnik BMA results for ",[x.__str__() for x in user_choice2].__str__())))
-                        else:
-                            print "\n",user_choice3,":Top 25 Resnik BMA results for",labeler.get(labelType,user_choice2.id)
-                            logger.debug("".join((user_choice3,"Top 25 Resnik BMA results for ",labeler.get(labelType,user_choice2.id))))
-                        for x in sorted(rBMA,key=lambda entry:rBMA[entry],reverse=True):
-                            print labeler.get(labelType,x.id),"\t\t",rBMA[x]
-                            logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(rBMA[x]))))
-                        print "\n"," ".join([x.id for x in sorted(rBMA,key=lambda entry:rBMA[entry],reverse=True)])
-                        
-
-                    if user_choice4=="2":
-                        jExt=cas.jaccardExt(user_choice,user_choice2,user_choice3,25)
-                        if isinstance(user_choice2,list):
-                            print "\n",user_choice3,":Top 25 Jaccard Extended results for",[x.__str__() for x in user_choice2].__str__()
-                            logger.debug("".join((user_choice3,"Top 25 Jaccard Extended results for ",[x.__str__() for x in user_choice2].__str__())))
-                        else:
-                            print "\n",user_choice3,":Top 25 Jaccard Extended results for",labeler.get(labelType,user_choice2.id)
-                            logger.debug("".join((user_choice3,"Top 25 Jaccard Extended results for ",labeler.get(labelType,user_choice2.id))))
-                        for x in sorted(jExt,key=lambda entry:jExt[entry],reverse=True):
-                            print labeler.get(labelType,x.id),"\t\t",jExt[x]
-                            logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(jExt[x]))))
-                        print "\n"," ".join([x.id for x in sorted(jExt,key=lambda entry:jExt[entry],reverse=True)])
-
-                    if user_choice4=="3":
-                        gExt=cas.gicExt(user_choice,user_choice2,user_choice3,25)
-                        if isinstance(user_choice2,list):
-                            print "\n",user_choice3,":Top 25 GIC Extended results for",[x.__str__() for x in user_choice2].__str__()
-                            logger.debug("".join((user_choice3,"Top 25 GIC Extended results for ",[x.__str__() for x in user_choice2].__str__())))
-                        else:
-                            print "\n",user_choice3,":Top 25 GIC Extended results for",labeler.get(labelType,user_choice2.id)
-                            logger.debug("".join((user_choice3,"Top 25 GIC Extended results for ",labeler.get(labelType,user_choice2.id))))
-                        for x in sorted(gExt,key=lambda entry:gExt[entry],reverse=True):
-                            print labeler.get(labelType,x.id),"\t\t",gExt[x]
-                            logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(gExt[x]))))
-                        print "\n"," ".join([x.id for x in sorted(gExt,key=lambda entry:gExt[entry],reverse=True)])
+                    results=SimmerEngine.requestSubmissionPC(choices[0],choices[1],user_choice,user_choice2,user_choice3,user_choice4,25,logger,labeler,ontman,annman)
+                    if isinstance(user_choice2,list):
+                        print "\n",user_choice3,":Top 25",user_choice4,"results for",[x.__str__() for x in user_choice2].__str__()
+                        logger.debug("".join((user_choice3,"Top 25",user_choice4,"results for ",[x.__str__() for x in user_choice2].__str__())))
+                    else:
+                        print "\n",user_choice3,":Top 25",user_choice4,"results for",labeler.get(labelType,user_choice2)
+                        logger.debug("".join((user_choice3,"Top 25",user_choice4,"for ",labeler.get(labelType,user_choice2))))
+                    for x in sorted(results,key=lambda entry:results[entry],reverse=True):
+                        print labeler.get(labelType,x.id),"\t\t",results[x]
+                        logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(results[x]))))
+                    print "\n"," ".join([x.id for x in sorted(results,key=lambda entry:results[entry],reverse=True)])
                             
-                    if raw_input('\nWould you like to search again with a new semantic similarity measure?\n"y"\t\t=\tSearch again\nanything else\t=\tDo not search again\n')=="y":
+                    if raw_input('\nWould you like to search again with a new semantic similarity measure?\n"y"\t\t=\tSearch again\nanything else\t=\tDo not search again\n>\t')=="y":
                         continue
                     break
                 break
@@ -163,26 +145,23 @@ Please specify which semantic similarity measure you'd like to use.
 def setConfigOptions(op):
     op.add_option("-l", "--length", metavar="NUM", dest="n", type="int", help="A number.")
     
-def choiceProcessing(menu,choice,ontman,annman,conman):
+def choiceProcessing(menu,choice,conman):
     if choice=="h":
         return menu
     elif choice=="e q":
-        return choices[1]
+        return [x for x in choices[1].split(",")]
     elif choice=="a q":
-        return annman.getSet()
+        return conman.cp.sectionsWith("type","annotations")
     elif choice=="o q":
-        return ontman.getOntology()
+        return conman.cp.sectionsWith("type","ontology")
     elif choice=="c":
         return configDetails(conman)
     elif choice=="a s":
-        print annman.getSet()
+        print conman.cp.sectionsWith("type","annotations")
         choices[0]=raw_input("Which annotationSet do you want to use?\n")
         return choices[0]
-    elif choice=="e c":
-        choices[1]=set([])
-        return choices[1]
     elif choice=="e a":
-        choices[1]|=set(raw_input("Which evidence codes would you like to append to the exclusion list?\n(Please enter as comma or space delimited list.)\n").replace(" ",",").split(","))
+        choices[1]=raw_input("Which evidence codes would you like to exclude?\n(Please enter as comma or space delimited list.)\n").replace(" ,",",").replace(" ",",")
         return choices[1]
     elif choice=="s":
         pass
@@ -195,7 +174,5 @@ def configDetails(conman):
     return conman.cp.getConfigObj(choiceOptionInquiry)
 
 if __name__=='__main__':
-    choices=["geneGO",set(["ND"])]
+    choices=["geneGO","ND"]
     main()
-
-

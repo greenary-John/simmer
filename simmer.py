@@ -17,46 +17,21 @@ from icLib import CompiledAnnotationSet
 from icLib import AnnotatedObject
 from icLib import Logger
 from icLib import Labeler
+from icLib import SimmerEngine
 
 def main():
+    print "Pre-Computation I..."
     logger=Logger.Logger()
-    logger.debug("\tStart!\t\tBeginning Precomputation.")
+    logger.debug("\tStart!\t\tBeginning Precomputation I.")
     cm=ConfigManager.ConfigManager(setConfigOptions)
     simmercon=cm.readConfig()
     #readConfig() returns a SimmerConfigParser so simmercon is a SimmerConfigParser
     labeler=Labeler.Labeler(simmercon)
     ontman=OntologyManager.OntologyManager(simmercon)
     annman=AnnotationManager.AnnotationManager(simmercon,ontman)
-    
-    logger.debug("\tNow building CompiledAnnotationSet")
-    '''
-    test=CompiledAnnotationSet.CompiledAnnotationSet(annman.annotationSets["geneMP"],[],ontman)
 
-    rBMA=test.resnikBMA("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:3526657"),"MPheno.ontology",25)
-    print '\nMP:ResnikBMA:MGI:3526657'    
-    logger.debug('\nMP:ResnikBMA:MGI:3526657')
-    for x in sorted(rBMA,key=lambda entry:rBMA[entry],reverse=True):
-        print x,"\t\t",rBMA[x]
-        logger.debug("".join(("\t",x.__str__(),"\t\t",str(rBMA[x]))))
-
-    jExt=test.jaccardExt("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:3526657"),"MPheno.ontology",25)
-    print '\nMP:JaccardExt:MGI:3526657'
-    logger.debug('\nMP:JaccardExt:MGI:3526657')
-    for x in sorted(jExt,key=lambda entry:jExt[entry],reverse=True):
-        print x,"\t\t",jExt[x]
-        logger.debug("".join(("\t",x.__str__(),"\t\t",str(jExt[x]))))
-    
-    gExt=test.gicExt("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:3526657"),"MPheno.ontology",25)
-    print '\nMP:gicExt:MGI:3526657'
-    logger.debug('\nMP:gicExt:MGI:3526657)')
-    for x in sorted(gExt,key=lambda entry:gExt[entry],reverse=True):
-        print x,"\t\t",gExt[x]
-        logger.debug("".join(("\t",x.__str__(),"\t\t",str(gExt[x]))))
-    '''
-    
-    test=CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annman.annotationSets["geneGO"],["ND"],ontman)
     labelType="gene"
-    rBMA=test.resnikBMA("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:87961"),"biological_process",25)
+    rBMA=SimmerEngine.requestSubmissionPC("geneGO","ND","object","MGI:87961","biological_process","resnikBMA",25,logger,labeler,ontman,annman)
     print '\nBP:ResnikBMA:MGI:87961'    
     logger.debug('\nBP:ResnikBMA:MGI:87961')
     for x in sorted(rBMA,key=lambda entry:rBMA[entry],reverse=True):
@@ -64,7 +39,7 @@ def main():
         logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(rBMA[x]))))
     print "\n"," ".join([x.id for x in sorted(rBMA,key=lambda entry:rBMA[entry],reverse=True)])
 
-    jExt=test.jaccardExt("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:87961"),"biological_process",25)
+    jExt=rBMA=SimmerEngine.requestSubmissionPC("geneGO","ND","object","MGI:87961","biological_process","jaccardExt",25,logger,labeler,ontman,annman)
     print '\nBP:JaccardExt:MGI:87961'
     logger.debug('\nBP:JaccardExt:MGI:87961')
     for x in sorted(jExt,key=lambda entry:jExt[entry],reverse=True):
@@ -72,7 +47,7 @@ def main():
         logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(jExt[x]))))
     print "\n"," ".join([x.id for x in sorted(jExt,key=lambda entry:jExt[entry],reverse=True)])
     
-    gExt=test.gicExt("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:87961"),"biological_process",25)
+    gExt=rBMA=SimmerEngine.requestSubmissionPC("geneGO","ND","object","MGI:87961","biological_process","gicExt",25,logger,labeler,ontman,annman)
     print '\nBP:gicExt:MGI:87961'
     logger.debug('\nBP:gicExt:MGI:87961)')
     for x in sorted(gExt,key=lambda entry:gExt[entry],reverse=True):

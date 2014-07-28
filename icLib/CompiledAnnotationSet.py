@@ -24,6 +24,7 @@ class CompiledAnnotationSet:
         if (AnnSet,frozenset(evCodes),ontman) in cls.knownCAS:
             return cls.knownCAS[(AnnSet,frozenset(evCodes),ontman)]
         else:
+            print "Pre-Computation II (Building CompiledAnnotationSet)..."
             newCAS=CompiledAnnotationSet(AnnSet,frozenset(evCodes),ontman)
             return newCAS
     

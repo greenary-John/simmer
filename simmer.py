@@ -54,7 +54,7 @@ def main():
         logger.debug("".join(("\t",x.__str__(),"\t\t",str(gExt[x]))))
     '''
     
-    test=CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annman.annotationSets["geneGO"],["ISS","ISA","ISO","ISM","IGC","IBA","IBD","IKR","IRD","RCA"],ontman)
+    test=CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annman.annotationSets["geneGO"],["ND"],ontman)
     labelType="gene"
     rBMA=test.resnikBMA("object",AnnotatedObject.AnnotatedObject.getAnnotatedObj("MGI:87961"),"biological_process",25)
     print '\nBP:ResnikBMA:MGI:87961'    

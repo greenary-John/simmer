@@ -22,7 +22,7 @@ from icLib import Labeler
 
 #NOTE:It is much better in REPL to use requestSubmissionPC so that each query
 #does not require a new Pre-Computation I step
-def requestSubmissionPC(annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,logger,labeler,ontman,annman,jason=False):
+def requestSubmissionPC(annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,logger,labeler,ontman,annman,jason="False"):
     #annSetChoice   =   string specifying desired AnnSet (e.g., 'geneGO' or 'genotypeMP')
     #evCodesChoice  =   string specifying desired evCodes to remove (e.g., 'ND,ISO,ISS')
     if searchType not in ["object","list"]:

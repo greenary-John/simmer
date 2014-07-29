@@ -94,6 +94,7 @@ Please specify which semantic similarity measure you'd like to use.
             print "\n",choiceProcessing(menu[5],user_choice,cm),"\n"
             user_choice=raw_input(menu[0])
         while True:
+            cas123=CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annman.annotationSets[choices[0]],list(set(choices[1].split(","))),ontman)
             user_choice=raw_input(menu[1]).replace("1","object").replace("2","list")
             if user_choice=="quit":
                 user_choice=raw_input('Are you sure? (Type "quit" to quit; otherwise type anything else.)\n>\t')

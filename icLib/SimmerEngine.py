@@ -8,6 +8,7 @@ Author: Patrick Osterhaus   s-osterh
 import sys
 import os
 import ConfigParser
+import json
 
 from icLib import Ontology
 from icLib import DAG
@@ -21,7 +22,7 @@ from icLib import Labeler
 
 #NOTE:It is much better in REPL to use requestSubmissionPC so that each query
 #does not require a new Pre-Computation I step
-def requestSubmissionPC(annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,logger,labeler,ontman,annman):
+def requestSubmissionPC(annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,logger,labeler,ontman,annman,jason=False):
     #annSetChoice   =   string specifying desired AnnSet (e.g., 'geneGO' or 'genotypeMP')
     #evCodesChoice  =   string specifying desired evCodes to remove (e.g., 'ND,ISO,ISS')
     if searchType not in ["object","list"]:
@@ -40,13 +41,26 @@ def requestSubmissionPC(annSetChoice,evCodesChoice,searchType,searchInput,namesp
     if searchType=="list":
         query=[cas.annset.ontology.getTerm(x)for x in searchInput.replace(" ,",",").replace(" ",",").split(",")]
     if methodChoice=="resnikBMA":
-        return cas.resnikBMA(searchType,query,namespaceChoice,length)
+        ret=cas.resnikBMA(searchType,query,namespaceChoice,length)
     if methodChoice=="jaccardExt":
-        return cas.jaccardExt(searchType,query,namespaceChoice,length)
+        ret=cas.jaccardExt(searchType,query,namespaceChoice,length)
     if methodChoice=="gicExt":
-        return cas.gicExt(searchType,query,namespaceChoice,length)
+        ret=cas.gicExt(searchType,query,namespaceChoice,length)
+    if jason!="False":
+        retH=[{x.id:ret[x]} for x in ret]
+        retI=dict(sum([x.items()for x in retH],[]))
+        retJ={"params":{"annSetChoice":annSetChoice,
+                        "evCodesChoice":evCodesChoice,
+                        "searchType":searchType,
+                        "searchInput":searchInput,
+                        "namespaceChoice":namespaceChoice,
+                        "methodChoice":methodChoice,
+                        "length":length},
+              "results":retI}
+        return json.dumps(retJ)
+    else:return ret
 
-def requestSubmissionRaw(annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length):
+def requestSubmissionRaw(annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,jason=False):
     #annSetChoice   =   string specifying desired AnnSet (e.g., 'geneGO' or 'genotypeMP')
     #evCodesChoice  =   string specifying desired evCodes to remove (e.g., 'ND,ISO,ISS')
     if searchType not in ["object","list"]:
@@ -73,11 +87,16 @@ def requestSubmissionRaw(annSetChoice,evCodesChoice,searchType,searchInput,names
     if searchType=="list":
         query=[cas.annset.ontology.getTerm(x)for x in searchInput.replace(" ,",",").replace(" ",",").split(",")]
     if methodChoice=="resnikBMA":
-        return cas.resnikBMA(searchType,query,namespaceChoice,length)
+        ret=cas.resnikBMA(searchType,query,namespaceChoice,length)
     if methodChoice=="jaccardExt":
-        return cas.jaccardExt(searchType,query,namespaceChoice,length)
+        ret=cas.jaccardExt(searchType,query,namespaceChoice,length)
     if methodChoice=="gicExt":
-        return cas.gicExt(searchType,query,namespaceChoice,length)
+        ret=cas.gicExt(searchType,query,namespaceChoice,length)
+    if jason!=False:
+        retI=[{x.id:ret[x]} for x in ret]
+        retJ=dict(sum([x.items()for x in retI],[]))
+        return json.dumps(retJ)
+    else:return ret
 
 def setConfigOptions(op):
     op.add_option("-l", "--length", metavar="NUM", dest="n", type="int", help="A number.")

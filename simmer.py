@@ -21,7 +21,6 @@ from icLib import Labeler
 from icLib import SimmerEngine
 
 def main():
-    global simmercon
     print "Pre-Computation I..."
     logger=Logger.Logger()
     logger.debug("\tStart!\t\tBeginning Precomputation I.")
@@ -43,16 +42,19 @@ def main():
     namespaceChoice=simmercon.get("CmdLineOpts","namespaceChoice")
     methodChoice=simmercon.get("CmdLineOpts","methodChoice")
     length=int(simmercon.get("CmdLineOpts","length"))
+    jason=simmercon.get("CmdLineOpts","jason")
 
-    results=SimmerEngine.requestSubmissionPC(annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,logger,labeler,ontman,annman)
-    
-    print "\n",str(length),"results for:",namespaceChoice,":",methodChoice,":",searchInput
-    logger.debug("".join(("\n",str(length),"results for:",namespaceChoice,":",methodChoice,":",searchInput)))
-    for x in sorted(results,key=lambda entry:results[entry],reverse=True):
-        print labeler.get(labelType,x.id),"\t\t",results[x]
-        logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(results[x]))))
-    print "\n"," ".join([x.id for x in sorted(results,key=lambda entry:results[entry],reverse=True)])
+    results=SimmerEngine.requestSubmissionPC(annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,logger,labeler,ontman,annman,jason)
 
+    if jason=="False":
+        print "\n",str(length),"results for:",namespaceChoice,":",methodChoice,":",searchInput
+        logger.debug("".join(("\n",str(length),"results for:",namespaceChoice,":",methodChoice,":",searchInput)))
+        for x in sorted(results,key=lambda entry:float(results[entry]),reverse=True):
+            print labeler.get(labelType,x.__str__()),"\t\t",results[x]
+            logger.debug("".join(("\t",labeler.get(labelType,x.__str__()),"\t\t",str(results[x]))))
+        print "\n"," ".join([x.__str__() for x in sorted(results,key=lambda entry:float(results[entry]),reverse=True)])
+    if jason!="False":
+        print "\n",results
  
 def setConfigOptions(op):
     op.add_option("-a","--annSet",metavar="STRING",dest="annSetChoice",default="geneGO",type="string",help="Desired annSet from the config file. Use section header name. (default=%default)")
@@ -62,6 +64,7 @@ def setConfigOptions(op):
     op.add_option("-n","--namespace",metavar="STRING",dest="namespaceChoice",default="biological_process",type="string",help="Specify namespace desired for use within search engine. (default=%default)")
     op.add_option("-m","--method",metavar="STRING",dest="methodChoice",default="resnikBMA",type="string",help="Specif which sem sim method is desired for use (i.e., resnikBMA, jaccardExt, or gicExt). (default=%default)")
     op.add_option("-l","--length",metavar="INT",dest="length",default="25",type="string",help="Specify the desired length of returned set of results. (default=%default)")
+    op.add_option("-j","--json",metavar="BOOLEAN",dest="jason",default="False",type="string",help="Type this command followed by 'True' if output is desired in JSON format; otherwise omit or specify 'False'. (default=%default)")
     
 if __name__=='__main__':
     main()

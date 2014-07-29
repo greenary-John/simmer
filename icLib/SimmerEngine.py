@@ -79,6 +79,7 @@ def requestSubmissionRaw(annSetChoice,evCodesChoice,searchType,searchInput,names
     annman=AnnotationManager.AnnotationManager(simmercon,ontman)
     if annSetChoice not in annman.annotationSets:
         print "Problem with parameter 1."
+
     annset=annman.annotationSets[annSetChoice]
     evCodes=list(set(evCodesChoice.split(",")))
     cas=CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annset,evCodes,ontman)
@@ -92,9 +93,17 @@ def requestSubmissionRaw(annSetChoice,evCodesChoice,searchType,searchInput,names
         ret=cas.jaccardExt(searchType,query,namespaceChoice,length)
     if methodChoice=="gicExt":
         ret=cas.gicExt(searchType,query,namespaceChoice,length)
-    if jason!=False:
-        retI=[{x.id:ret[x]} for x in ret]
-        retJ=dict(sum([x.items()for x in retI],[]))
+    if jason!="False":
+        retH=[{x.id:ret[x]} for x in ret]
+        retI=dict(sum([x.items()for x in retH],[]))
+        retJ={"params":{"annSetChoice":annSetChoice,
+                        "evCodesChoice":evCodesChoice,
+                        "searchType":searchType,
+                        "searchInput":searchInput,
+                        "namespaceChoice":namespaceChoice,
+                        "methodChoice":methodChoice,
+                        "length":length},
+              "results":retI}
         return json.dumps(retJ)
     else:return ret
 

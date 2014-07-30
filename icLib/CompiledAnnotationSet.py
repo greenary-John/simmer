@@ -24,8 +24,10 @@ class CompiledAnnotationSet:
         if (AnnSet,frozenset(evCodes),ontman) in cls.knownCAS:
             return cls.knownCAS[(AnnSet,frozenset(evCodes),ontman)]
         else:
+            start=time.time()
             print "Pre-Computation II (Building CompiledAnnotationSet)..."
             newCAS=CompiledAnnotationSet(AnnSet,frozenset(evCodes),ontman)
+            print time.time()-start
             return newCAS
     
     def __init__(self,AnnSet,evCodes,ontman):

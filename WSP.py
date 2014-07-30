@@ -20,7 +20,7 @@ from icLib import SimmerEngine
 app= Flask(__name__)
 
 #example input URL:
-#http://127.0.0.1:5000/?ecode=ND&annSet=geneGO&method=resnikBMA&qtype=object&qid=MGI:87961&length=25&nspace=biological_process
+#http://localhost:5000/?ecode=ND&annSet=geneGO&method=resnikBMA&qtype=object&qid=MGI:87961&length=25&nspace=biological_process
 
 @app.route('/')
 def hello_world():
@@ -32,7 +32,7 @@ def hello_world():
     method = request.values.get('method')
     length = int(float(request.values.get('length')))#rounds down any floats entered to nearest int
     #return json.dumps([annSetChoice,str(evCodesChoice),searchType,searchInput,namespaceChoice,method,length])
-    return SimmerEngine.requestSubmissionPC(annSetChoice,",".join([x for x in evCodesChoice]),searchType,",".join([x for x in searchInput]),namespaceChoice,method,length,labeler,logger,ontman,annman,"True")
+    return SimmerEngine.requestSubmissionPC(annSetChoice,",".join([x for x in evCodesChoice]),searchType,",".join([x for x in searchInput]),namespaceChoice,method,length,logger,labeler,ontman,annman,"True")
 
 def setConfigOptions(op):
     op.add_option("-l", "--length", metavar="NUM", dest="n", type="int", help="A number.")

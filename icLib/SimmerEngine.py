@@ -47,6 +47,10 @@ def requestSubmissionPC(annSetChoice,evCodesChoice,searchType,searchInput,namesp
         ret=cas.jaccardExt(searchType,query,namespaceChoice,length)
     if methodChoice=="gicExt":
         ret=cas.gicExt(searchType,query,namespaceChoice,length)
+    if namespaceChoice=="MPheno.ontology":
+        labelType="genotype"
+    else:
+        labelType="gene"
     if jason!="False":
         retJ={"params":{"annSetChoice":annSetChoice,
                         "evCodesChoice":evCodesChoice,
@@ -55,7 +59,7 @@ def requestSubmissionPC(annSetChoice,evCodesChoice,searchType,searchInput,namesp
                         "namespaceChoice":namespaceChoice,
                         "methodChoice":methodChoice,
                         "length":length},
-              "results":[(x[0].id,x[1]) for x in ret]}
+              "results":[(labeler.get(labelType,x[0].id),x[1]) for x in ret]}
         return json.dumps(retJ)
     else:return ret
 
@@ -92,6 +96,10 @@ def requestSubmissionRaw(annSetChoice,evCodesChoice,searchType,searchInput,names
         ret=cas.jaccardExt(searchType,query,namespaceChoice,length)
     if methodChoice=="gicExt":
         ret=cas.gicExt(searchType,query,namespaceChoice,length)
+    if namespaceChoice=="MPheno.ontology":
+        labelType="genotype"
+    else:
+        labelType="gene"
     if jason!="False":
         retJ={"params":{"annSetChoice":annSetChoice,
                         "evCodesChoice":evCodesChoice,
@@ -100,7 +108,7 @@ def requestSubmissionRaw(annSetChoice,evCodesChoice,searchType,searchInput,names
                         "namespaceChoice":namespaceChoice,
                         "methodChoice":methodChoice,
                         "length":length},
-              "results":[(x[0].id,x[1]) for x in ret]}
+              "results":[(labeler.get(labelType,x[0].id),x[1]) for x in ret]}
         return json.dumps(retJ)
     else:return ret
 

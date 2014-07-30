@@ -23,13 +23,13 @@ from icLib import SimmerEngine
 #and handled that way. My only concern with that is I don't know how to
 #exit the program while not in the main method.
 def main2():
-    annSetChoice=raw_input("Which annSet would you like?\n>\t")
-    evCodesChoice=raw_input("Which evCodes should be removed?\n>\t").replace(" ,",",").replace(" ",",")
-    searchType=raw_input("Search by object or list?\n>\t")
-    searchInput=raw_input("Search what?\n>\t")
-    namespaceChoice=raw_input("Which namespace should be used?\n>\t")
-    methodChoice=raw_input("Which method should be used?\n>\t")
-    length=int(raw_input("How many results should be returned?\n>\t"))
+    annSetChoice=raw_input("Which annSet would you like?\n> ")
+    evCodesChoice=raw_input("Which evCodes should be removed?\n>    ").replace(" ,",",").replace(" ",",")
+    searchType=raw_input("Search by object or list?\n>  ")
+    searchInput=raw_input("Search what?\n>  ")
+    namespaceChoice=raw_input("Which namespace should be used?\n>   ")
+    methodChoice=raw_input("Which method should be used?\n> ")
+    length=int(raw_input("How many results should be returned?\n>   "))
     results=SimmerEngine.requestSubmissionRaw(annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length)
     if searchType=="list":
         print "\n",namespaceChoice,": Top",length," ",methodChoice," results for",[x.__str__() for x in searchInput].__str__()
@@ -41,41 +41,41 @@ def main2():
 def main():
     menu=['''
 What would you like to do? (Enter "h" for help)
->   ''','''
+>\t''','''
 Which would you like to search with?
-"1"             =   search by object
-"2"             =   search by set of terms
-"restart"       =   start over (new CompiledAnnotationSet)
-"quit"          =   quit the loop
->   ''','''
+"1"\t\t\t\t=\tsearch by object
+"2"\t\t\t\t=\tsearch by set of terms
+"restart"\t\t\t=\tstart over (new CompiledAnnotationSet)
+"quit"\t\t\t\t=\tquit the loop
+>\t''','''
 Please name the object you'd like to search by.
-Ex:     "MGI:87961"
-Ex:     "MGI:3526657"
->   ''','''
+Ex:\t\t"MGI:87961"
+Ex:\t\t"MGI:3526657"
+>\t''','''
 Please type the list of terms, separated by spaces or commas, you'd like to search by.
-Ex:     "GO:0008219,GO:0008150"
->   ''','''
+Ex:\t\t"GO:0008219,GO:0008150"
+>\t''','''
 Please specify which namespace you'd like to compare the query in:
-"1"            =   "biological_process"
-"2"            =   "molecular_function"
-"3"            =   "cellular_component"
->   ''','''
-"e q"           =   display current evidenceCode exclusion list
-"a q"           =   display available annotation sets
-"o q"           =   display available ontologies
-"c"             =   interrogate config file
+"1"\t\t\t\t=\t"biological_process"
+"2"\t\t\t\t=\t"molecular_function"
+"3"\t\t\t\t=\t"cellular_component"
+>\t''','''
+"e q"\t\t\t=\tdisplay current evidenceCode exclusion list
+"a q"\t\t\t=\tdisplay available annotation sets
+"o q"\t\t\t=\tdisplay available ontologies
+"c"\t\t\t\t=\tinterrogate config file
 
-"a s"           =   select from available annotation sets
-"e a"           =   specify evidence codes to exclude
+"a s"\t\t\t=\tselect from available annotation sets
+"e a"\t\t\t=\tspecify evidence codes to exclude
 
-"s"             =   use the search program
-"quit"          =   quit the loop
->   ''','''
+"s"\t\t\t\t=\tuse the search program
+"quit"\t\t\t=\tquit the loop
+>\t''','''
 Please specify which semantic similarity measure you'd like to use.
-"1"             =   Resnik Best Match Average
-"2"             =   Jaccard Extended
-"3"             =   GIC Extended
->   ''']
+"1"\t\t\t\t=\tResnik Best Match Average
+"2"\t\t\t\t=\tJaccard Extended
+"3"\t\t\t\t=\tGIC Extended
+>\t''']
     print "Pre-Computation I..."
     logger=Logger.Logger()
     cm=ConfigManager.ConfigManager(setConfigOptions)
@@ -93,8 +93,7 @@ Please specify which semantic similarity measure you'd like to use.
                     quit()
             print "\n",choiceProcessing(menu[5],user_choice,cm),"\n"
             user_choice=raw_input(menu[0])
-        while True:
-            cas123=CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annman.annotationSets[choices[0]],list(set(choices[1].split(","))),ontman)
+        while True:            
             user_choice=raw_input(menu[1]).replace("1","object").replace("2","list")
             if user_choice=="quit":
                 user_choice=raw_input('Are you sure? (Type "quit" to quit; otherwise type anything else.)\n>\t')
@@ -134,10 +133,10 @@ Please specify which semantic similarity measure you'd like to use.
                     else:
                         print "\n",user_choice3,":Top",str(user_choice5),user_choice4,"results for",labeler.get(labelType,user_choice2)
                         logger.debug("".join((user_choice3,":Top",str(user_choice5),user_choice4,"for ",labeler.get(labelType,user_choice2))))
-                    for x in sorted(results,key=lambda entry:results[entry],reverse=True):
-                        print labeler.get(labelType,x.id),"\t\t",results[x]
-                        logger.debug("".join(("\t",labeler.get(labelType,x.id),"\t\t",str(results[x]))))
-                    print "\n"," ".join([x.id for x in sorted(results,key=lambda entry:results[entry],reverse=True)])
+                    for x in results:
+                        print labeler.get(labelType,x[0].id),"\t\t",x[1]
+                        logger.debug("".join((" ",labeler.get(labelType,x[0].id),"\t\t",str(x[1]))))
+                    print "\n"," ".join([x[0].id for x in results])
                             
                     if raw_input('\nWould you like to search again with a new semantic similarity measure?\n"y"\t\t=\tSearch again\nanything else\t=\tDo not search again\n>\t')=="y":
                         continue
@@ -160,10 +159,10 @@ def choiceProcessing(menu,choice,conman):
         return configDetails(conman)
     elif choice=="a s":
         print conman.cp.sectionsWith("type","annotations")
-        choices[0]=raw_input("Which annotationSet do you want to use?\n")
+        choices[0]=raw_input("Which annotationSet do you want to use?\n>\t")
         return choices[0]
     elif choice=="e a":
-        choices[1]=raw_input("Which evidence codes would you like to exclude?\n(Please enter as comma or space delimited list.)\n").replace(" ,",",").replace(" ",",")
+        choices[1]=raw_input("Which evidence codes would you like to exclude?\n(Please enter as comma or space delimited list.)\n>\t").replace(" ,",",").replace(" ",",")
         return choices[1]
     elif choice=="s":
         pass
@@ -172,7 +171,7 @@ def choiceProcessing(menu,choice,conman):
         
 def configDetails(conman):
     print conman.cp.sections(),"\n"
-    choiceOptionInquiry=raw_input("\nWhich section would you like? (Hit enter for all.)\n")
+    choiceOptionInquiry=raw_input("\nWhich section would you like? (Hit enter for all.)\n>\t")
     return conman.cp.getConfigObj(choiceOptionInquiry)
 
 if __name__=='__main__':

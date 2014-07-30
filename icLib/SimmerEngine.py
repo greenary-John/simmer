@@ -40,6 +40,7 @@ def requestSubmissionPC(annSetChoice,evCodesChoice,searchType,searchInput,namesp
         query=AnnotatedObject.AnnotatedObject.getAnnotatedObj(searchInput)
     if searchType=="list":
         query=[cas.annset.ontology.getTerm(x)for x in searchInput.replace(" ,",",").replace(" ",",").split(",")]
+    print "Running Semantic Similarity Measure..."
     if methodChoice=="resnikBMA":
         ret=cas.resnikBMA(searchType,query,namespaceChoice,length)
     if methodChoice=="jaccardExt":
@@ -47,8 +48,6 @@ def requestSubmissionPC(annSetChoice,evCodesChoice,searchType,searchInput,namesp
     if methodChoice=="gicExt":
         ret=cas.gicExt(searchType,query,namespaceChoice,length)
     if jason!="False":
-        retH=[{x.id:ret[x]} for x in ret]
-        retI=dict(sum([x.items()for x in retH],[]))
         retJ={"params":{"annSetChoice":annSetChoice,
                         "evCodesChoice":evCodesChoice,
                         "searchType":searchType,
@@ -56,7 +55,7 @@ def requestSubmissionPC(annSetChoice,evCodesChoice,searchType,searchInput,namesp
                         "namespaceChoice":namespaceChoice,
                         "methodChoice":methodChoice,
                         "length":length},
-              "results":retI}
+              "results":[(x[0].id,x[1]) for x in ret]}
         return json.dumps(retJ)
     else:return ret
 
@@ -94,8 +93,6 @@ def requestSubmissionRaw(annSetChoice,evCodesChoice,searchType,searchInput,names
     if methodChoice=="gicExt":
         ret=cas.gicExt(searchType,query,namespaceChoice,length)
     if jason!="False":
-        retH=[{x.id:ret[x]} for x in ret]
-        retI=dict(sum([x.items()for x in retH],[]))
         retJ={"params":{"annSetChoice":annSetChoice,
                         "evCodesChoice":evCodesChoice,
                         "searchType":searchType,
@@ -103,7 +100,7 @@ def requestSubmissionRaw(annSetChoice,evCodesChoice,searchType,searchInput,names
                         "namespaceChoice":namespaceChoice,
                         "methodChoice":methodChoice,
                         "length":length},
-              "results":retI}
+              "results":[(x[0].id,x[1]) for x in ret]}
         return json.dumps(retJ)
     else:return ret
 

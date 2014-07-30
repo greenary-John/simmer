@@ -115,28 +115,21 @@ class CompiledAnnotationSet:
         #eventually normalize for the maximum (identity) score to equal 1
         start=time.time()
         self.MICAcount=0
-        resultsDict={}
-        returnDict={}
-        count=0
+        resultsList=[]
         if qType=="object":
             for x in self.obj2term:
-                resultsDict[x]=self.objCompare(query,x,namespace)
+                resultsList.append((x,self.objCompare(query,x,namespace)))
         else:
             for x in self.obj2term:
-                resultsDict[x]=self.listCompare(query,x,namespace)
-        for x in sorted(resultsDict,key=lambda entry:resultsDict[entry],reverse=True):
-            if count>=length:
-                break
-            returnDict[x]=resultsDict[x]
-            count+=1
+                resultsList.append((x,self.listCompare(query,x,namespace)))
         self.logger.debug("".join(("\nFinished!\tresnikBMA\t",str(self.MICAcount)," MICA calculations\nactual runtime:\t\t",str(time.time()-start)," seconds\n")))
-        return returnDict
+        return sorted(resultsList,key=lambda x:x[1],reverse=True)[0:length]
 
     def jaccardExt(self,qType,que,namespace,length):
         start=time.time()
         resultsDict={}
         returnDict={}
-        count=0
+        resultsList=[]
         query=set([])
         if qType=="object":
             for x in self.obj2term[que]:
@@ -152,22 +145,15 @@ class CompiledAnnotationSet:
                 if y.namespace==namespace:
                     test|=self.annset.ontology.reverseClosure[y]
             if len(query|test)==0:
-                resultsDict[x]=0.0
+                resultsList.append((x,0.0))
             else:
-                resultsDict[x]=float(len(query&test))/len(query|test)
-        for x in sorted(resultsDict,key=lambda entry:resultsDict[entry],reverse=True):
-            if count>=length:
-                break
-            returnDict[x]=resultsDict[x]
-            count+=1
+                resultsList.append((x,float(len(query&test))/len(query|test)))
         self.logger.debug("".join(("\nFinished!\tjaccardExt\t",str(time.time()-start)," seconds\n")))
-        return returnDict
+        return sorted(resultsList,key=lambda x:x[1],reverse=True)[0:length]
 
     def gicExt(self,qType,que,namespace,length):
         start=time.time()
-        resultsDict={}
-        returnDict={}
-        count=0
+        resultsList=[]
         query=set([])
         if qType=="object":
             for x in self.obj2term[que]:
@@ -183,13 +169,8 @@ class CompiledAnnotationSet:
                 if y.namespace==namespace:
                     test|=self.annset.ontology.reverseClosure[y]
             if sum([self.term2IC.get(d,0)for d in query|test])==0:
-                resultsDict[x]=0.0
+                resultsList.append((x,0.0))
             else:
-                resultsDict[x]=sum([self.term2IC.get(z,0)for z in query&test])/sum([self.term2IC.get(d,0)for d in query|test])
-        for x in sorted(resultsDict,key=lambda entry:resultsDict[entry],reverse=True):
-            if count>=length:
-                break
-            returnDict[x]=resultsDict[x]
-            count+=1
+                resultsList.append((x,sum([self.term2IC.get(z,0)for z in query&test])/sum([self.term2IC.get(d,0)for d in query|test])))
         self.logger.debug("".join(("\nFinished!\tgicExt\t",str(time.time()-start)," seconds\n")))
-        return returnDict
+        return sorted(resultsList,key=lambda x:x[1],reverse=True)[0:length]

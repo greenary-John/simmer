@@ -19,10 +19,20 @@ from icLib import SimmerEngine
 
 app= Flask(__name__)
 
+#example input URL:
+#http://127.0.0.1:5000/?ecode=ND&annSet=geneGO&method=resnikBMA&qtype=object&qid=MGI:87961&length=25&nspace=biological_process
+
 @app.route('/')
 def hello_world():
-
-    return SimmerEngine.requestSubmissionPC("geneGO","ND","object","MGI:87961","biological_process","resnikBMA",25,labeler,logger,ontman,annman,"True")
+    annSetChoice = request.values.get('annSet')
+    evCodesChoice = request.values.getlist('ecode')
+    searchType  = request.values.get('qtype')
+    searchInput  = request.values.getlist('qid')
+    namespaceChoice = request.values.get('nspace')
+    method = request.values.get('method')
+    length = int(float(request.values.get('length')))#rounds down any floats entered to nearest int
+    #return json.dumps([annSetChoice,str(evCodesChoice),searchType,searchInput,namespaceChoice,method,length])
+    return SimmerEngine.requestSubmissionPC(annSetChoice,",".join([x for x in evCodesChoice]),searchType,",".join([x for x in searchInput]),namespaceChoice,method,length,labeler,logger,ontman,annman,"True")
 
 def setConfigOptions(op):
     op.add_option("-l", "--length", metavar="NUM", dest="n", type="int", help="A number.")
@@ -40,4 +50,4 @@ if __name__=='__main__':
     annman=AnnotationManager.AnnotationManager(simmercon,ontman)
     simmercon,cm=None,None
     print time.time()-start
-    app.run(debug=True)
+    app.run(debug=True,use_reloader=False)

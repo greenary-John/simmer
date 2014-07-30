@@ -20,7 +20,8 @@ from icLib import SimmerEngine
 app= Flask(__name__)
 
 #example input URL:
-#http://localhost:5000/?ecode=ND&annSet=geneGO&method=resnikBMA&qtype=object&qid=MGI:87961&length=25&nspace=biological_process
+#http://localhost:5000/?ecode=ND&annSet=geneGO&method=jaccardExt&qtype=object&qid=MGI:87961&length=25&nspace=biological_process
+#http://localhost:5000/?ecode=ND&annSet=genotypeMP&method=jaccardExt&qtype=object&qid=MGI:3526657&length=25&nspace=MPheno.ontology
 
 @app.route('/')
 def hello_world():
@@ -32,7 +33,7 @@ def hello_world():
     method = request.values.get('method')
     length = int(float(request.values.get('length')))#rounds down any floats entered to nearest int
     #return json.dumps([annSetChoice,str(evCodesChoice),searchType,searchInput,namespaceChoice,method,length])
-    return SimmerEngine.requestSubmissionPC(annSetChoice,",".join([x for x in evCodesChoice]),searchType,",".join([x for x in searchInput]),namespaceChoice,method,length,logger,labeler,ontman,annman,"True")
+    return SimmerEngine.requestSubmissionPC(annSetChoice,",".join([x for x in evCodesChoice]),searchType,",".join([x for x in searchInput]),namespaceChoice,method,length,logger,labeler,ontman,annman,"json")
 
 def setConfigOptions(op):
     op.add_option("-l", "--length", metavar="NUM", dest="n", type="int", help="A number.")
@@ -50,4 +51,6 @@ if __name__=='__main__':
     annman=AnnotationManager.AnnotationManager(simmercon,ontman)
     simmercon,cm=None,None
     print time.time()-start
+    CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annman.annotationSets["geneGO"],["ND"],ontman)
+    CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annman.annotationSets["genotypeMP"],["ND"],ontman)
     app.run(debug=True,use_reloader=False)

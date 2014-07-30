@@ -7,6 +7,7 @@ Author: Patrick Osterhaus   s-osterh
 import sys
 import os
 import ConfigParser
+import time
 
 from icLib import Ontology
 from icLib import DAG
@@ -63,12 +64,12 @@ Please specify which namespace you'd like to compare the query in:
 "e q"\t\t\t=\tdisplay current evidenceCode exclusion list
 "a q"\t\t\t=\tdisplay available annotation sets
 "o q"\t\t\t=\tdisplay available ontologies
-"c"\t\t\t\t=\tinterrogate config file
+"c"\t\t\t=\tinterrogate config file
 
 "a s"\t\t\t=\tselect from available annotation sets
 "e a"\t\t\t=\tspecify evidence codes to exclude
 
-"s"\t\t\t\t=\tuse the search program
+"s"\t\t\t=\tuse the search program
 "quit"\t\t\t=\tquit the loop
 >\t''','''
 Please specify which semantic similarity measure you'd like to use.
@@ -76,6 +77,7 @@ Please specify which semantic similarity measure you'd like to use.
 "2"\t\t\t\t=\tJaccard Extended
 "3"\t\t\t\t=\tGIC Extended
 >\t''']
+    start=time.time()
     print "Pre-Computation I..."
     logger=Logger.Logger()
     cm=ConfigManager.ConfigManager(setConfigOptions)
@@ -84,6 +86,7 @@ Please specify which semantic similarity measure you'd like to use.
     labeler=Labeler.Labeler(simmercon)
     ontman=OntologyManager.OntologyManager(simmercon)
     annman=AnnotationManager.AnnotationManager(simmercon,ontman)
+    print time.time()-start
     while True:
         user_choice=raw_input(menu[0])
         while user_choice!="s":
@@ -127,16 +130,18 @@ Please specify which semantic similarity measure you'd like to use.
                         continue
                     user_choice5=int(raw_input("How many results should be returned?\n>\t"))
                     results=SimmerEngine.requestSubmissionPC(choices[0],choices[1],user_choice,user_choice2,user_choice3,user_choice4,user_choice5,logger,labeler,ontman,annman)
-                    if isinstance(user_choice2,list):
-                        print "\n",user_choice3,":Top",str(user_choice5),user_choice4,[x.__str__() for x in user_choice2].__str__()
-                        logger.debug("".join((user_choice3,":Top",str(user_choice5),user_choice4,"results for ",[x.__str__() for x in user_choice2].__str__())))
-                    else:
-                        print "\n",user_choice3,":Top",str(user_choice5),user_choice4,"results for",labeler.get(labelType,user_choice2)
-                        logger.debug("".join((user_choice3,":Top",str(user_choice5),user_choice4,"for ",labeler.get(labelType,user_choice2))))
-                    for x in results:
-                        print labeler.get(labelType,x[0].id),"\t\t",x[1]
-                        logger.debug("".join((" ",labeler.get(labelType,x[0].id),"\t\t",str(x[1]))))
-                    print "\n"," ".join([x[0].id for x in results])
+                    #if isinstance(user_choice2,list):
+                        #print "\n",user_choice3,":Top",str(user_choice5),user_choice4,"results for",[x.__str__() for x in user_choice2].__str__()
+                        #logger.debug("".join((user_choice3,":Top",str(user_choice5),user_choice4,"results for ",[x.__str__() for x in user_choice2].__str__())))
+                    #else:
+                        #print "\n",user_choice3,":Top",str(user_choice5),user_choice4,"results for",labeler.get(labelType,user_choice2)
+                        #logger.debug("".join((user_choice3,":Top",str(user_choice5),user_choice4,"results for ",labeler.get(labelType,user_choice2))))
+                    #for x in results:
+                        #print labeler.get(labelType,x[0].id),"\t\t",x[1]
+                        #logger.debug("".join((" ",labeler.get(labelType,x[0].id),"\t\t",str(x[1]))))
+                    #print "\n"," ".join([x[0].id for x in results])
+                    print results
+                    logger.debug(results)
                             
                     if raw_input('\nWould you like to search again with a new semantic similarity measure?\n"y"\t\t=\tSearch again\nanything else\t=\tDo not search again\n>\t')=="y":
                         continue

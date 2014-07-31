@@ -81,49 +81,35 @@ class CompiledAnnotationSet:
     def maxIC(self,lst):
         return max([self.term2IC.get(x,0)for x in lst])if len(lst)>0 else 0.0
 
-    def getMICAscore(self,termA,termB,namespace):
-        if termA.namespace!=namespace or termB.namespace!=namespace:
-            return
+    def getMICAscore(self,termA,termB):
+        #term to term comparison
         self.MICAcount+=1
         return self.maxIC(self.annset.ontology.reverseClosure[termA]&self.annset.ontology.reverseClosure[termB])
 
-    def rowMICA(self,termA,objB,namespace):
-        #term to obj comparison
-        ret=max([self.getMICAscore(termA,y,namespace)for y in self.obj2term[objB]])
-        if ret==None:
-            return
-        else:
-            return ret
+    def rowMICA(self,termA,listB):
+        #term to list comparison
+        return max([self.getMICAscore(termA,y)for y in listB])
 
-    def objCompare(self,objA,objB,namespace):
-        #obj to obj comparison
-        lst=[self.rowMICA(y,objB,namespace)for y in self.obj2term[objA]]
-        #return float(sum(lst))/len(lst) if len(lst)>0 else 0
-        if len([x for x in lst if x!=None])>0:
-            return float(sum([x for x in lst if x!=None]))/len([x for x in lst if x!=None])
-        else:
-            return 0.0
+    def listCompare(self,listA,listB):
+        #list to list comparison
+        lst=[self.rowMICA(y,listB)for y in listA]
+        return float(sum(lst))/len(lst)
 
-    def listCompare(self,listA,objB,namespace):
-        #list to obj comparison
-        lst=[self.rowMICA(y,objB,namespace)for y in listA]
-        if len([x for x in lst if x!=None])>0:
-            return float(sum([x for x in lst if x!=None]))/len([x for x in lst if x!=None])
-        else:
-            return 0.0
-        
-    def resnikBMA(self,qType,query,namespace,length):
+    def resnikBMA(self,qType,rawQuery,namespace,length):
         #BMA approach; obj to list of objs comparison
         #eventually normalize for the maximum (identity) score to equal 1
         start=time.time()
         self.MICAcount=0
+        query=[]
         resultsList=[]
-        if qType=="object":
-            for x in self.obj2term:
-                resultsList.append((x,self.objCompare(query,x,namespace)))
-        else:
-            for x in self.obj2term:
-                resultsList.append((x,self.listCompare(query,x,namespace)))
+        if qType=="object":query=self.obj2term[rawQuery]
+        else:query=rawQuery
+        query=[x for x in query if x.namespace==namespace]
+        if len(query)==0:for x in self.annset.getAnnotatedObjects():resultsList.append((x,0.0))
+        for x in self.annset.getAnnotatedObjects():
+            res=[z for z in self.obj2term[x] if z.namespace==namespace]
+            if len(res)==0:resultsList.append((x,0.0))
+            else:resultsList.append((x,self.listCompare(query,res)))
         self.logger.debug("".join(("\nFinished!\tresnikBMA\t",str(self.MICAcount)," MICA calculations\nactual runtime:\t\t",str(time.time()-start)," seconds\n")))
         return sorted(resultsList,key=lambda x:x[1],reverse=True)[0:length]
 

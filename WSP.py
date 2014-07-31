@@ -20,8 +20,8 @@ from icLib import SimmerEngine
 app= Flask(__name__, static_url_path="")
 
 #example input URL:
-#http://localhost:5000/?ecode=ND&annSet=geneGO&method=jaccardExt&qtype=object&qid=MGI:87961&length=25&nspace=biological_process
-#http://localhost:5000/?ecode=ND&annSet=genotypeMP&method=jaccardExt&qtype=object&qid=MGI:3526657&length=25&nspace=MPheno.ontology
+#http://localhost:5000/simmer?ecode=ND&annSet=geneGO&method=jaccardExt&qtype=object&qid=MGI:87961&length=25&nspace=biological_process
+#http://localhost:5000/simmer?ecode=ND&annSet=genotypeMP&method=jaccardExt&qtype=object&qid=MGI:3526657&length=25&nspace=MPheno.ontology
 
 @app.route('/simmer')
 def simmer_engine():

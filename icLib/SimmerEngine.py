@@ -98,9 +98,9 @@ def jsonFormatter(dic,annSetChoice,evCodesChoice,searchType,searchInput,namespac
 def htmlFormatter(dic,annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,labeler):
     if namespaceChoice=="MPheno.ontology":labelType="genotype"
     else:labelType="gene"
-    ret='<table border="1"><thead><th>MGI #</th><th>Score</th></thead><tbody>'
+    ret='<table border="1"><thead><th>Result</th><th>Score</th></thead><tbody>'
     for x in dic:
-        ret=ret+"<tr><td>"+x[0].id+"</td><td>"+str(x[1])+"</td></tr>"
+        ret=ret+"<tr><td>"+labeler.get(labelType,x[0].id).replace("\t"," ")+"</td><td>"+str(x[1])+"</td></tr>"
     ret=ret+"</tbody></table>"
     return ret
 

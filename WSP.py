@@ -33,7 +33,7 @@ def simmer_engine():
     method = request.values.get('method')
     length = int(float(request.values.get('length')))#rounds down any floats entered to nearest int
     #return json.dumps([annSetChoice,str(evCodesChoice),searchType,searchInput,namespaceChoice,method,length])
-    return SimmerEngine.requestSubmissionPC(annSetChoice,",".join([x for x in evCodesChoice]),searchType,",".join([x for x in searchInput]),namespaceChoice,method,length,logger,labeler,ontman,annman,"json")
+    return SimmerEngine.requestSubmissionPC(annSetChoice,",".join([x for x in evCodesChoice]),searchType,",".join([x for x in searchInput]),namespaceChoice,method,length,logger,labeler,ontman,annman,"html")
 
 def setConfigOptions(op):
     op.add_option("-l", "--length", metavar="NUM", dest="n", type="int", help="A number.")

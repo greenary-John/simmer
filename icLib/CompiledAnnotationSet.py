@@ -25,7 +25,7 @@ class CompiledAnnotationSet:
             return cls.knownCAS[(AnnSet,frozenset(evCodes),ontman)]
         else:
             start=time.time()
-            print "Pre-Computation II (Building CompiledAnnotationSet)..."
+            print "Pre-Computation II (Building a CompiledAnnotationSet)..."
             newCAS=CompiledAnnotationSet(AnnSet,frozenset(evCodes),ontman)
             print time.time()-start
             return newCAS

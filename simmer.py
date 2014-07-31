@@ -55,6 +55,10 @@ def main():
         print "\n"," ".join([x.__str__() for x in sorted(results,key=lambda entry:float(results[entry]),reverse=True)])
     elif form=="json":
         print "\n",results
+    elif form=="html":
+        print "\n",results
+    else:
+        print "\n",results
  
 def setConfigOptions(op):
     op.add_option("-a","--annSet",metavar="STRING",dest="annSetChoice",default="geneGO",type="string",help="Desired annSet from the config file. Use section header name. (default=%default)")

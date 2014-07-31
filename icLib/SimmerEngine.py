@@ -40,6 +40,7 @@ def requestSubmissionPC(annSetChoice,evCodesChoice,searchType,searchInput,namesp
     if methodChoice=="gicExt":ret=cas.gicExt(searchType,query,namespaceChoice,length)
     if form=="plaintext":return plaintextFormatter(ret,annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,labeler)
     elif form=="json":return jsonFormatter(ret,annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,labeler)
+    elif form=="html":return htmlFormatter(ret,annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,labeler)
     else:return ret
 
 def requestSubmissionRaw(annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,form="plaintext"):
@@ -69,6 +70,7 @@ def requestSubmissionRaw(annSetChoice,evCodesChoice,searchType,searchInput,names
     if methodChoice=="gicExt":ret=cas.gicExt(searchType,query,namespaceChoice,length)
     if form=="plaintext":return plaintextFormatter(ret,annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,labeler)
     elif form=="json":return jsonFormatter(ret,annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,labeler)
+    elif form=="html":return htmlFormatter(ret,annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,labeler)
     else:return ret
 
 def plaintextFormatter(dic,annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,labeler):
@@ -76,7 +78,7 @@ def plaintextFormatter(dic,annSetChoice,evCodesChoice,searchType,searchInput,nam
     else:labelType="gene"
     header="".join((namespaceChoice,":Top",str(length),methodChoice,"results for ",searchInput))
     body=""
-    for x in dic:body=body.join(("\n",labeler.get(labelType,x[0].id),"\t\t",str(x[1])))
+    for x in dic:body=body+"".join(("\n",labeler.get(labelType,x[0].id),"\t\t",str(x[1])))
     tail=" ".join([x[0].id for x in dic])
     return "\n".join((header,body,tail))
 
@@ -92,6 +94,15 @@ def jsonFormatter(dic,annSetChoice,evCodesChoice,searchType,searchInput,namespac
                     "length":length},
           "results":[(labeler.get(labelType,x[0].id).replace("\t"," "),x[1]) for x in dic]}
     return json.dumps(ret)
+
+def htmlFormatter(dic,annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,labeler):
+    if namespaceChoice=="MPheno.ontology":labelType="genotype"
+    else:labelType="gene"
+    ret='<table border="1"><thead><th>MGI #</th><th>Score</th></thead><tbody>'
+    for x in dic:
+        ret=ret+"<tr><td>"+x[0].id+"</td><td>"+str(x[1])+"</td></tr>"
+    ret=ret+"</tbody></table>"
+    return ret
 
 def setConfigOptions(op):
     op.add_option("-l", "--length", metavar="NUM", dest="n", type="int", help="A number.")

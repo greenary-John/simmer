@@ -21,20 +21,20 @@ class CompiledAnnotationSet:
 
     @classmethod
     def getCAS(cls,AnnSet,evCodes,ontman):
-        if (AnnSet,frozenset(evCodes),ontman) in cls.knownCAS:
-            return cls.knownCAS[(AnnSet,frozenset(evCodes),ontman)]
+        if (AnnSet,frozenset(evCodes.split(",")),ontman) in cls.knownCAS:
+            return cls.knownCAS[(AnnSet,frozenset(evCodes.split(",")),ontman)]
         else:
             start=time.time()
             print "Pre-Computation II (Building a CompiledAnnotationSet)..."
-            newCAS=CompiledAnnotationSet(AnnSet,frozenset(evCodes),ontman)
+            newCAS=CompiledAnnotationSet(AnnSet,evCodes,ontman)
             print time.time()-start
             return newCAS
     
     def __init__(self,AnnSet,evCodes,ontman):
-        self.knownCAS[(AnnSet,frozenset(evCodes),ontman)]=self
+        self.knownCAS[(AnnSet,frozenset(evCodes.split(",")),ontman)]=self
         self.ontman=ontman
-        self.evCodes=evCodes if isinstance(evCodes,list) else [evCodes]
-        self.annset=AnnSet.evidenceFilter(self.evCodes)
+        self.evCodes=evCodes#might not be used anywhere else; but saved as a remnant to help debugging
+        self.annset=AnnSet.evidenceFilter(evCodes)
         self.logger=Logger.Logger()
         self.Compute_obj2term()
         self.Compute_term2obj()

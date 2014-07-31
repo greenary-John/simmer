@@ -30,7 +30,7 @@ def requestSubmissionPC(annSetChoice,evCodesChoice,searchType,searchInput,namesp
     if not isinstance(length,int):print "Problem with parameter 7."
     if annSetChoice not in annman.annotationSets:print "Problem with parameter 1."
     annset=annman.annotationSets[annSetChoice]
-    evCodes=list(set(evCodesChoice.split(",")))
+    evCodes=evCodesChoice.replace(" ,",",").replace(" ",",")
     cas=CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annset,evCodes,ontman)
     if searchType=="object":query=AnnotatedObject.AnnotatedObject.getAnnotatedObj(searchInput)
     if searchType=="list":query=[cas.annset.ontology.getTerm(x)for x in searchInput.replace(" ,",",").replace(" ",",").split(",")]
@@ -60,7 +60,7 @@ def requestSubmissionRaw(annSetChoice,evCodesChoice,searchType,searchInput,names
     if annSetChoice not in annman.annotationSets:print "Problem with parameter 1."
 
     annset=annman.annotationSets[annSetChoice]
-    evCodes=list(set(evCodesChoice.split(",")))
+    evCodes=evCodesChoice.replace(" ,",",").replace(" ",",")
     cas=CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annset,evCodes,ontman)
     if searchType=="object":query=AnnotatedObject.AnnotatedObject.getAnnotatedObj(searchInput)
     if searchType=="list":query=[cas.annset.ontology.getTerm(x)for x in searchInput.replace(" ,",",").replace(" ",",").split(",")]
@@ -98,10 +98,19 @@ def jsonFormatter(dic,annSetChoice,evCodesChoice,searchType,searchInput,namespac
 def htmlFormatter(dic,annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,labeler):
     if namespaceChoice=="MPheno.ontology":labelType="genotype"
     else:labelType="gene"
-    ret='<table border="1"><thead><th>Result</th><th>Score</th></thead><tbody>'
-    for x in dic:
-        ret=ret+"<tr><td>"+labeler.get(labelType,x[0].id).replace("\t"," ")+"</td><td>"+str(x[1])+"</td></tr>"
-    ret=ret+"</tbody></table>"
+    params=[("annSetChoice",annSetChoice),("evCodesChoice",evCodesChoice),("searchType",searchType),("searchInput",searchInput),("namespaceChoice",namespaceChoice),("methodChoice",methodChoice),("length",length)]
+    ret='<table border="1"><thead><th>Parameter</th><th>Input</th></thead><tbody>'
+    for x in params:
+        ret=ret+'<tr><td>'+x[0]+'</td><td>'+x[1].__str__()+'</td></tr>'
+    ret=ret+"</tbody></table><pre>\n\n</pre>"
+    ret=ret+'<table border="1"><thead><th>Result</th><th>Score</th></thead><tbody>'
+    if labelType=="gene":
+        for x in dic:
+            ret=ret+'<tr><td><a href="http://www.informatics.jax.org/accession/'+x[0].id+'">'+labeler.get(labelType,x[0].id).replace("\t"," ")+"</a></td><td>"+str(x[1])+"</td></tr>"
+    else:
+        for x in dic:
+            ret=ret+'<tr><td><a href="http://www.informatics.jax.prg/allele/genoview/'+x[0].id+'?counter=1">'+labeler.get(labelType,x[0].id).replace("\t"," ")+"</a></td><td>"+str(x[1])+"</td></tr>"
+    ret=ret+"</tbody></table><pre>Flat Results List:\n\n"+"\n".join([x[0].id for x in dic])+"</pre>"
     return ret
 
 def setConfigOptions(op):

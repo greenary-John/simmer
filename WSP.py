@@ -25,15 +25,21 @@ app= Flask(__name__, static_url_path="")
 
 @app.route('/simmer')
 def simmer_engine():
-    annSetChoice = request.values.get('annSet')
-    evCodesChoice = request.values.getlist('ecode')
+    annSetChoice = request.values.get('annSet').split(",")[0]    
     searchType  = request.values.get('qtype')
     searchInput  = request.values.getlist('qid')
-    namespaceChoice = request.values.get('nspace')
+    if request.values.get('nspace')!=None:
+        namespaceChoice = request.values.get('nspace')
+    elif len(request.values.get('annSet').split(","))>=2:
+        namespaceChoice=request.values.get('annSet').split(",")[1] 
+    if namespaceChoice=="MPheno.ontology":
+        evCodesChoice=""
+    else:
+        evCodesChoice = request.values.get('ecode')
     method = request.values.get('method')
     length = int(float(request.values.get('length')))#rounds down any floats entered to nearest int
     #return json.dumps([annSetChoice,str(evCodesChoice),searchType,searchInput,namespaceChoice,method,length])
-    return SimmerEngine.requestSubmissionPC(annSetChoice,",".join([x for x in evCodesChoice]),searchType,",".join([x for x in searchInput]),namespaceChoice,method,length,logger,labeler,ontman,annman,"html")
+    return SimmerEngine.requestSubmissionPC(annSetChoice,evCodesChoice,searchType,",".join([x for x in searchInput]),namespaceChoice,method,length,logger,labeler,ontman,annman,"html")
 
 def setConfigOptions(op):
     op.add_option("-l", "--length", metavar="NUM", dest="n", type="int", help="A number.")
@@ -50,6 +56,7 @@ if __name__=='__main__':
     ontman=OntologyManager.OntologyManager(simmercon)
     annman=AnnotationManager.AnnotationManager(simmercon,ontman)
     print time.time()-start
-    CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annman.annotationSets["geneGO"],["ND"],ontman)
-    CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annman.annotationSets["genotypeMP"],["ND"],ontman)
+    CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annman.annotationSets["geneGO"],"ND",ontman)
+    CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annman.annotationSets["geneGO"],"ND,ISS,ISA,ISO,ISM,IGC,IBA,IBD,IKR,IRD,RCA",ontman)
+    CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annman.annotationSets["genotypeMP"],"",ontman)
     app.run(debug=True,use_reloader=False)

@@ -14,6 +14,7 @@ def simmerWSP():
     namespaceChoice = request.values.get('nspace')
     method = request.values.get('method')
     length = request.values.get('length')
+    print namespaceChoice
     return json.dumps([annSetChoice,str(evCodesChoice),searchType,searchInput,namespaceChoice,method,length])
 
 if __name__ == "__main__":

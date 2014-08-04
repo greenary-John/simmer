@@ -46,9 +46,9 @@ def setConfigOptions(op):
 
 
 if __name__=='__main__':
+    print "Pre-Computation I..." 
     start=time.time()
     logger=Logger.Logger()
-    print "Pre-Computation I..." 
     cm=ConfigManager.ConfigManager(setConfigOptions)
     simmercon=cm.readConfig()
     #readConfig() returns a SimmerConfigParser so simmercon is a SimmerConfigParser

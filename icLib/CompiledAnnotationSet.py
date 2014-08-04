@@ -105,7 +105,8 @@ class CompiledAnnotationSet:
         if qType=="object":query=self.obj2term[rawQuery]
         else:query=rawQuery
         query=[x for x in query if x.namespace==namespace]
-        if len(query)==0:for x in self.annset.getAnnotatedObjects():resultsList.append((x,0.0))
+        if len(query)==0:
+            for x in self.annset.getAnnotatedObjects():resultsList.append((x,0.0))
         for x in self.annset.getAnnotatedObjects():
             res=[z for z in self.obj2term[x] if z.namespace==namespace]
             if len(res)==0:resultsList.append((x,0.0))

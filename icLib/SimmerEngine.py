@@ -32,9 +32,9 @@ def requestSubmissionPC(annSetChoice,evCodesChoice,searchType,searchInput,namesp
     annset=annman.annotationSets[annSetChoice]
     evCodes=evCodesChoice.replace(" ,",",").replace(" ",",")
     cas=CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annset,evCodes,ontman)
+    print "Running Semantic Similarity Measure..."
     if searchType=="object":query=AnnotatedObject.AnnotatedObject.getAnnotatedObj(searchInput)
     if searchType=="list":query=[cas.annset.ontology.getTerm(x)for x in searchInput.replace(" ,",",").replace(" ",",").split(",")]
-    print "Running Semantic Similarity Measure..."
     if methodChoice=="resnikBMA":ret=cas.resnikBMA(searchType,query,namespaceChoice,length)
     if methodChoice=="jaccardExt":ret=cas.jaccardExt(searchType,query,namespaceChoice,length)
     if methodChoice=="gicExt":ret=cas.gicExt(searchType,query,namespaceChoice,length)
@@ -78,7 +78,7 @@ def plaintextFormatter(dic,annSetChoice,evCodesChoice,searchType,searchInput,nam
     else:labelType="gene"
     header="".join((namespaceChoice,":Top",str(length),methodChoice,"results for ",searchInput))
     body=""
-    for x in dic:body=body+"".join(("\n",labeler.get(labelType,x[0].id),"\t\t",str(x[1])))
+    for x in dic:body=body+"".join(("\n",x[0].id,"\t",labeler.get(labelType,x[0].id),"\t\t",str(x[1])))
     tail=" ".join([x[0].id for x in dic])
     return "\n".join((header,body,tail))
 
@@ -92,7 +92,7 @@ def jsonFormatter(dic,annSetChoice,evCodesChoice,searchType,searchInput,namespac
                     "namespaceChoice":namespaceChoice,
                     "methodChoice":methodChoice,
                     "length":length},
-          "results":[(labeler.get(labelType,x[0].id).replace("\t"," "),x[1]) for x in dic]}
+          "results":[(x[0].id+labeler.get(labelType,x[0].id).replace("\t"," "),x[1]) for x in dic]}
     return json.dumps(ret)
 
 def htmlFormatter(dic,annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,labeler):
@@ -103,13 +103,13 @@ def htmlFormatter(dic,annSetChoice,evCodesChoice,searchType,searchInput,namespac
     for x in params:
         ret=ret+'<tr><td>'+x[0]+'</td><td>'+x[1].__str__()+'</td></tr>'
     ret=ret+"</tbody></table><pre>\n\n</pre>"
-    ret=ret+'<table border="1"><thead><th>Result</th><th>Score</th></thead><tbody>'
+    ret=ret+'<table border="1"><thead><th>Result Identifier</th><th>Result Label</th><th>Score</th></thead><tbody>'
     if labelType=="gene":
         for x in dic:
-            ret=ret+'<tr><td><a href="http://www.informatics.jax.org/accession/'+x[0].id+'">'+labeler.get(labelType,x[0].id).replace("\t"," ")+"</a></td><td>"+str(x[1])+"</td></tr>"
+            ret=ret+'<tr><td><a href="http://www.informatics.jax.org/accession/'+x[0].id+'">'+x[0].id+"</a></td><td>"+labeler.get(labelType,x[0].id).replace("\t"," ")+"</td><td>"+str(x[1])+"</td></tr>"
     else:
         for x in dic:
-            ret=ret+'<tr><td><a href="http://www.informatics.jax.prg/allele/genoview/'+x[0].id+'?counter=1">'+labeler.get(labelType,x[0].id).replace("\t"," ")+"</a></td><td>"+str(x[1])+"</td></tr>"
+            ret=ret+'<tr><td><a href="http://www.informatics.jax.org/allele/genoview/'+x[0].id+'">'+x[0].id+"</a></td><td>"+labeler.get(labelType,x[0].id).replace("\t"," ")+"</td><td>"+str(x[1])+"</td></tr>"
     ret=ret+"</tbody></table><pre>Flat Results List:\n\n"+"\n".join([x[0].id for x in dic])+"</pre>"
     return ret
 

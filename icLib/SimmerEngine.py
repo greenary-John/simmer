@@ -25,10 +25,6 @@ from icLib import Labeler
 def requestSubmissionPC(annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,logger,labeler,ontman,annman,form="plaintext"):
     #annSetChoice   =   string specifying desired AnnSet (e.g., 'geneGO' or 'genotypeMP')
     #evCodesChoice  =   string specifying desired evCodes to remove (e.g., 'ND,ISO,ISS')
-    if searchType not in ["object","list"]:print "Problem with parameter 3."
-    if methodChoice not in ["resnikBMA","jaccardExt","gicExt"]:print "Problem with parameter 6."
-    if not isinstance(length,int):print "Problem with parameter 7."
-    if annSetChoice not in annman.annotationSets:print "Problem with parameter 1."
     annset=annman.annotationSets[annSetChoice]
     evCodes=evCodesChoice.replace(" ,",",").replace(" ",",")
     cas=CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annset,evCodes,ontman)
@@ -46,9 +42,6 @@ def requestSubmissionPC(annSetChoice,evCodesChoice,searchType,searchInput,namesp
 def requestSubmissionRaw(annSetChoice,evCodesChoice,searchType,searchInput,namespaceChoice,methodChoice,length,form="plaintext"):
     #annSetChoice   =   string specifying desired AnnSet (e.g., 'geneGO' or 'genotypeMP')
     #evCodesChoice  =   string specifying desired evCodes to remove (e.g., 'ND,ISO,ISS')
-    if searchType not in ["object","list"]:print "Problem with parameter 3."
-    if methodChoice not in ["resnikBMA","jaccardExt","gicExt"]:print "Problem with parameter 6."
-    if not isinstance(length,int):print "Problem with parameter 7."
     print "Pre-Computation I..."
     logger=Logger.Logger()
     cm=ConfigManager.ConfigManager(setConfigOptions)
@@ -57,8 +50,6 @@ def requestSubmissionRaw(annSetChoice,evCodesChoice,searchType,searchInput,names
     labeler=Labeler.Labeler(simmercon)
     ontman=OntologyManager.OntologyManager(simmercon)
     annman=AnnotationManager.AnnotationManager(simmercon,ontman)
-    if annSetChoice not in annman.annotationSets:print "Problem with parameter 1."
-
     annset=annman.annotationSets[annSetChoice]
     evCodes=evCodesChoice.replace(" ,",",").replace(" ",",")
     cas=CompiledAnnotationSet.CompiledAnnotationSet.getCAS(annset,evCodes,ontman)

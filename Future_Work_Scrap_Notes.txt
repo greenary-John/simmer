@@ -1,0 +1,15 @@
+for cool, new composite search:
+annSetChoice parameter would have to be a list (if multiple provided)
+evCodesChoice parameter would have to be a list (if multiple sets provided)
+namespaceChoice parameter would have to be a list (if multiple provided)
+methodChoice parameter would have to be a list (if multiple provided)
+
+consider adding an optional parameter to SS methods to return all results, regardless of length 
+	consider using a dictionary?
+
+in html format, have multiple columns
+	ex:	composite	Resnik BMA	Extended GIC	Extended Jaccard
+
+note: in case of all three SS measures being incorporated (probably not advised, to be honest)
+weight GIC and JAC lesser individually such that returned results are not dominated by groupwise approach
+

@@ -5,17 +5,17 @@
 <br />
 Select data set:
 <select name="annSet">
-<option value="geneGO,biological_process" selected="True">Functional (GO: Biological Process) annotations to mouse genes in the Biological Process Ontology</option>
+<option value="geneGO,biological_process">Functional (GO: Biological Process) annotations to mouse genes in the Biological Process Ontology</option>
 <option value="geneGO,cellular_component">Functional (GO: Cellular Component) annotations to mouse genes in the Cellular Component Ontology</option>
 <option value="geneGO,molecular_function">Functional (GO: Molecular Function) annotations to mouse genes in the Molecular Function Ontology</option>
-<option value="genotypeMP,MPheno.ontology">Phenotype (MP) annotations to mouse genotypes</option>
+<option value="genotypeMP,MPheno.ontology" selected="True">Phenotype (MP) annotations to mouse genotypes</option>
 </select>
 
 <br />
 Select similarity method:
 <select name="method">
-<option value="resnikBMA">Resnik BMA</option>
-<option value="jaccardExt" selected="True">Jaccard (extended)</option>
+<option value="resnikBMA" selected="True">Resnik BMA</option>
+<option value="jaccardExt">Jaccard (extended)</option>
 <option value="gicExt">GIC (extended)</option>
 </select>
 
@@ -30,9 +30,9 @@ Select evidence codes:
 Select type of search:
 <select name="qtype">
 <option value="object" selected="True">Find results similar to a particular object</option>
-<option value="list">Find results matching a set of terms<option>
+<option value="list">Find results matching a set of terms</option>
 </select>
-<input type="text" name="qid" size="30" value="MGI:87961" />
+<input type="text" name="qid" size="30" value="MGI:3526657" />
 
 <br />
 Number of results to return:

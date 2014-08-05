@@ -55,6 +55,7 @@ Ex:\t\t"MGI:3526657"
 >\t''','''
 Please type the list of terms, separated by spaces or commas, you'd like to search by.
 Ex:\t\t"GO:0008219,GO:0008150"
+Ex:\t\t"MP:0009754,MP:0009751"
 >\t''','''
 Please specify which namespace you'd like to compare the query in:
 "1"\t\t\t\t=\t"biological_process"
@@ -180,5 +181,5 @@ def configDetails(conman):
     return conman.cp.getConfigObj(choiceOptionInquiry)
 
 if __name__=='__main__':
-    choices=["geneGO","ND"]
+    choices=["genotypeMP"," "]
     main()

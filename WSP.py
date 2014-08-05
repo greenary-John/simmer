@@ -33,7 +33,7 @@ def simmer_engine():
     elif len(request.values.get('annSet').split(","))>=2:
         namespaceChoice=request.values.get('annSet').split(",")[1] 
     if namespaceChoice=="MPheno.ontology":
-        evCodesChoice=" "
+        evCodesChoice=""
     else:
         evCodesChoice = request.values.get('ecode')
     method = request.values.get('method')

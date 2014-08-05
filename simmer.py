@@ -62,7 +62,7 @@ def main():
  
 def setConfigOptions(op):
     op.add_option("-a","--annSet",metavar="STRING",dest="annSetChoice",default="genotypeMP",type="string",help="Desired annSet from the config file. Use section header name. (default=%default)")
-    op.add_option("-e", "--evCodes",metavar="STRING",dest="evCodesChoice",default=" ",type="string",help="Desired excluded evidence codes (comma/space delimited list) (default=%default)")
+    op.add_option("-e", "--evCodes",metavar="STRING",dest="evCodesChoice",default="ND",type="string",help="Desired excluded evidence codes (comma/space delimited list) (default=%default)")
     op.add_option("-s","--searchType",metavar="STRING",dest="searchType",default="object",type="string",help="Specify object or list for object or term-set search, respectively. (default=%default)")
     op.add_option("-q","--query",metavar="STRING",dest="searchInput",default="MGI:3526657",type="string",help="Desired query. (e.g., 'MGI:87961' or 'GO:0008150,GO:0008219') (default=%default)")
     op.add_option("-n","--namespace",metavar="STRING",dest="namespaceChoice",default="MPheno.ontology",type="string",help="Specify namespace desired for use within search engine. (default=%default)")

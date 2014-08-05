@@ -181,5 +181,5 @@ def configDetails(conman):
     return conman.cp.getConfigObj(choiceOptionInquiry)
 
 if __name__=='__main__':
-    choices=["genotypeMP"," "]
+    choices=["genotypeMP",""]
     main()
